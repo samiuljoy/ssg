@@ -1580,7 +1580,16 @@ case "$1" in
 		case "$prompt" in
 			y|Y|yes|Yes|YES ) arrange && sync
 				;;
-			N|n|No|no|NO ) echo "you need to run 'sh main.sh all' first to generate all articles in html format"
+			N|n|No|no|NO ) read -p "Would you like to generate all html files and move them into main-site? [y/n]: " generate_prompt
+				case "$generate_prompt" in
+					y|Y|yes|Yes|YES ) to_html && sync && arrange && sync
+						;;
+					n|N|No|no|NO ) echo "you need to run 'sh main.sh all' first to generate all articles in html format"
+						;;
+					* ) echo "Invalid input, exiting" && \
+						return 1;
+						;;
+				esac
 				;;
 			* ) echo "wrong input, exiting..." && \
 				return 1;

@@ -78,17 +78,9 @@ p code {
 	background: grey;
 }
 @media screen and (max-width: 800px) {
-	p, p a {
+	p, p a, p code {
 	font-size: 1rem;
 	color: var(--dpri);
-	text-decoration: none;
-	}
-	blockquote p {
-	color: black;
-	}
-	p code {
-	font-size: 1rem;
-	color: black;
 	text-decoration: none;
 	}
 }
@@ -130,7 +122,6 @@ nav a{
 	color: var(--dpri);
 	font-weight:bold;
 	margin: 0.5rem;
-	text-decoration: none;
 }
 nav ul{
 	text-align:center;
@@ -255,7 +246,7 @@ nav ul li{
 }
 blockquote{
 	background: #808080;
-	color: black;
+	color: var(--dlak);
 	border-left:5px solid #704550;
 	font-size:120%;
 	margin:2rem 0;
@@ -277,7 +268,7 @@ blockquote h3 {
 	font-weight: bold;
 }
 blockquote p b {
-	color: black;
+	color: var(--dlak);
 	font-weight: bold;
 }
 blockquote p {
@@ -376,7 +367,7 @@ tr:nth-child(even) {
 	color: black;
 }
 table {
-	border: 2px solid #353535;
+	border: 1.5px solid grey;
 	border-collapse: collapse;
 	padding: 0.2rem;
 	outline: none;
@@ -393,6 +384,8 @@ table {
 		border: none;
 	}
 }
+th {
+	}
 td,th {
 	border-left: 1px solid black!important;
 	border-right: 1px solid black!important;

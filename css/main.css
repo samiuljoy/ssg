@@ -103,7 +103,6 @@ nav a{
 	color: var(--lnk);
 	font-weight:bold;
 	margin: 0.5rem;
-	text-decoration: none;
 }
 nav ul{
 	text-align:center;
@@ -340,7 +339,7 @@ tr:nth-child(even) {
 	background-color: #d1dbdb;
 }
 table {
-	border: 2px solid #353535;
+	border: 1.5px solid grey;
 	border-collapse: collapse;
 	padding: 0.2rem;
 	outline: none;

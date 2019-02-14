@@ -11,8 +11,9 @@
 ++++navigation
 .homepage: [home](..//index.html)
 .navmenu: roam
-.navpage: [demo](..//demo/base.html)
+.navpage: [demo](..//demos/base.html)
 .navpage: [microblog](..//microblog/base.html)
+.navpage: [notes](notes/base.md)
 .backpage: [base](base.html)
 ----------navigation
 
@@ -96,6 +97,10 @@ ___.date section:___ The date section starts with .date and a colon(:) making .d
 ___.article section:___ The article section starts the same way date does. The text the square brackets [text in square brackets] is the title. which gets displayed as a title and the text in (link.html) is the page it goes to. Much like normal url links in markdown format.
 
 ___.describe section:___ The describe section is the text which gets displayed in the description section of the card section.
+
+![made easy image](../assets/basepage.png)
+
+.caption: When viewed through your web browser
 
 That's how you add articles. Then to add another article, just add a blank line after .describe: and start from .date ^_^
 

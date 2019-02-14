@@ -12,8 +12,8 @@ $ cat index.md
 
 ++++++++++++++++++++++intro
 .h2: samiuljoy.github.io
-.h2: Random stuff
-.img: ![rando image](assets/pens.png)
+.h2: A personal place of mine ^_^
+.img: ![rando image](assets/read.svg)
 ----------------------intro
 
 

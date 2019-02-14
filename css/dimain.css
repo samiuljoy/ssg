@@ -7,7 +7,7 @@ body {
 	-webkit-text-size-adjust:100%;
 	zoom:1;
 	text-rendering:optimizeLegibility;
-	font-family: 'Monospace';
+	font-family: Monospace;
 }
 .grid-container {
 	padding: 2rem;
