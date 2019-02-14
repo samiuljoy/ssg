@@ -83,6 +83,9 @@ p code {
 	color: var(--dpri);
 	text-decoration: none;
 	}
+	blockquote p {
+	color: black;
+	}
 	p code {
 	font-size: 1rem;
 	color: black;

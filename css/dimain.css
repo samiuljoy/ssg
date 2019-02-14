@@ -48,7 +48,6 @@ body {
 }
 @media screen and (max-width: 500px) {
 	img {
-	border-radius:0.5rem;
 	width:100%;
 	height:auto
 	}
