@@ -153,6 +153,20 @@ config_generate() {
 		echo "----------navigation" >> $config_file
 	fi
 
+	grep -q "^++.*sitelink" $config_file && grep -q "^--.*sitelink" $config_file
+
+	if [ "$?" -ne 0 ]; then
+		echo "" >> $config_file
+		echo "# This portion is necessary for rss.xml generation. Rss portion starts from here\n" >> $config_file
+		echo "+++++sitelink\nhttps://yoursitename.com\n------sitelink" >> $config_file
+		echo "" >> $config_file
+		echo "+++++description\nsome description about your site\n-----description" >> $config_file
+		echo "" >> $config_file
+		echo "++++title\nthe title of your site\n-----title" >> $config_file
+		echo "" >> $config_file
+		echo "# Rss generation portion ends here. The Rss portion is optional" >> $config_file
+	fi
+
 	grep -q "^# toggle script" $config_file
 
 	if [ "$?" -ne 0 ]; then
@@ -389,12 +403,12 @@ main_generate() {
 	sed -i 's/^-.*head/<\/head>\n<!-- header section end -->/g' $filename
 
 	# navigation section
-	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.homepage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<a href="\2" style="color: white; text-decoration: none"><home>\1<\/home><\/a>/g' $filename
+	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.homepage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<a href="\2"><home>\1<\/home><\/a>/g' $filename
 	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.navmenu:\s\(.*\)/\t<\/li><li class="dropdown">\n\t<button class="dropbtn">\n\t\t<div class="index">\1<\/div>\n\t<\/button>\n\t<div class="dropdown-content">/g' $filename
 	
 	# transform urls
 	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.navpage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<a href="\2">\1<\/a>/g' $filename
-	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.backpage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<\/div>\n\t<li><a href="\2" style="text-decoration: none"><back>\1<\/back><\/a>\n<\/li>\n<\/ul>/g' $filename
+	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.backpage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<\/div>\n\t<li><a href="\2"><back>\1<\/back><\/a>\n<\/li>\n<\/ul>/g' $filename
 	
 	# navigation tags transform
 	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/^$/<!-- blank line -->/g' $filename
@@ -418,7 +432,7 @@ main_generate() {
 
 	# noscript section
 
-	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">🔆<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n.inner-switch {\n\tdisplay: none;\n}\npre {\n\tbackground:black;\n\tcolor:white;\n\toverflow:auto;\n\tpadding:0.5rem;\n\tborder-radius:0.5rem;\n}\n@media screen and (max-width:500px) {\n\tpre {\n\tmax-height:250px;\n\t}\n}\n\t<\/style>\n<\/noscript>\n" $filename
+	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">🔆<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n.inner-switch {\n\tdisplay: none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
 
 	# card section start
 	sed -i '/^+.*card$/,/^-.*card$/ s/^\.date:\s\(.*\)/<div class="card">\n<div class="date">\1<\/div>/g' $filename
