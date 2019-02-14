@@ -130,6 +130,7 @@ nav a{
 	color: var(--dpri);
 	font-weight:bold;
 	margin: 0.5rem;
+	text-decoration: none;
 }
 nav ul{
 	text-align:center;
@@ -375,7 +376,7 @@ tr:nth-child(even) {
 	color: black;
 }
 table {
-	border: 1.5px solid grey;
+	border: 2px solid #353535;
 	border-collapse: collapse;
 	padding: 0.2rem;
 	outline: none;
@@ -392,8 +393,6 @@ table {
 		border: none;
 	}
 }
-th {
-	}
 td,th {
 	border-left: 1px solid black!important;
 	border-right: 1px solid black!important;

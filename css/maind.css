@@ -130,6 +130,7 @@
 }
 .D nav a {
  color: var(--dpri);
+ text-decoration: none;
 }
 .D .dropbtn {
  text-decoration: none;
