@@ -23,7 +23,7 @@
 
 .caption: This is a cover image
 
-Alright syntax 101 for ssg! Syntax for ssg is pretty simple. Dead simple. Most of it is basic markdown syntax with some additional features like inserting a [table](#table) or [underlines](#underline) since markdown syntax doesn't support these features(yet). You can check the source code for this page in clear markdown format [here](https://github.com/samiuljoy/samiuljoy.github.io/demo/syntax.md).
+Alright syntax 101 for ssg! Syntax for ssg is pretty simple. Dead simple. Most of it is basic markdown syntax with some additional features like inserting a [table](#table) or [underlines](#underline) since markdown syntax doesn't support these features(yet). You can check the source code for this page in clear markdown format [here](https://github.com/samiuljoy/ssg/demo/syntax.md).
 
 See that heading at top that says 'Intro to syntax'? Notice the header is in center of the page and it's a header 1. Here's how you can add a center header1 tag;
 
@@ -43,7 +43,7 @@ To add a new paragraph, just start typing anything after a new line just like yo
 General headers starts with # followed by header numbers. The header above that says '# General header tags' is a header2 writen like this;
 
 ```no
-	### # General header tags
+	## # General header tags
 ```
 
 Also normal headers as well;

@@ -49,6 +49,8 @@ body {
 img {
 	--webkit-filter: invert(100%);
 	filter: invert(100%);
+	height: 450px;
+	width: 600px;
 }
 @media screen and (max-width: 500px) {
 	img {
