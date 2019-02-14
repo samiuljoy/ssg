@@ -45,14 +45,16 @@ body {
 	font-weight: bold;
 }
 img {
-	height:300px;
+	/* height:300px;
 	width:590px;
+	*/
+	height: 450;
+	width: 600px;
 }
 @media screen and (max-width: 500px) {
 	img {
-	border-radius:0.5rem;
 	width:100%;
-	height:auto
+	height:auto;
 	}
 }
 footer {

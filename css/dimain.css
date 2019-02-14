@@ -46,8 +46,13 @@ body {
 	color: #10101c;
 	font-weight: bold;
 }
+img {
+	--webkit-filter: invert(100%);
+	filter: invert(100%);
+}
 @media screen and (max-width: 500px) {
 	img {
+	border-radius:0.5rem;
 	width:100%;
 	height:auto
 	}
