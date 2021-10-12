@@ -1,0 +1,154 @@
+:root {
+ --dpri: #cdcdcd;
+ --dsec: #eeeeee;
+ --dbac: #000000;
+ --dshad: #192841;
+ --dlak: #000000;
+}
+.D {
+ background: var(--dbac);
+ color: var(--dpri);
+}
+.D a {
+ color: var(--dpri);
+ text-decoration: underline var(--dsec);
+}
+.D p code {
+ background:grey;
+}
+.D p a {
+ color: var(--dpri);
+ text-decoration: none;
+}
+@media screen and (max-width: 800px) {
+ .D p a {
+  color: var(--dpri);
+  text-decoration: none;
+ }
+}
+.D p a:visited:hover, .D p a:hover {
+ color: var(--dpri);
+ text-decoration: none;
+}
+.D a:visited {
+ color: var(--dsec);
+}
+.D a:visited:hover, .D a:hover {
+ color: var(--dpri);
+ text-decoration: underline dashed var(--dsec);
+}
+.D blockquote {
+ background: #808080;
+ border-left:5px solid #704550;
+}
+.D blockquote h1, .D blockquote, .D blockquote h2, .D blockquote h3 {
+ color: var(--dlak);
+}
+.D blockquote p b {
+ color:black;
+ font-weight: bold;
+}
+.D tr:nth-child(odd) {
+ background-color:grey;
+ color:black;
+}
+.D tr:nth-child(even) {
+ background-color: darkgrey;
+ color: black;
+}
+.D th {
+ border: 1px solid black!important;
+ color: black;
+}
+.D td, th {
+ border-left: 1px solid black!important;
+ border-right: 1px solid black!important;
+}
+.D .card {
+ box-shadow: 0 4px 8px -2px #1c2e4a;
+ border: 1px solid #777777;
+}
+.D .card:hover {
+ box-shadow: 2px 4px 8px 2px #1c2e4a;
+}
+.D .card a {
+ text-decoration: none;
+ color: white
+}
+.D .area, .D .area:visited, .D .area:hover, .D .area:visited:hover {
+ color: var(--dpri);
+ text-decoration: none;
+}
+.D .date {
+ color: inherit;
+}
+.D .author {
+ color: inherit;
+}
+.D .tag {
+ color: var(--dpri);
+}
+.D ul, .D .ull {
+ color: var(--dpri);
+}
+.D .ull a {
+	color: white;
+	text-decoration: none;
+}
+.D ol li {
+	color: white;
+}
+.D strong, .D b, .D h1, .D h2, .D h3, .D h4 {
+ font-weight:bold;
+ color: var(--dsec);
+}
+.D hr:after {
+ color: lightgrey;
+ background-color:black;
+}
+.D .caption {
+ color: var(--dsec);
+}
+.D home, .D back, .D .index {
+ background: var(--dbac);
+ color: var(--dpri);
+ border: 2px solid grey;
+}
+.D home:hover, .D back:hover, .D .index:hover {
+ color: white;
+ border: 2px dashed grey;
+}
+.D .btn {
+ text-decoration: none;
+ background-color: var(--dlak);
+ color: var(--dpri);
+ border: 1px solid #445566;
+}
+.D nav ul {
+ background: var(--dbac);
+ box-shadow: 0 4px 2px -2px rgba(25,40,65,.5);
+}
+.D nav a {
+ color: var(--dpri);
+}
+.D .dropbtn {
+ text-decoration: none;
+ color: var(--dpri);
+}
+.D .dropdown {
+ color: var(--dpri);
+ background-color: black;
+}
+.D .dropdown-content {
+ background-color: #10101c;
+}
+.D .dropdown-content a {
+ color: var(--dpri);
+ font-weight: bold;
+ text-decoration: none;
+}
+.D .dropdown-content a:hover {
+ background-color: var(--dbac);
+ color: white;
+ border:2px dashed grey;
+}

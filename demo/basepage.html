@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Learn how to edit base pages</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<meta name="theme-color" content="#002f30">
+	<meta name="author" content="samiuljoy">
+	<meta name="description" content="Learn how to edit base.md pages">
+	<link rel="stylesheet" href="../css/maind.css" type="text/css">
+	<link rel="stylesheet" href="../css/main.css" type="text/css">
+	<meta name="generator" content="Basepage Edit tutorial">
+	<link rel="canonical" href="https://samiuljoy.github.io/demo/basepage.html">
+</head>
+
+<body>
+<header role="banner">
+<nav role="navigation">
+
+<ul class="navigation">
+	<li>
+		<a href="../index.html" style="color: white; text-decoration: none"><home>home</home></a>
+	</li><li class="dropdown">
+	<button class="dropbtn">
+		<div class="index">roam</div>
+	</button>
+	<div class="dropdown-content">
+		<a href="../demos/base.html">demo</a>
+		<a href="../microblog/base.html">microblog</a>
+		<a href="notes/base.md">notes</a>
+		</div>
+	<li><a href="base.html" style="text-decoration: none"><back>base</back></a>
+</li>
+</ul>
+</nav>
+</header>
+
+<div id=switch class=inner-switch>
+	<span id=sword>🔆</span>
+</div>
+<noscript>
+	<style type=text/css media=all>
+	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
+.inner-switch {
+	display: none;
+}
+pre {
+	background:black;
+	color:white;
+	overflow:auto;
+	padding:0.5rem;
+	border-radius:0.5rem;
+}
+@media screen and (max-width:500px) {
+	pre {
+	max-height:250px;
+	}
+}
+.btn {
+	display:none;
+}
+	</style>
+</noscript>
+
+<main id="main" role="main">
+<center><h1>Basepage Edit</center></h1>
+
+<p>Learn how to edit base.md pages. base.md pages basically holds the article records along with some short introduction about this section of the webpage for the the articles under a topic. Editing base.md pages are very easy. If you've read the <a href="syntax.html" rel="nofollow">syntax.html</a> article, all syntaxes are valid here as well, the only extra portions are the .date entries, the .article entries and the .describe entry.</p>
+
+<p>To edit a dir/base.md file, you could manually edit it by hand or run from your terminal;</p>
+
+<pre>
+<code>
+$ sh main&period;sh post
+
+then when asked about filename: you put in dirname/base&period;md
+where dirname is any directory name and base&period;md is the base file
+</code>
+</pre>
+
+<p>Then fill all the values and edit base.md file like this;</p>
+
+
+<pre>
+<code>
+&period;ce header1: some page name
+
+This is a base page for some articles, Here are some articles;
+
+++++++++++++++++++++++++++++++++card
+
+&period;date: April 32, 2077
+&period;article: &lsqb;Meeting the coolest person on the fediverse&rsqb;(cool&period;html)
+&period;describe: On this day the coolest person on the fediverse was born and I got to meet them&excl;&excl;
+
+&period;date: August 25, 2022
+&period;article: &lsqb;how I learned to cook for the first time&rsqb;(cook&period;html)
+&period;describe: This article describes about my first experience with cooking
+
+&period;date: December 66, 4041
+&period;article: &lsqb;How I almost smiled&rsqb;(smile&period;html)
+&period;describe: This article describes how I almost smiled
+
+-----------------card
+
+</code>
+</pre>
+
+<p>There's 3 articles mentioned here. Each of these articles has a .date, and .article and a .describe section seperated by a blank line bounded by a ++++card and ----card section.</p>
+
+
+<p>The ++card --card section is what identifies this section as a article section.</p>
+
+
+<pre>
+<code>
+&period;ce header1: some page name
+
+This is a base page for some articles&period; Here are some articles;
+
+++++++++++++++++++++card
+
+--------------------card
+
+
+</code>
+</pre>
+
+<p>Then add first article in card section.</p>
+
+<pre>
+<code>
+&period;ce header1: some page name
+
+This is a base page for some articles&period; Here are some articles;
+
+++++++++++++++++++++card
+
+&period;date: April 32, 2077
+&period;article: &lsqb;Meeting the coolest person on the fediverse&rsqb;(cool&period;html)
+&period;describe: On this day the coolest person on the fediverse was born and I got to meet them&excl;&excl;
+
+-------------------card
+
+</code>
+</pre>
+
+<p><b><i>.date section:</b></i> The date section starts with .date and a colon(:) making .date: The date content should be in <code>Month date, year</code> which is <code>April 32, 2077</code>. Notice the space in between.</p>
+
+<p><b><i>.article section:</b></i> The article section starts the same way date does. The text the square brackets [text in square brackets] is the title. which gets displayed as a title and the text in (link.html) is the page it goes to. Much like normal url links in markdown format.</p>
+
+<p><b><i>.describe section:</b></i> The describe section is the text which gets displayed in the description section of the card section.</p>
+
+<center><img loading="lazy" class="pimg" src="../assets/basepage.png" alt="made easy image"></center>
+
+
+<div class="caption">When viewed through your web browser</div>
+
+<p>That's how you add articles. Then to add another article, just add a blank line after .describe: and start from .date ^_^</p>
+
+<hr>
+
+
+<center><p>Made with &lt;3 by <a href="https://github.com/samiuljoy" rel="nofollow">samiuljoy</a></p></center>
+
+
+<script>
+	mode = document.getElementById('switch');
+
+	if (! navigator.cookieEnabled) {
+		mode.style.display = 'none';
+	}
+	else if(! localStorage) {
+		mode.style.display = 'none';
+	}
+	else {
+		mode.style.display = 'inline';
+	}
+</script>
+
+	<script src="..//js/toggle.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,486 @@
+:root{
+	 --dpri: #cdcdcd;
+	 --dsec: #eeeeee;
+	 --dbac: #000000;
+	 --dshad: #192841;
+	 --dlak: #000000;
+	 --dblak: #000000;
+	--hfont: 'Monospace';
+	--fsize: 1.5rem;
+}
+body{
+	font-size:1rem;
+	line-height:1.55;
+	-webkit-font-smoothing:antialiased;
+	text-rendering:optimizeLegibility;
+	-webkit-text-size-adjust:100%;
+	//zoom:1;
+	font-family: var(--hfont);
+	margin:0 auto;
+	max-width:50rem;
+	padding:1rem;
+	padding-top: 4.3rem;
+	background: var(--dlak);
+	color: var(--dpri);
+}
+@media screen and (min-width: 800px){
+	body {
+	padding-left: 2.5rem;
+	padding-right: 2.5rem;
+	font-size: 1rem;
+	}
+}
+.inner-switch{
+	font-size: 1rem;
+	background-color: inherit;
+	cursor: pointer;
+	position: fixed;
+	margin: 0.5rem;
+	top: 0;
+	padding: 0.2rem;
+}
+@media screen and (min-width: 800px) {
+	.inner-switch { font-size: var(--fsize); }
+}
+.inner-switch:hover{
+	border-radius:0.3rem;
+	border:2px dashed grey;
+}
+a {
+	color: var(--dpri);
+	text-decoration: underline var(--dsec);
+}
+a:visited {
+	color: var(--dsec);
+}
+a:visited:hover, a:hover {
+	color: var(--dpri);
+	text-decoration: underline dashed var(--dsec);
+}
+p{
+	font-family: var(--hfont);
+	font-size: 1.15rem;
+}
+p a{
+	color: var(--dpri);
+	text-decoration: none;
+	border-bottom: 2px solid grey;
+}
+p a:visited:hover, p a:hover{
+	color: var(--dpri);
+	text-decoration: none;
+	border-bottom: 2px dashed grey;
+}
+p code {
+	font-family: var(--hfont);
+	color: black;
+	font-size: 1.15rem;
+	background: grey;
+}
+@media screen and (max-width: 800px) {
+	p, p a, p code {
+	font-size: 1rem;
+	color: var(--dpri);
+	text-decoration: none;
+	}
+}
+home, back, .index{
+	background: var(--dlak);
+	padding:0.5rem;
+	color: var(--dpri);
+	border: 2px solid grey;
+	font-weight:bold;
+	border-radius: 0.5rem;
+	font-size: 1.15rem;
+	text-decoration: none;
+	text-align: center;
+}
+@media screen and (max-width: 800px) {
+	home, back, .index {
+	font-size: 1rem;
+	}
+}
+
+home:hover, back:hover, .index:hover {
+	background: var(--dlak);
+	color: white;
+	border: 2px dashed grey;
+}
+.btn{
+	display: inline-block;
+	background-color: black;
+	text-decoration: none;
+	color: var(--dpri);
+	border: 1px solid #445566;
+	border-radius: 0.3rem;
+	width: 3rem auto;
+	font-weight: bold;
+	padding: 0.1875rem;
+	margin-left: 0.3125rem;
+}
+nav a{
+	color: var(--dpri);
+	font-weight:bold;
+	margin: 0.5rem;
+}
+nav ul{
+	text-align:center;
+	list-style: none;
+	padding: 1rem;
+	top: 0;
+	margin: 0;
+	background: black;
+	box-shadow: 0 4px 2px -2px rgba(25,40,65,.5);
+	opacity: 0.92;
+}
+nav ul li{
+	display:inline-block;
+}
+.navbar{
+	overflow: hidden;
+}
+.dropdown-menu-center{
+	left: 50%;
+}
+.dropdown{
+	font-size: 1rem;
+	color: var(--dpri);
+	background-color: black;
+	text-align: center;
+	text-decoration: none;
+}
+.dropbtn{
+	border: none;
+	text-decoration: none;
+	color: var(--dpri);
+	background-color: inherit;
+	font-family: inherit;
+}
+.navbar a:hover, .dropdown:hover .dropbtn{
+	background-color: inherit;
+}
+.dropdown-content{
+	display: none;
+	position: absolute;
+	background-color: #10101c;
+	min-width: 140px;
+	max-height: 21.5rem;
+	overflow: scroll;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.dropdown-content a{
+	float: inherit;
+	color: var(--dpri);
+	font-weight: bold;
+	text-decoration: none;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+}
+.dropdown-content a:visited:hover{
+	color: #dddddd;
+}
+.dropdown-content a:hover{
+	background-color: var(--dbac);
+	color: white;
+	border: 2px dashed grey;
+	border-radius: 0.5rem;
+}
+.dropdown:hover .dropdown-content{
+	display: block;
+	border-radius: 0.5rem;
+	border: none;
+}
+@media screen and (min-width: 800px){
+	.dropdown:hover .dropdown-content{
+	display: table;
+	border-radius: 0.5rem;
+	border: none;
+	}
+}
+.card{
+	padding: 20px;
+	box-shadow: 2px 4px 8px -2px #1c2e4a;
+	border-radius: 0.5rem;
+	margin-bottom:4rem;
+	border: 1px solid #777777;
+}
+.area, .area:visited, .area:hover, .area:visited:hover{
+	color: var(--dpri);
+	text-decoration: none;
+	font-weight: normal;
+}
+.date, author {
+	color: inherit;
+	margin-bottom: 1rem;
+	font-weight: bold;
+	font-size: 14px;
+	margin-top: 0;
+}
+.date {
+	float: right;
+}
+.author {
+	float: left;
+}
+.card:hover{
+	box-shadow: 2px 4px 8px 2px #1c2e4a;
+	border: none;
+}
+.card a{
+	color: white;
+	text-decoration:none;
+	font-weight:bold;
+}
+.card a:hover{
+	text-decoration:none;
+	border-bottom: 2px dashed grey;
+}
+.card a:visited{
+	color: grey;
+}
+.tag{
+	font-weight: bold;
+	color: var(--dpri);
+}
+blockquote{
+	background: #808080;
+	color: var(--dlak);
+	border-left:5px solid #704550;
+	font-size:120%;
+	margin:2rem 0;
+	padding:1rem;
+	border-radius: 0.3rem;
+}
+blockquote h1 {
+	font-size: 25px;
+	font-weight: bold;
+}
+
+blockquote h2 {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+blockquote h3 {
+	font-size: 20px;
+	font-weight: bold;
+}
+blockquote p b {
+	color: var(--dlak);
+	font-weight: bold;
+}
+blockquote p {
+	margin: 0;
+}
+blockquote blockquote p {
+	font-size: 100%;
+}
+blockquote footer{
+	font-size:90%;
+	margin:1rem 0 0 0;
+}
+ul{
+	font-family: var(--hfont);
+	font-weight: bold;
+	font-size: 1.15rem;
+	color: var(--dpri);
+}
+ol li{
+	font-family: var(--hfont);
+	font-size: 1.15rem;
+	color: white;
+}
+.ull{
+	font-family: var(--hfont);
+	font-size: 1.15rem;
+	font-weight: bold;
+	color: var(--dpri);
+	list-style-type: '# ';
+}
+.ull a {
+	color: white;
+	text-decoration: none;
+	border-bottom: 2px solid grey;
+}
+
+.ull a:hover {
+	border-bottom: 2px dashed grey;
+}
+
+@media screen and (max-width: 800px) {
+	ol li, ull, .ull{
+		font-size: 1rem;
+	}
+}
+.navigation{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+dl dt{
+	margin-bottom:0.5rem;
+}
+dl dd{
+	font-style:italic;
+	margin-bottom:2rem;
+}
+html{
+	box-sizing:border-box;
+}
+*,*:before, *:after{
+	box-sizing:inherit;
+}
+strong,b,h1,h2,h3,h4{
+	font-weight:bold;
+	color: var(--dsec);
+}
+hr {
+	text-align: center;
+	line-height: 1px;
+	height: 1px;
+	border-width: 1px 0;
+	border-style: dashed;
+	border-color: grey;
+	margin: 20px 10px;
+	overflow: visible;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+hr:after {
+	content: 'return NULL\;';
+	padding: 0.5rem;
+	font-size: 1rem;
+	color: lightgrey;
+	display: inline;
+	background-color: black;
+}
+tr:nth-child(odd) {
+	background-color: grey;
+	color: black;
+}
+tr:nth-child(even) {
+	background-color: darkgrey;
+	color: black;
+}
+table {
+	border: 1.5px solid grey;
+	border-collapse: collapse;
+	padding: 0.2rem;
+	outline: none;
+	height: auto;
+	text-align: center;
+	whitespace: nowrap;
+}
+@media screen and (max-width: 650px) {
+	table {
+		/* max-height: 250px; */
+		display: block;
+		overflow: auto;
+		padding: 0;
+		border: none;
+	}
+}
+th {
+	}
+td,th {
+	border-left: 1px solid black!important;
+	border-right: 1px solid black!important;
+	padding: 0.2rem;
+}
+@media screen and (max-width: 800px) {
+	td,th {
+		border-top: 1.5px solid grey;
+		border-bottom: 1.5px solid grey;
+	}
+}
+th {
+	border: 1px solid black!important;
+	color: black;
+	padding: 0.45rem;
+}
+table tr{
+	border-bottom:1px solid var(--dlak);
+}
+table td{
+	padding:0.5rem;
+}
+pre{
+	background: #10101c;
+	color: white;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	overflow: auto;
+	border: 2px solid #353535;
+	border-radius: 0.3rem;
+}
+@media screen and (max-width: 800px) {
+	pre {
+		max-height: 300px;
+	}
+}
+.img{
+	width: 100%;
+	height: auto;
+	margin:0.5rem 0;
+	border: none;
+	border-radius: 0.5rem;
+}
+.cover, .pimg{
+	width: 100%;
+	height: auto;
+	margin:1rem 0;
+	border: none;
+	border-radius: 0.5rem;
+	border: 0.5px solid #353535;
+}
+@media screen and (min-width: 800px){
+	.pimg{width: 80%;
+		height: auto;
+	}
+}
+.caption{
+	font-style: italic;
+	margin-top: -0.5rem;
+	margin-bottom: var(--fsize);
+	font-weight: bold;
+	text-align: center;
+	color: var(--dsec);
+}
+/* 
+.footer{
+	background: #e6e6e6;
+	padding: 1.2rem;
+	border-radius:0.5rem;
+	font-family: var(--hfont);
+	color: var(--sec);
+	margin-top: 2rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+	box-shadow: 0 4px 2px -2px rgba(0,0,0,.2);
+}
+.footer a{
+	color: #192841;
+	font-family: var(--hfont);
+}
+.pin{
+	left:-1.5rem;
+	position: relative;
+	margin-top: -1.6rem;
+	font-size: 21px;
+}
+*/
+iframe{
+	width: 100%;
+	height: 205px;
+	border-radius: 0.2rem;
+}
+@media screen and (min-width: 800px){
+	iframe{width: 560px;
+	height: 315px;
+	border-radius: 0.2rem;
+	}
+}

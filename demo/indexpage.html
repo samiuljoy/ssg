@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Learn how to edit index.md pages</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<meta name="theme-color" content="#002f30">
+	<meta name="author" content="samiuljoy">
+	<meta name="description" content="Learn how to write index.md pages with ssg">
+	<link rel="stylesheet" href="../css/maind.css" type="text/css">
+	<link rel="stylesheet" href="../css/main.css" type="text/css">
+	<meta name="generator" content="Index page edit">
+	<link rel="canonical" href="https://samiuljoy.github.io/demo/indexpage.html">
+</head>
+
+<body>
+<header role="banner">
+<nav role="navigation">
+
+<ul class="navigation">
+	<li>
+		<a href="../index.html" style="color: white; text-decoration: none"><home>home</home></a>
+	</li><li class="dropdown">
+	<button class="dropbtn">
+		<div class="index">roam</div>
+	</button>
+	<div class="dropdown-content">
+		<a href="../demos/base.html">demo</a>
+		<a href="../microblog/base.html">microblog</a>
+		<a href="notes/base.md">notes</a>
+		</div>
+	<li><a href="base.html" style="text-decoration: none"><back>base</back></a>
+</li>
+</ul>
+</nav>
+</header>
+
+<div id=switch class=inner-switch>
+	<span id=sword>🔆</span>
+</div>
+<noscript>
+	<style type=text/css media=all>
+	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
+.inner-switch {
+	display: none;
+}
+pre {
+	background:black;
+	color:white;
+	overflow:auto;
+	padding:0.5rem;
+	border-radius:0.5rem;
+}
+@media screen and (max-width:500px) {
+	pre {
+	max-height:250px;
+	}
+}
+.btn {
+	display:none;
+}
+	</style>
+</noscript>
+
+<main id="main" role="main">
+<center><h1>Syntax Intro to index.md</center></h1>
+
+<p>The index page needs to be edited manually means writing from scratch.</p>
+
+<p>Here's a sample demo page;</p>
+
+<pre>
+<code>
+$ cat index&period;md
+
+++++++++++++++++head
+&period;title: A blog by samiuljoy
+&period;author: samiuljoy
+&period;description: A demo page on ssg + random blog
+&period;style: css/imain&period;css
+&period;name-generator: A personal space of samiuljoy
+&period;canonical: https://samiuljoy&period;github&period;io/
+--------------------head
+
+
+++++++++++++++++++++++intro
+&period;h2: samiuljoy&period;github&period;io
+&period;h2: A personal place of mine ^&lowbar;^
+&period;img: &excl;&lsqb;rando image&rsqb;(assets/read&period;svg)
+----------------------intro
+
+
+++++++++++++++++++++navigation
+&period;page: &lsqb;demo&rsqb;(demo/base&period;html)
+&period;page: &lsqb;about&rsqb;(about&period;html)
+&period;page: &lsqb;blog&rsqb;(blog/base&period;html)
+-------------------------navigation
+
+
++++++++++++++++++++footer
+&period;message: &lt;&excl;&gt;
+--------------------footer
+
+
++++++++++++++++++++++script
+&period;script: js/itoggle&period;js
+---------------------script
+
+
+</code>
+</pre>
+<a class='btn' href='code/indexpage.html-code1'>view raw</a>
+
+
+<h2># Head section</h2>
+
+<p>The ++head and --head section is the &lt;head&gt;&lt;/head&gt; tags.</p>
+
+
+<p><b>.title</b> -&gt; is the title tag &lt;title&gt;</p>
+
+<p><b>.author</b> -&gt; Your name</p>
+
+<p><b>.description</b> -&gt; something to describe about the page</p>
+
+<p><b>.style</b> -&gt; the index css. You can change it if you like.</p>
+
+<p><b>.name-generator</b> -&gt; whatever you want to best describe the index page</p>
+
+<p><b>.canonical</b> -&gt; the link to your site, in my case I would type in https://samiuljoy.github.io</p>
+
+<h2># Intro section</h2>
+
+<p>Intro section ++intro --intro is what get's displayed on the screen.</p>
+
+<p><b>.h2</b> -&gt; heading 2 texts</p>
+
+<p><b>.img: !&lsqb;image alt&rsqb;(assets/image.png)</b> -&gt; is what gets displayed at the image section. The image section is mostly in markdown syntax.</p>
+
+<h2># Navigation section</h2>
+
+<p>These are the navigation pages. The words in square [square] brackets is what gets displayed and (dirname/base.html) is the link to the base.html file. Remember to only include base.html pages when mentioning directories.</p>
+
+<p>Bounded by ++navigation and --navigation and each page section starts with <code>.page:</code> followed by the display name and url</p>
+
+<h2># Footer section</h2>
+
+<p>Bounded by ++footer and --footer the <code>.message: </code> part is what get's displayed on the footer part</p>
+
+
+<h2># Script section</h2>
+
+<p>This little script portion is for dark/light mode toggle. If you click the image, the page will be in dark mode and clicking again puts it in light mode. You can also add custom scripts the same way.</p>
+
+<p>This is what it should look like;</p>
+
+<h2># Generating index.md page</h2>
+
+<p>For generating index.md pages from the shell you'd do</p>
+
+<pre>
+<code>
+$ sh main&period;sh index index&period;md
+</code>
+</pre>
+<p>This will generate a index.html</p>
+
+<hr>
+
+
+<center><p>Made with &lt;3 by <a href="https://github.com/samiuljoy" rel="nofollow">samiuljoy</a></p></center>
+
+
+<script>
+	mode = document.getElementById('switch');
+
+	if (! navigator.cookieEnabled) {
+		mode.style.display = 'none';
+	}
+	else if(! localStorage) {
+		mode.style.display = 'none';
+	}
+	else {
+		mode.style.display = 'inline';
+	}
+</script>
+
+	<script src="..//js/toggle.js"></script>
+
+</body>
+</html>

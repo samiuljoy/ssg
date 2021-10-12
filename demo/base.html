@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Base page for demos</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<meta name="theme-color" content="#002f30">
+	<meta name="author" content="samiuljoy">
+	<meta name="description" content="This page contains list of stuff in on demo page">
+	<link rel="stylesheet" href="../css/maind.css" type="text/css">
+	<link rel="stylesheet" href="../css/main.css" type="text/css">
+	<meta name="generator" content="demos for ssg">
+	<link rel="canonical" href="https://samiuljoy.github.io/demos/base.html">
+</head>
+
+<body>
+<header role="banner">
+<nav role="navigation">
+
+<ul class="navigation">
+	<li>
+		<a href="../index.html" style="color: white; text-decoration: none"><home>home</home></a>
+	</li><li class="dropdown">
+	<button class="dropbtn">
+		<div class="index">roam</div>
+	</button>
+	<div class="dropdown-content">
+		<a href="../demo/base.html">demo</a>
+		<a href="../microblog/base.html">microblog</a>
+		<a href="notes/base.md">notes</a>
+		</div>
+	<li><a href="base.html" style="text-decoration: none"><back>base</back></a>
+</li>
+</ul>
+</nav>
+</header>
+
+<div id=switch class=inner-switch>
+	<span id=sword>🔆</span>
+</div>
+<noscript>
+	<style type=text/css media=all>
+	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
+.inner-switch {
+	display: none;
+}
+pre {
+	background:black;
+	color:white;
+	overflow:auto;
+	padding:0.5rem;
+	border-radius:0.5rem;
+}
+@media screen and (max-width:500px) {
+	pre {
+	max-height:250px;
+	}
+}
+.btn {
+	display:none;
+}
+	</style>
+</noscript>
+
+<main id="main" role="main">
+<center><h1>Demo pages</center></h1>
+
+<p>This here is the base demo page for static site generator <a href="https://github.com/samiuljoy/ssg" rel="nofollow">ssg</a>.</p>
+
+<p>The base page holds page entries to different articles in the same directory. Since this is a demo page, check out how to properly format base.md pages, index,md pages and general markdown pages in the following article entries.</p>
+
+
+<div class="card">
+<div class="date">August 30, 2021</div>
+<h2><a href="syntax.html">Intro to basic syntaxes</a></h2>
+<p>This article section walks you through the basic syntaxes needed for editing markdown files in ssg</p>
+</div>
+
+<div class="card">
+<div class="date">August 30, 2021</div>
+<h2><a href="basepage.html">Edit base.md pages</a></h2>
+<p>This article section walks you throgh how to edit base.md landing pages properly</p>
+</div>
+
+<div class="card">
+<div class="date">August 30, 2021</div>
+<h2><a href="indexpage.html">Edit index.md pages</a></h2>
+<p>Learn how to edit index.md pages properly</p>
+</div>
+
+
+
+<hr>
+
+
+
+
+<center><p>Made with &lt;3 by <a href="https://github.com/samiuljoy" rel="nofollow">samiuljoy</a></p></center>
+
+
+<script>
+	mode = document.getElementById('switch');
+
+	if (! navigator.cookieEnabled) {
+		mode.style.display = 'none';
+	}
+	else if(! localStorage) {
+		mode.style.display = 'none';
+	}
+	else {
+		mode.style.display = 'inline';
+	}
+</script>
+
+	<script src="..//js/toggle.js"></script>
+
+</body>
+</html>

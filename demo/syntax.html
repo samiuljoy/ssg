@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Basic Syntaxes</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<meta name="theme-color" content="#002f30">
+	<meta name="author" content="samiuljoy">
+	<meta name="description" content="A guide to basic syntaxes for ssg">
+	<link rel="stylesheet" href="../css/maind.css" type="text/css">
+	<link rel="stylesheet" href="../css/main.css" type="text/css">
+	<meta name="generator" content="ssg basic syntaxes">
+	<link rel="canonical" href="https://samiuljoy.github.io/demo/syntax.html">
+</head>
+
+<body>
+<header role="banner">
+<nav role="navigation">
+
+<ul class="navigation">
+	<li>
+		<a href="../index.html" style="color: white; text-decoration: none"><home>home</home></a>
+	</li><li class="dropdown">
+	<button class="dropbtn">
+		<div class="index">roam</div>
+	</button>
+	<div class="dropdown-content">
+		<a href="../demos/base.html">demo</a>
+		<a href="../microblog/base.html">microblog</a>
+		<a href="notes/base.md">notes</a>
+		</div>
+	<li><a href="base.html" style="text-decoration: none"><back>base</back></a>
+</li>
+</ul>
+</nav>
+</header>
+
+<div id=switch class=inner-switch>
+	<span id=sword>🔆</span>
+</div>
+<noscript>
+	<style type=text/css media=all>
+	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
+.inner-switch {
+	display: none;
+}
+pre {
+	background:black;
+	color:white;
+	overflow:auto;
+	padding:0.5rem;
+	border-radius:0.5rem;
+}
+@media screen and (max-width:500px) {
+	pre {
+	max-height:250px;
+	}
+}
+.btn {
+	display:none;
+}
+	</style>
+</noscript>
+
+<main id="main" role="main">
+<center><h1>Intro to syntax!</center></h1>
+
+<center><img class="cover" src="../assets/terry.png" alt="A Famous quote from Terry Davis" loading="lazy"></center>
+
+
+<div class="caption">This is a cover image</div>
+
+<p>Alright syntax 101 for ssg! Syntax for ssg is pretty simple. Dead simple. Most of it is basic markdown syntax with some additional features like inserting a <a href="#table" rel="nofollow">table</a> or <a href="#underline" rel="nofollow">underlines</a> since markdown syntax doesn't support these features(yet). You can check the source code for this page in clear markdown format <a href="https://github.com/samiuljoy/samiuljoy.github.io/demo/syntax.md" rel="nofollow">here</a>.</p>
+
+<p>See that heading at top that says 'Intro to syntax'? Notice the header is in center of the page and it's a header 1. Here's how you can add a center header1 tag;</p>
+
+<pre>
+<code>
+&period;ce header1: Intro to syntax&excl;
+</code>
+</pre>
+
+<p>Whatever after the colon(:) gets displayed on the main screen. Same way, you can add header2, header3 upto header4. Just add 1 or 2 or 3 or 4 after <code>header</code> and before <code>:</code></p>
+
+
+<h2># Parahraphs</h2>
+
+<p>To add a new paragraph, just start typing anything after a new line just like you would do in markdown files. Here every newline gets wraped around <code>&lt;p&gt;</code> paragraph tags.</p>
+
+<h2># General header tags</h2>
+
+<p>General headers starts with # followed by header numbers. The header above that says '# General header tags' is a header2 writen like this;</p>
+
+<pre>
+<code>
+&num;&num;&num; &num; General header tags
+</code>
+</pre>
+
+<p>Also normal headers as well;</p>
+
+<h1>This is header 1</h1>
+<h2>This is header 2</h2>
+<h3>This is header 3</h3>
+<h4>This is header 4</h4>
+
+<p>which is;</p>
+
+<pre>
+<code>
+&num; This is header 1
+&num;&num; This is header 2
+&num;&num;&num; This is header 3
+&num;&num;&num;&num; This is header 4
+</code>
+</pre>
+
+<h2># Bold texts</h2>
+
+<p>Bold tags follows basic markdown syntax, <b>this is a bold text</b> with double asterisks and <b>this</b> with double underscores which should look like this in raw mode;</p>
+
+<pre>
+<code>
+&ast;&ast;this is a bold text&ast;&ast; with double asterisks and &lowbar;&lowbar;this&lowbar;&lowbar; with double underscores
+</code>
+</pre>
+
+<p><b>Note:</b> If you're starting some line with bold or italic or bold-italic or urls then consider using underscores for bold,italic or bold-italics instead of asterisks and for urls use an extra space at the very begining.</p>
+
+<h2># Italic texts</h2>
+
+<p>Italic texts with one asterisk &ast; or one underscore &lowbar;. This text is <i>italic</i> and this is also <i>italic</i> which in markdown format looks like this;</p>
+
+<pre>
+<code>
+This text is &lowbar;italic&lowbar; and this is also &ast;italic&ast;
+</code>
+</pre>
+
+<h2># Bold-Italic texts</h2>
+
+<p>Bold-italic texts with three asterisks &ast;&ast;&ast; or three underscores &lowbar;&lowbar;&lowbar;. This text is <b><i>bold italic</b></i> and this is also <i><b>bold italic</b></i></p>
+
+<pre>
+<code>
+This text is &lowbar;&lowbar;&lowbar;bold italic&lowbar;&lowbar;&lowbar; and this is also &ast;&ast;&ast;bold italic&ast;&ast;&ast;
+</code>
+</pre>
+
+<h2 id="underline"># Underline texts</h2>
+
+<p>Markdown syntax does not come with any underline features, so this is how you do <u>underlines</u> for now, with three commas <code>,,,</code></p>
+
+<pre>
+<code>
+this is how you do ,,,underlines,,, for now
+</code>
+</pre>
+
+<h2># Strike Through texts</h2>
+
+<p>This text is a <strike>strike</strike> through <strike>text</strike></p>
+
+<pre>
+<code>
+This text is a &sim;&sim;strike&sim;&sim; through &sim;&sim;text&sim;&sim;
+</code>
+</pre>
+
+<h2># URL texts</h2>
+
+<p>Follows default markdown syntax.</p>
+
+<p> <a href="https://example.org" rel="nofollow">This</a> is a url that leads to example.org and <a href="https://duckduckgo.com" rel="nofollow">this</a> to duckduckgo.com</p>
+
+<pre>
+<code>
+&lsqb;This&rsqb;(https://example&period;org) is a url that leads to example&period;org and &lsqb;this&rsqb;(https://duckduckgo&period;com) to duckduckgo&period;com
+</code>
+</pre>
+
+<p>You can also jump through sections with <code>{id="idname"}</code> after a header section and mentioning the idname in url section with &lsqb;url link name&rsqb;(#idname)</p>
+
+<pre>
+<code>
+This is a text and this is a &lsqb;url&rsqb;(&num;another) which will jump to another section of the article&period;
+This is some text and some more text
+Again some text&period; Next portion is
+
+&num;&num;&num; {id="another"} &num; Some header text
+
+some more text
+</code>
+</pre>
+
+<h2># Image add</h2>
+
+<p>Add paragraph images with <code>.pimg:</code> tags</p>
+
+<pre>
+<code>
+&period;pimg: &period;&period;/assets/terry&period;png terry davis quote
+
+&period;caption: Image: One of Terry Davis's quotes
+</code>
+</pre>
+
+<p>The .pimg portion is calling paragraph image method, then terry.png is the image file being called from previous directory assets and the later portion is just an alt, if image does not get displayed then show 'terry davis quote'. The caption portion is what get's displayed below the image.</p>
+
+<center><img class="pimg" src="../assets/terry.png" alt="terry davis quote"></center>
+
+
+<div class="caption">Image: One of Terry Davis's quotes</div>
+
+<p>Alternatively you can also add class sections in images. The cover image(which is previously mentioned in css file) at the top looks like this in raw code;</p>
+
+<pre>
+<code>
+&period;img: class="cover" &period;&period;/assets/terry&period;png A famous quote from Terry Davis
+</code>
+</pre>
+
+<p><b>Explanation:</b> The <code>.img</code> method invokes class="cover" followed by the image file directory which is <code>../assets/terry.png</code>. The later portion is for accessibility which is an alt text. The spaces are separators in this case.</p>
+
+<p>And yes you can also use default markdown syntax to add images as well;</p>
+
+<pre>
+<code>
+&excl;&lsqb;Terry Davis&rsqb;(&period;&period;/assets/terry&period;png)
+&period;caption: Image: One of Terry Davis's quotes
+</code>
+</pre>
+
+<center><img loading="lazy" class="pimg" src="../assets/terry.png" alt="Terry Davis"></center>
+
+
+<div class="caption">Image: One of Terry Davis's quotes</div>
+
+<h2># Blockquotes</h2>
+
+<p>Blockquotes also follows markdown syntax but each <code>&gt;</code> expands to a new-line;</p>
+
+<pre>
+<code>
+
+&gt; This is a text in a blockquote
+&gt; This is another line of text in a blockquote
+
+</code>
+</pre>
+
+<p><b>Notice the extra one blank line above and one blank line below. This blank lines are necesary for blockquotes, also looks good too</b></p>
+
+<blockquote>
+	<p>This is a text in a blockquote</p>
+	<p>This is another line of text in a blockquote</p>
+</blockquote>
+
+
+<h2># Unordered lists</h2>
+
+<p>Like you'd do in a markdown file;</p>
+
+<pre>
+<code>
+
+&ast; This is an item in an unordered list
+&ast; Another item
+&ast; And another item
+
+</code>
+</pre>
+<p><b>Notice the blank lines above and below</b></p>
+
+<ul>
+	<li>This is an item in an unordered list</li>
+	<li>Another item</li>
+	<li>And another item</li>
+</ul>
+
+<p>You can also use dash - instead of asterisks</p>
+
+<pre>
+<code>
+
+- This is an item in an unordered list
+- Another item
+- And another item
+
+</code>
+</pre>
+<p>Alternatively you can also use '#.' symbols instead of bullet points followed by a full-stop</p>
+
+<pre>
+<code>
+
+&num;&period; This is an item in an unordered list
+&num;&period; Another item
+&num;&period; And another item
+
+</code>
+</pre>
+
+<ul class="ull">
+	<li>This is an item in an unordered list</li>
+	<li>Another item</li>
+	<li>And another item</li>
+</ul>
+
+<h2># Ordered lists</h2>
+
+<p>Also follows normal markdown syntax.</p>
+
+<pre>
+<code>
+
+1&period; Item 1 in ordered list
+2&period; Item 2 in ordered list
+3&period; Item 3 in ordered list
+
+</code>
+</pre>
+
+<ol>
+	<li>Item 1 in ordered list</li>
+	<li>Item 2 in ordered list</li>
+	<li>Item 3 in ordered list</li>
+</ol>
+
+<p>Alternatively you can also use alphabets;</p>
+
+<pre>
+<code>
+
+a&period; Item 1 in ordered list
+b&period; Item 2 in ordered list
+c&period; Item 3 in ordered list
+
+</code>
+</pre>
+
+<p>Which eventually transforms into numbers, unfortunately, ordered list doesn't respect alphabetical orders in html.</p>
+
+<h2># Inline codes</h2>
+
+<p>You've noticed me typing inline <code>tags</code> like this. Here's how to do it;</p>
+
+<pre>
+<code>
+The text <code>code</code> will be an inline code
+</code>
+</pre>
+
+<p>The text <code>code</code> will be an inline code</p>
+
+<p>If you want literal backticks just do escapes</p>
+
+<pre>
+<code>
+The text \&grave;code\&grave; will have literal backticks
+</code>
+</pre>
+
+<p>The text &grave;code&grave; will have literal backticks</p>
+
+<h2 id="table"># Table addition</h2>
+
+<p>Tables are very easy to add. <code>.th: </code> is for table header, <code>.td: </code> is for table data. Here's how you add tables;</p>
+
+<pre>
+<code>
+
++++++++++++++++++table
+
+&period;th: header 1
+&period;th: header 2
+&period;th: header 3
+&period;th: header 4
+&period;th: header 5
+
+&period;td: data 1
+&period;td: data 2
+&period;td: data 3
+&period;td: data 4
+&period;td: data 5
+
+&period;td: data 6
+&period;td: data 7
+&period;td: data 8
+&period;td: data 10
+&period;td: data 11
+
+&period;td: data 10
+&period;td: data 11
+&period;td: data 12
+&period;td: data 13
+&period;td: data 14
+
+----------------table
+
+&period;caption: Table: A Demo Table
+
+</code>
+</pre>
+
+<p><b>Notice the blank line before .th on line 1 and a blank line after the last .td: data 14. Blanks are important</b></p>
+
+<center>
+<table>
+
+	<tr>
+		<th>header 1</th>
+		<th>header 2</th>
+		<th>header 3</th>
+		<th>header 4</th>
+		<th>header 5</th>
+	</tr>
+
+	<tr>
+		<td>data 1</td>
+		<td>data 2</td>
+		<td>data 3</td>
+		<td>data 4</td>
+		<td>data 5</td>
+	</tr>
+
+	<tr>
+		<td>data 6</td>
+		<td>data 7</td>
+		<td>data 8</td>
+		<td>data 10</td>
+		<td>data 11</td>
+	</tr>
+
+	<tr>
+		<td>data 10</td>
+		<td>data 11</td>
+		<td>data 12</td>
+		<td>data 13</td>
+		<td>data 14</td>
+	</tr>
+
+	<tr>
+		<td>data 15</td>
+		<td>data 16</td>
+		<td>data 17</td>
+		<td>data 18</td>
+		<td>data 19</td>
+	</tr>
+
+</table>
+</center>
+<br>
+
+
+
+<div class="caption">Table: A Demo Table</div>
+
+
+<h2># Add Month date, year</h2>
+
+<p>If you invoke <code>[ .today ]</code>,(with nospaces) this will add today's date like this;</p>
+
+<p>Today is September 29, 2021, the day seems nice, and I'm feeling good today</p>
+
+<pre>
+<code>
+Today is &lsqb;&period;today&rsqb;, The day seems nice and all, and I'm feeling good today
+</code>
+</pre>
+
+
+<h2># Code block section</h2>
+
+<p>Code block section is mostly similar to the default markdown syntaxes with some changes/added features. This is how you do code blocks;</p>
+
+<pre>
+<code>
+&num;&excl;/usr/bin/env sh
+echo "hello world"
+</code>
+</pre>
+
+<p>The portion above is a code block, which when writing should be written like this;</p>
+
+<pre>
+<code>
+&grave;&grave;&grave;no
+	&num;&excl;/usr/bin/env sh
+	echo "hello world"
+&grave;&grave;&grave;
+</code>
+</pre>
+
+
+<p>Every code block section should have an extra tab in front of each line. Notice the extra tabs before each line within backticks. The tabs gets rearranged into their original form when viewed from the web browser. The <code>no</code> portion means this is code section does not need to viewed as raw. Viewing in raw mode is similar to copying texts, but with view raw mode, you can curl or wget only the code portion instead of downloading the whole source code for the website then deleting all extra codes later. That's a pain.</p>
+
+<p>This is what it looks like with view raw mode;</p>
+
+<pre>
+<code>
+&num;&excl;/usr/bin/env sh
+echo "hello world"
+</code>
+</pre>
+<a class='btn' href='code/syntax.html-code1'>view raw</a>
+
+<p>This is what you'd actually type in;</p>
+
+<pre>
+<code>
+&grave;&grave;&grave;1
+	&num;&excl;/usr/bin/env sh
+	echo "hello world"
+&grave;&grave;&grave;
+&period;code1
+</code>
+</pre>
+
+<p>The view raw text method uses serial number based code block arrangement in a separate directory assigned for raw code sections. The 1 after 3 backticks means it's the first code that needs to have a view raw section and the <code>.code1</code> later get's transformed into "view raw". The serial number should be same for 1 and .code1. Then for a second code block with view raw option you'd do 2 and the .code2 like this;</p>
+
+<pre>
+<code>
+&num;&excl;/usr/bin/env sh
+echo "this is a second code block"
+</code>
+</pre>
+<a class='btn' href='code/syntax.html-code2'>view raw</a>
+
+<p>This would look something like this when writing;</p>
+
+<pre>
+<code>
+&grave;&grave;&grave;2
+	&num;&excl;/usr/bin/env sh
+	echo "this is a second code block"
+&grave;&grave;&grave;
+&period;code2
+</code>
+</pre>
+
+<p>So, no after 3 backticks means just normal code block section, no view raw code, and a numerical digit means it's supposed to be viewed as raw. Now from now on if I wanted to add another view raw code block section, I'd do 3 backticks and the add 3 to it and then add <code>.code3</code> after code block section.</p>
+
+<p><b>Note: Don't break the serial number however, if you mentioned code block with 1 then assign the next one with 3, this wouldn't work properly</b></p>
+
+<h2># Horizontal line</h2>
+
+<p>I made a customized horizontal line, just invoke <code>.hr</code></p>
+
+<pre>
+<code>
+&period;hr
+</code>
+</pre>
+<p>This should print out a horizontal line like below;</p>
+
+<hr>
+
+<h2># Line breaks</h2>
+
+<p>Do line breaks with <code>.br</code></p>
+
+<pre>
+<code>
+This is a text
+&period;br
+This is another line of text but on a new line
+</code>
+</pre>
+
+<h2># Comments</h2>
+
+<p>Comments are more like c11 style, this is how you do comments;</p>
+
+<pre>
+<code>
+This is some text /&ast; this is a comment &ast;/
+This is another line of text
+</code>
+</pre>
+
+<p>From the command line, you can also enable or disable comments;</p>
+
+<pre>
+<code>
+$ sh main&period;sh html -c file&period;md
+</code>
+</pre>
+
+<p>Comments are removed by default when no flags are mentioned.</p>
+
+<h2># Nested blockquotes (experimental)</h2>
+
+<p>You can also do nested blockquotes but they are still experimental. Here's how you do nested blockquotes;</p>
+
+<pre>
+<code>
+&gt; This is some text in blockquotes
+&gt; Another line of text in a blockquote
+&gt;&gt; This portion is in nested blockquotes
+&gt;&gt; This portion is also in a nested blockquote on a new line
+&gt; This text is in normal blockquotes
+</code>
+</pre>
+
+<blockquote>
+	<p>This is some text in blockquotes</p>
+	<p>Another line of text in a blockquote</p>
+	<blockquote>
+	<p>This portion is in nested blockquotes</p>
+	</blockquote>
+	<blockquote>
+	<p>This portion is also in a nested blockquote but on a new line</p>
+	</blockquote>
+	<p>This text is in normal blockquotes</p>
+</blockquote>
+
+
+<h2># Escape characters</h2>
+
+<p>You've noticed that underscores &lowbar; and &ast; asterisks are used as tag syntaxes. Well you can use literal underscores and asterisk with backslashes <code>\ _</code> without any spaces in between them;</p>
+
+<pre>
+<code>
+This is \&lowbar; underscore and \&ast; is an asterisk and \&grave; this is a backtick
+</code>
+</pre>
+
+<p><b>Will print out;</b></p>
+
+<p>This is &lowbar; underscore and &ast; is an asterisk and &grave; this is a backtick</p>
+
+<p>If you want to use literal \&lowbar; just use double backslashes;</p>
+
+<pre>
+<code>
+This is \\&lowbar; underscore and \\&ast; is an asterisk and \\&grave; this is a backtick
+</code>
+</pre>
+
+<p><b>Will print out;</b></p>
+
+<p>This is \&lowbar; underscore and \&ast; is an asterisk and \&grave; this is a backtick</p>
+
+<p>That's it for basic syntax. Learn how to write basic.md files on the <a href="basepage.html" rel="nofollow">next</a> article or learn how to write index.md pages <a href="indexpage.html" rel="nofollow">here</a>. Check the source code for this site over <a href="https://gitbub.com/samiuljoy/samiuljoy.github.io" rel="nofollow">here</a></p>
+
+<hr>
+
+
+<center><p>Made with &lt;3 by <a href="https://github.com/samiuljoy" rel="nofollow">samiuljoy</a></p></center>
+
+
+<script>
+	mode = document.getElementById('switch');
+
+	if (! navigator.cookieEnabled) {
+		mode.style.display = 'none';
+	}
+	else if(! localStorage) {
+		mode.style.display = 'none';
+	}
+	else {
+		mode.style.display = 'inline';
+	}
+</script>
+
+	<script src="..//js/toggle.js"></script>
+
+</body>
+</html>

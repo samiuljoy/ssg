@@ -1,0 +1,36 @@
+$ cat index.md
+
+++++++++++++++++head
+.title: A blog by samiuljoy
+.author: samiuljoy
+.description: A demo page on ssg + random blog
+.style: css/imain.css
+.name-generator: A personal space of samiuljoy
+.canonical: https://samiuljoy.github.io/
+--------------------head
+
+
+++++++++++++++++++++++intro
+.h2: samiuljoy.github.io
+.h2: A personal place of mine ^_^
+.img: ![rando image](assets/read.svg)
+----------------------intro
+
+
+++++++++++++++++++++navigation
+.page: [demo](demo/base.html)
+.page: [about](about.html)
+.page: [blog](blog/base.html)
+-------------------------navigation
+
+
++++++++++++++++++++footer
+.message: <!>
+--------------------footer
+
+
++++++++++++++++++++++script
+.script: js/itoggle.js
+---------------------script
+
+
