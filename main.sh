@@ -314,11 +314,11 @@ main_generate() {
 		mkdir -p "$code_directory"
 		
 		while [ "$code_number" -le "$upto" ]; do
-			sed -n "/^\`\`\`$code_number$/,/^\.code$code_number$/p" $filename > "$filename-code$code_number"
-			sed -i '/^\.code[[:digit:]]\+/d' "$filename-code$code_number"
-			sed -i '/^```/d' "$filename-code$code_number"
-			sed -i 's/^\t//g' "$filename-code$code_number"
-			mv "$filename-code$code_number" $code_directory
+			sed -n "/^\`\`\`$code_number$/,/^\.code$code_number$/p" $filename > "$filename-code$code_number.txt"
+			sed -i '/^\.code[[:digit:]]\+/d' "$filename-code$code_number.txt"
+			sed -i '/^```/d' "$filename-code$code_number.txt"
+			sed -i 's/^\t//g' "$filename-code$code_number.txt"
+			mv "$filename-code$code_number.txt" $code_directory
 			code_number="$(( $code_number + 1 ))"
 		done
 	fi
@@ -596,9 +596,9 @@ main_generate() {
 	echo $filename | grep -q "/"
 	if [ "$?" = 0 ]; then
 		name_sub="$(echo "$1" | sed 's/.*\/\(.*\).md$/\1.html/g')"
-		sed -i "s/^\.\(code[[:digit:]]\+\)$/<a class='btn' href='code\/$name_sub-\1'>view raw<\/a>/g" $filename
+		sed -i "s/^\.\(code[[:digit:]]\+\)$/<a class='btn' href='code\/$name_sub-\1.txt'>view raw<\/a>/g" $filename
 	else
-		sed -i "s/^\.\(code[[:digit:]]\+\)$/<a class='btn' href='code\/$filename-\1'>view raw<\/a>/g" $filename
+		sed -i "s/^\.\(code[[:digit:]]\+\)$/<a class='btn' href='code\/$filename-\1.txt'>view raw<\/a>/g" $filename
 	fi
 
 	# Paragraph substitution
