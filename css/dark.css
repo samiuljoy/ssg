@@ -78,9 +78,14 @@ p code {
 	background: grey;
 }
 @media screen and (max-width: 800px) {
-	p, p a, p code {
+	p, p a {
 	font-size: 1rem;
 	color: var(--dpri);
+	text-decoration: none;
+	}
+	p code {
+	font-size: 1rem;
+	color: black;
 	text-decoration: none;
 	}
 }
@@ -246,7 +251,7 @@ nav ul li{
 }
 blockquote{
 	background: #808080;
-	color: var(--dlak);
+	color: black;
 	border-left:5px solid #704550;
 	font-size:120%;
 	margin:2rem 0;
@@ -268,7 +273,7 @@ blockquote h3 {
 	font-weight: bold;
 }
 blockquote p b {
-	color: var(--dlak);
+	color: black;
 	font-weight: bold;
 }
 blockquote p {

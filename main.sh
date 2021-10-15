@@ -418,7 +418,7 @@ main_generate() {
 
 	# noscript section
 
-	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">🔆<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n.inner-switch {\n\tdisplay: none;\n}\npre {\n\tbackground:black;\n\tcolor:white;\n\toverflow:auto;\n\tpadding:0.5rem;\n\tborder-radius:0.5rem;\n}\n@media screen and (max-width:500px) {\n\tpre {\n\tmax-height:250px;\n\t}\n}\n.btn {\n\tdisplay:none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
+	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">🔆<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n.inner-switch {\n\tdisplay: none;\n}\npre {\n\tbackground:black;\n\tcolor:white;\n\toverflow:auto;\n\tpadding:0.5rem;\n\tborder-radius:0.5rem;\n}\n@media screen and (max-width:500px) {\n\tpre {\n\tmax-height:250px;\n\t}\n}\n\t<\/style>\n<\/noscript>\n" $filename
 
 	# card section start
 	sed -i '/^+.*card$/,/^-.*card$/ s/^\.date:\s\(.*\)/<div class="card">\n<div class="date">\1<\/div>/g' $filename
@@ -656,7 +656,7 @@ main_generate() {
 	echo "</html>" >> $filename
 }
 
-## post articles -> main post function
+## post articles -> main post function -> will be called later
 main_post() {
 	# functions begin
 	empty() {
@@ -688,6 +688,13 @@ main_post() {
 	read -p "make file into .html when done? [y/n]: " generate
 	val="$generate" && skip
 	touch $current
+	
+	# check if editor variable is defined
+	[ -z "$EDITOR" ] && \
+		echo "Editor global variable is not set" && \
+		exit 1
+
+	# invoke editor variable if prefix is set
 	$EDITOR $current
 
 	# if file is empty
