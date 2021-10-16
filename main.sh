@@ -1247,6 +1247,8 @@ index_generate() {
 	sed -i '/^+.*head$/,/^-.*head$/ s/\.style:\s\(.*\)/<link rel="stylesheet" type="text\/css" href="\1">/g' $filename
 	sed -i '/^+.*head$/,/^-.*head$/ s/\.name-generator:\s\(.*\)/<meta name="generator" content="\1">/g' $filename
 	sed -i '/^+.*head$/,/^-.*head$/ s/\.canonical:\s\(.*\)/<link rel="canonical" href="\1">/g' $filename
+	
+	sed -i "/^-.*head$/ a \\\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import 'css\/dimain.css' screen and (prefers-color-scheme: dark);\n\t<\/style>\n<\/noscript>" $filename
 
 	sed -i 's/^+.*head$/<\!DOCTYPE html>\n<html>\n<head>/g' $filename
 	sed -i 's/^-.*head$/<\/head>/g' $filename
