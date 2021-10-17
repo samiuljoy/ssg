@@ -1448,7 +1448,7 @@ rss_generate() {
 		sed -i 's/^\.article:\s//g' $rss_md
 		sed -i "s/^\[\(.*\)\]/\t<title>\1<\/title>/g" $rss_md
 		sed -i 's/^\.describe:\s\(.*\)/\t<p>\1<\/p>\n\t]]>\n\t<\/description>\n<\/item>/g' $rss_md
-		sed -i 's/(\(.*\))/\n\t<description><![CDATA[\n\t<p>\1<\/p>/g' $rss_md
+		sed -i 's/(\(.*\))/\n\t<description><![CDATA[\n\t<a href="\1">\1<\/a>/g' $rss_md
 	}
 
 	## appending header section
