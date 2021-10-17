@@ -19,17 +19,16 @@
 
 <ul class="navigation">
 	<li>
-		<a href="../index.html" style="color: white; text-decoration: none"><home>home</home></a>
+		<a href="../index.html"><home>home</home></a>
 	</li><li class="dropdown">
 	<button class="dropbtn">
 		<div class="index">roam</div>
 	</button>
 	<div class="dropdown-content">
-		<a href="../demos/base.html">demo</a>
+		<a href="../demo/base.html">demo</a>
 		<a href="../microblog/base.html">microblog</a>
-		<a href="notes/base.md">notes</a>
 		</div>
-	<li><a href="base.html" style="text-decoration: none"><back>base</back></a>
+	<li><a href="base.html"><back>base</back></a>
 </li>
 </ul>
 </nav>
@@ -43,21 +42,6 @@
 	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
 .inner-switch {
 	display: none;
-}
-pre {
-	background:black;
-	color:white;
-	overflow:auto;
-	padding:0.5rem;
-	border-radius:0.5rem;
-}
-@media screen and (max-width:500px) {
-	pre {
-	max-height:250px;
-	}
-}
-.btn {
-	display:none;
 }
 	</style>
 </noscript>
@@ -150,11 +134,6 @@ This is a base page for some articles&period; Here are some articles;
 <p><b><i>.article section:</b></i> The article section starts the same way date does. The text the square brackets [text in square brackets] is the title. which gets displayed as a title and the text in (link.html) is the page it goes to. Much like normal url links in markdown format.</p>
 
 <p><b><i>.describe section:</b></i> The describe section is the text which gets displayed in the description section of the card section.</p>
-
-<center><img loading="lazy" class="pimg" src="../assets/basepage.png" alt="made easy image"></center>
-
-
-<div class="caption">When viewed through your web browser</div>
 
 <p>That's how you add articles. Then to add another article, just add a blank line after .describe: and start from .date ^_^</p>
 

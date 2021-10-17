@@ -5,7 +5,7 @@
 .style: ..//css/maind.css
 .style: ..//css/main.css
 .name-generator: demos for ssg
-.canonical-link: https://samiuljoy.github.io/demos/base.html
+.canonical-link: https://samiuljoy.github.io/demo/base.html
 -------------------head
 
 ++++navigation
@@ -13,7 +13,6 @@
 .navmenu: roam
 .navpage: [demo](..//demo/base.html)
 .navpage: [microblog](..//microblog/base.html)
-.navpage: [notes](notes/base.md)
 .backpage: [base](base.html)
 ----------navigation
 

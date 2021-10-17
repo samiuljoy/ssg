@@ -11,9 +11,8 @@
 ++++navigation
 .homepage: [home](..//index.html)
 .navmenu: roam
-.navpage: [demo](..//demos/base.html)
+.navpage: [demo](..//demo/base.html)
 .navpage: [microblog](..//microblog/base.html)
-.navpage: [notes](notes/base.md)
 .backpage: [base](base.html)
 ----------navigation
 
@@ -35,7 +34,7 @@ See that heading at top that says 'Intro to syntax'? Notice the header is in cen
 Whatever after the colon(:) gets displayed on the main screen. Same way, you can add header2, header3 upto header4. Just add 1 or 2 or 3 or 4 after `header` and before `:`
 
 
-## # Parahraphs
+## # Paragraphs
 
 To add a new paragraph, just start typing anything after a new line just like you would do in markdown files. Here every newline gets wraped around `<p>` paragraph tags.
 
@@ -252,7 +251,7 @@ Which eventually transforms into numbers, unfortunately, ordered list doesn't re
 You've noticed me typing inline `tags` like this. Here's how to do it;
 
 ```no
-	The text `code` will be an inline code
+	The text \`code\` will be an inline code
 ```
 
 The text `code` will be an inline code
@@ -495,7 +494,7 @@ __Will print out;__
 
 This is \\_ underscore and \\* is an asterisk and \\` this is a backtick
 
-That's it for basic syntax. Learn how to write basic.md files on the [next](basepage.html) article or learn how to write index.md pages [here](indexpage.html). Check the source code for this site over [here](https://gitbub.com/samiuljoy/samiuljoy.github.io)
+That's it for basic syntax. Learn how to write base.md files on the [next](basepage.html) article or learn how to write index.md pages [here](indexpage.html). Check the source code for this site over [here](https://gitbub.com/samiuljoy/samiuljoy.github.io)
 
 .hr
 

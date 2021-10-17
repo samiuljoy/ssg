@@ -11,9 +11,8 @@
 ++++navigation
 .homepage: [home](..//index.html)
 .navmenu: roam
-.navpage: [demo](..//demos/base.html)
+.navpage: [demo](..//demo/base.html)
 .navpage: [microblog](..//microblog/base.html)
-.navpage: [notes](notes/base.md)
 .backpage: [base](base.html)
 ----------navigation
 
@@ -39,8 +38,8 @@ Here's a sample demo page;
 	
 	++++++++++++++++++++++intro
 	.h2: samiuljoy.github.io
-	.h2: A personal place of mine ^_^
-	.img: ![rando image](assets/read.svg)
+	.h2: Random stuff
+	.img: ![rando image](assets/pens.png)
 	----------------------intro
 
 	
