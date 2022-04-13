@@ -35,7 +35,7 @@ demo -> a directory with some examples
 $ git clone https://github.com/samiuljoy/ssg.git
 ```
 
-* Write the index.md by hand following [this](https://samiuljoy.github.io/demos/indexpage.html) article
+* Write the index.md by hand following [this](https://samiuljoy.github.io/demo/indexpage.html) article
 
 * Generating a config.txt file
 
