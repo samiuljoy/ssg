@@ -16,7 +16,6 @@ usage() {
 	echo "sh main.sh index index.md -------> convert index.md file to index.html"
 	echo "sh main.sh final -------> arrange all files to a main or final site directory"
 	echo "sh main.sh rss ----------> generate a rss feed of the articles from base.md files"
-	echo "sh main.sh lol ----------> ^_^"
 }
 
 # global variables
@@ -432,7 +431,7 @@ main_generate() {
 
 	# noscript section
 
-	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">🔆<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n.inner-switch {\n\tdisplay: none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
+	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">λ<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n.inner-switch {\n\tdisplay: none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
 
 	# card section start
 	sed -i '/^+.*card$/,/^-.*card$/ s/^\.date:\s\(.*\)/<div class="card">\n<div class="date">\1<\/div>/g' $filename
@@ -487,8 +486,11 @@ main_generate() {
 	today="$(date +%B' '%e', '%Y)" && \
 		sed -i "s/\[\.today\]/$today/g" $filename
 
-	# markdown style image conversion
-	sed -i 's/\!\[\([^]]*\)\](\([^)]*\))/<center><img loading="lazy" class="pimg" src="\2" alt="\1"><\/center>/g' $filename
+	# markdown style video addition
+	sed -i 's/\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<video title="\1" controls>\n\t\t<source src="\2">\n\t<\/video>\n<\/center>/g' $filename
+
+	# markdown style image addition
+	sed -i 's/\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<img loading="lazy" class="pimg" src="\2" alt="\1">\n<\/center>/g' $filename
 
 	# main section
 	sed -i '/^+.*main$/,/^-.*main$/ s/^\.ce\sheader1:\s\(.*\)/<center><h1>\1<\/center><\/h1>/g' $filename
@@ -1595,8 +1597,6 @@ case "$1" in
 				return 1;
 				;;
 		esac
-		;;
-	lol ) echo "^_^"
 		;;
 	* ) usage
 		;;
