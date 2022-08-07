@@ -1459,24 +1459,38 @@ rss_generate() {
 	## appending header section
 	header() {
 		# get description text from config_file
-		description="$(sed -n '/^++.*description$/,/^--.*description$/p' $config_file | grep -v "^++.*\|^--.*")"
+		description_of_site="$(sed -n '/^++.*description$/,/^--.*description$/p' $config_file | grep -v "^++.*\|^--.*")"
 		# get the site title from config_file
-		site_title="$(sed -n '/^++.*title$/,/^--.*title$/p' $config_file | grep -v "^++.*\|^--.*")"
-		
-		# appending xml tags
-		sed -i '1i <?xml version="1.0" encoding="utf-8"?>' $rss_xml
-		sed -i '1a <!-- content starts here -->' $rss_xml
-		sed -i "1a <atom:link href='$main_site\/rss.xml' rel='self' type='application\/rss+xml' \/>" $rss_xml
-		sed -i "1a <link>$main_site\/rss.xml<\/link>" $rss_xml
-		sed -i "1a <language>en-us<\/language>" $rss_xml
-		sed -i "1a <description>$description<\/description>" $rss_xml
-		sed -i "1a <title>$site_title<\/title>" $rss_xml
-		sed -i "1a <channel>" $rss_xml
-		sed -i '1a <rss version="2.0" xmlns:atom="http:\/\/www.w3.org\/2005\/Atom">' $rss_xml
+		site_title_name="$(sed -n '/^++.*title$/,/^--.*title$/p' $config_file | grep -v "^++.*\|^--.*")"
+
+		# have to remove leading tabs for catting into a file
+		cat << EOF > $rss_xml
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>$site_title_name</title>
+<description>$description_of_site</description>
+<language>en-us</language>
+<link>$site_link/rss.xml</link>
+<atom:link href='$site_link/rss.xml' rel='self' type='application/rss+xml' />
+<!-- content starts here -->
+EOF
 	}
+
+		# appending xml tags (deprecated)
+		#sed -i '1i <?xml version="1.0" encoding="utf-8"?>' $rss_xml
+		#sed -i '1a <!-- content starts here -->' $rss_xml
+		#sed -i "1a <atom:link href='$main_site\/rss.xml' rel='self' type='application\/rss+xml' \/>" $rss_xml
+		#sed -i "1a <link>$main_site\/rss.xml<\/link>" $rss_xml
+		#sed -i "1a <language>en-us<\/language>" $rss_xml
+		#sed -i "1a <description>$description<\/description>" $rss_xml
+		#sed -i "1a <title>$site_title<\/title>" $rss_xml
+		#sed -i "1a <channel>" $rss_xml
+		#sed -i '1a <rss version="2.0" xmlns:atom="http:\/\/www.w3.org\/2005\/Atom">' $rss_xml
+	#}
 	# end of functions
 
-	# removes the old rss file if exists already
+	# removes the old rss file if already exists 
 	[ -f "$rss_xml" ] && \
 		rm "$rss_xml"
 
@@ -1487,7 +1501,10 @@ rss_generate() {
 	check_config
 
 	# only base file
-	base_files="$(grep '\/base\.md$' $config_file)"
+	base_files="$(grep '\/base\.md$\|\/base..md$' $config_file)"
+
+	# modify the headers
+	header
 
 	# push to $rss_md file
 	card_loop
@@ -1508,11 +1525,10 @@ rss_generate() {
 		echo "rss.awk file not found, exiting..." && \
 		return 1;
 
-	awk -f "rss.awk" $rss_md > $rss_xml
+	awk -f "rss.awk" $rss_md >> $rss_xml
 
 	# properly format header section and add ending tags
-	header && \
-		echo "</channel>" >> $rss_xml && \
+	echo "</channel>" >> $rss_xml && \
 		echo "</rss>" >> $rss_xml
 }
 
