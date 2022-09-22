@@ -325,7 +325,7 @@ main_generate() {
 		upto="$(grep '^```[[:digit:]]\+$' $filename | tail -n1 | cut -c 4-)"
 		code_directory="$(dirname $filename)/code"
 		mkdir -p "$code_directory"
-		
+
 		while [ "$code_number" -le "$upto" ]; do
 			sed -n "/^\`\`\`$code_number$/,/^\.code$code_number$/p" $filename > "$filename-code$code_number.txt"
 			sed -i '/^\.code[[:digit:]]\+/d' "$filename-code$code_number.txt"
@@ -431,7 +431,7 @@ main_generate() {
 
 	# noscript section
 
-	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">λ<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n.inner-switch {\n\tdisplay: none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
+	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">λ<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n\t.inner-switch {\n\tdisplay: none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
 
 	# card section start
 	sed -i '/^+.*card$/,/^-.*card$/ s/^\.date:\s\(.*\)/<div class="card">\n<div class="date">\1<\/div>/g' $filename
@@ -490,7 +490,10 @@ main_generate() {
 	sed -i 's/\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<video title="\1" controls>\n\t\t<source src="\2">\n\t<\/video>\n<\/center>/g' $filename
 
 	# markdown style image addition
-	sed -i 's/\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<img loading="lazy" class="pimg" src="\2" alt="\1">\n<\/center>/g' $filename
+	sed -i 's/^\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<img loading="lazy" class="pimg" src="\2" alt="\1">\n<\/center>/g' $filename
+
+	# custom markdown style next page
+	sed -i 's/^\.next\[\([^]]*\)\](\([^)]*\))/<center><div class="next_page"><a href="\2" rel="nofollow">\1<\/a><\/div><\/center>/g' $filename
 
 	# main section
 	sed -i '/^+.*main$/,/^-.*main$/ s/^\.ce\sheader1:\s\(.*\)/<center><h1>\1<\/center><\/h1>/g' $filename
