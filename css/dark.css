@@ -30,22 +30,6 @@ body{
 	font-size: 1rem;
 	}
 }
-.inner-switch{
-	font-size: 1rem;
-	background-color: inherit;
-	cursor: pointer;
-	position: fixed;
-	margin: 0.5rem;
-	top: 0;
-	padding: 0.2rem;
-}
-@media screen and (min-width: 800px) {
-	.inner-switch { font-size: var(--fsize); }
-}
-.inner-switch:hover{
-	border-radius:0.3rem;
-	border:2px dashed grey;
-}
 a {
 	color: var(--dpri);
 	text-decoration: underline var(--dsec);

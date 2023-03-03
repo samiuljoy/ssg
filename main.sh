@@ -439,8 +439,8 @@ main_generate() {
 	sed -i '/^+.*card$/,/^-.*card$/ s/^\.describe:\s\(.*\)/<p>\1<\/p>\n<\/div>/g' $filename
 	
 	# card tags transform
-	sed -i 's/^+.*card$/<!-- card section begin -->/g' $filename
-	sed -i 's/^-.*card$/<!-- card section end -->/g' $filename
+	sed -i 's/^+.*card$/<div class="grid-container">\n/g' $filename
+	sed -i 's/^-.*card$/<\/div>/g' $filename
 	# card section end
 
 	# table section start

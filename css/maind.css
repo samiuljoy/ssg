@@ -89,6 +89,12 @@
 .D .author {
  color: inherit;
 }
+.D .next_page a {
+	color: var(--dpri);
+}
+.D .next_page a:hover {
+	color: var(--dsec);
+}
 .D .tag {
  color: var(--dpri);
 }
