@@ -191,10 +191,12 @@ nav ul li{
 	text-decoration: none;
 	font-weight: normal;
 }
-.grid-container {
-	display: grid;
-	grid-template-columns: auto auto;
-	gap: 5px;
+@media screen and (min-width: 600px) {
+	.grid-container {
+		display: grid;
+		grid-template-columns: auto auto;
+		gap: 5px;
+	}
 }
 .date, author {
 	color: grey;
