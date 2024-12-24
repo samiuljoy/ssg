@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>About ssg</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<meta name="theme-color" content="#f8f8eb">
+	<meta name="author" content="Samiul Joy">
+	<meta name="description" content="A brief introduction to ssg">
+	<link rel="stylesheet" href="../css/maind.css" type="text/css">
+	<link rel="stylesheet" href="../css/main.css" type="text/css">
+	<meta name="generator" content="Brief introduction to ssg">
+	<link rel="canonical" href="https://samiuljoy.github.io/demo/ssg.html">
+</head>
+
+<body>
+<header role="banner">
+<nav role="navigation">
+
+<ul class="navigation">
+	<li>
+		<a href="../index.html"><home>home</home></a>
+	</li><li class="dropdown">
+	<button class="dropbtn">
+		<div class="index">roam</div>
+	</button>
+	<div class="dropdown-content">
+		<a href="../demo/base.html">demo</a>
+		<a href="../microblog/base.html">microblog</a>
+		<a href="../theology/base.html">theology</a>
+		<a href="../academics/base.html">academics</a>
+		</div>
+	<li><a href="base.html"><back>base</back></a>
+</li>
+</ul>
+</nav>
+</header>
+
+<div id=switch class=inner-switch>
+	<span id=sword>λ</span>
+</div>
+<noscript>
+	<style type=text/css media=all>
+	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
+	.inner-switch {
+	display: none;
+}
+	</style>
+</noscript>
+
+<main id="main" role="main">
+<center><h1>Static Site Generator</center></h1>
+
+<h2>What is ssg?</h2>
+
+<p> <a href="https://github.com/samiuljoy/ssg" rel="nofollow">ssg</a> is a static site generator written in shell script. This thing basically takes in files written in markdown format and converts them into proper html files that you can later deploy on your websites or your servers. All you need is a proper config.txt file and you are ready to go. This article does not elaborate on how to write and configure ssg or the config.txt file. Please see the <a href="https://github.com/samiuljoy/ssg" rel="nofollow">github</a> instructions for configuring and using ssg.</p>
+
+<p>For reference you can see how <a href="https://github.com/samiuljoy/samiuljoy.github.io" rel="nofollow">this</a> sites source code and all the files in it, and how they are arranged and how they work.</p>
+
+<h2>What is it used for?</h2>
+
+<p>For converting markown files into html files. Markdown files are easy to write compared to html ones as they require you to have tags and brackets and all sorts of things. Here, you write documents in clear and elegant markown format and ssg does the dirty work for you and converts the file into html.</p>
+
+<p>Not only that, with a proper directory structure provided to a config file, you can arrange a whole website structure pretty easily and quickly.</p>
+
+<h2>Why should you use it?</h2>
+
+<p>Well, you can use it if;</p>
+
+<ul class="ull">
+	<li>You're converting a file from markown to html</li>
+	<li>you're deploying a website and want to create file structure automatically</li>
+	<li>if you dont love writing html syntax files and love markdown files</li>
+	<li>if you love speed</li>
+</ul>
+
+<h2>Should I try it?</h2>
+
+<p>Depends on you. No harm in trying tho.</p>
+
+<hr>
+
+
+<center><p>Made with &lt;3 by <a href="https://github.com/samiuljoy" rel="nofollow">samiuljoy</a></p></center>
+
+<center><p><a href="/rss.xml" rel="nofollow">rss</a> | <a href="/about.html" rel="nofollow">about</a> | <a href="#" rel="nofollow">go to top</a></p></center>
+
+
+<script>
+	mode = document.getElementById('switch');
+
+	if (! navigator.cookieEnabled) {
+		mode.style.display = 'none';
+	}
+	else if(! localStorage) {
+		mode.style.display = 'none';
+	}
+	else {
+		mode.style.display = 'inline';
+	}
+</script>
+
+	<script src="..//js/toggle.js"></script>
+
+</body>
+</html>

@@ -5,7 +5,7 @@
 .style: ..//css/maind.css
 .style: ..//css/main.css
 .name-generator: demos for ssg
-.canonical-link: https://samiuljoy.github.io/demos/base.html
+.canonical-link: https://samiuljoy.github.io/demo/base.html
 -------------------head
 
 ++++navigation
@@ -13,7 +13,8 @@
 .navmenu: roam
 .navpage: [demo](..//demo/base.html)
 .navpage: [microblog](..//microblog/base.html)
-.navpage: [notes](notes/base.md)
+.navpage: [theology](..//theology/base.html)
+.navpage: [academics](..//academics/base.html)
 .backpage: [base](base.html)
 ----------navigation
 
@@ -25,6 +26,10 @@ This here is the base demo page for static site generator [ssg](https://github.c
 The base page holds page entries to different articles in the same directory. Since this is a demo page, check out how to properly format base.md pages, index,md pages and general markdown pages in the following article entries.
 
 +++++++++++++++++card
+
+.date: April 12, 2022
+.article: [About ssg](ssg.html)
+.describe: A brief intro to ssg, what it is, it's function.
 
 .date: August 30, 2021
 .article: [Intro to basic syntaxes](syntax.html)
@@ -47,8 +52,8 @@ The base page holds page entries to different articles in the same directory. Si
 ----------------main
 
 ++++++++++++++++footer
-.class: footer
 .message: Made with <3 by [samiuljoy](https://github.com/samiuljoy)
+.message: [rss](/rss.xml) | [about](/about.html) | [go to top](#)
 ------------------footer
 
 +++++++script

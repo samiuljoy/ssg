@@ -11,9 +11,10 @@
 ++++navigation
 .homepage: [home](..//index.html)
 .navmenu: roam
-.navpage: [demo](..//demos/base.html)
+.navpage: [demo](..//demo/base.html)
 .navpage: [microblog](..//microblog/base.html)
-.navpage: [notes](notes/base.md)
+.navpage: [theology](..//theology/base.html)
+.navpage: [academics](..//academics/base.html)
 .backpage: [base](base.html)
 ----------navigation
 
@@ -39,8 +40,8 @@ Here's a sample demo page;
 	
 	++++++++++++++++++++++intro
 	.h2: samiuljoy.github.io
-	.h2: A personal place of mine ^_^
-	.img: ![rando image](assets/read.svg)
+	.h2: Random stuff
+	.img: ![rando image](assets/pens.png)
 	----------------------intro
 
 	
@@ -122,6 +123,7 @@ This will generate a index.html
 
 ++++++++++++++++footer
 .message: Made with <3 by [samiuljoy](https://github.com/samiuljoy)
+.message: [rss](/rss.xml) | [about](/about.html) | [go to top](#)
 ------------------footer
 
 +++++++script

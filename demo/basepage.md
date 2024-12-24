@@ -11,9 +11,10 @@
 ++++navigation
 .homepage: [home](..//index.html)
 .navmenu: roam
-.navpage: [demo](..//demos/base.html)
+.navpage: [demo](..//demo/base.html)
 .navpage: [microblog](..//microblog/base.html)
-.navpage: [notes](notes/base.md)
+.navpage: [theology](..//theology/base.html)
+.navpage: [academics](..//academics/base.html)
 .backpage: [base](base.html)
 ----------navigation
 
@@ -98,18 +99,20 @@ ___.article section:___ The article section starts the same way date does. The t
 
 ___.describe section:___ The describe section is the text which gets displayed in the description section of the card section.
 
-![made easy image](../assets/basepage.png)
+That's how you add articles. Then to add another article, just add a blank line after .describe: and start from .date ^\_^
 
-.caption: When viewed through your web browser
+You can also add next page href link to basepages;
 
-That's how you add articles. Then to add another article, just add a blank line after .describe: and start from .date ^_^
+```no
+	.next[next->](base2.html)
+```
 
 .hr
 ----------------main
 
 ++++++++++++++++footer
-.class: footer
 .message: Made with <3 by [samiuljoy](https://github.com/samiuljoy)
+.message: [rss](/rss.xml) | [about](/about.html) | [go to top](#)
 ------------------footer
 
 +++++++script

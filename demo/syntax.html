@@ -4,7 +4,7 @@
 	<title>Basic Syntaxes</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=0.9">
-	<meta name="theme-color" content="#002f30">
+	<meta name="theme-color" content="#f8f8eb">
 	<meta name="author" content="samiuljoy">
 	<meta name="description" content="A guide to basic syntaxes for ssg">
 	<link rel="stylesheet" href="../css/maind.css" type="text/css">
@@ -19,45 +19,31 @@
 
 <ul class="navigation">
 	<li>
-		<a href="../index.html" style="color: white; text-decoration: none"><home>home</home></a>
+		<a href="../index.html"><home>home</home></a>
 	</li><li class="dropdown">
 	<button class="dropbtn">
 		<div class="index">roam</div>
 	</button>
 	<div class="dropdown-content">
-		<a href="../demos/base.html">demo</a>
+		<a href="../demo/base.html">demo</a>
 		<a href="../microblog/base.html">microblog</a>
-		<a href="notes/base.md">notes</a>
+		<a href="../theology/base.html">theology</a>
+		<a href="../academics/base.html">academics</a>
 		</div>
-	<li><a href="base.html" style="text-decoration: none"><back>base</back></a>
+	<li><a href="base.html"><back>base</back></a>
 </li>
 </ul>
 </nav>
 </header>
 
 <div id=switch class=inner-switch>
-	<span id=sword>🔆</span>
+	<span id=sword>λ</span>
 </div>
 <noscript>
 	<style type=text/css media=all>
 	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
-.inner-switch {
+	.inner-switch {
 	display: none;
-}
-pre {
-	background:black;
-	color:white;
-	overflow:auto;
-	padding:0.5rem;
-	border-radius:0.5rem;
-}
-@media screen and (max-width:500px) {
-	pre {
-	max-height:250px;
-	}
-}
-.btn {
-	display:none;
 }
 	</style>
 </noscript>
@@ -70,7 +56,7 @@ pre {
 
 <div class="caption">This is a cover image</div>
 
-<p>Alright syntax 101 for ssg! Syntax for ssg is pretty simple. Dead simple. Most of it is basic markdown syntax with some additional features like inserting a <a href="#table" rel="nofollow">table</a> or <a href="#underline" rel="nofollow">underlines</a> since markdown syntax doesn't support these features(yet). You can check the source code for this page in clear markdown format <a href="https://github.com/samiuljoy/samiuljoy.github.io/demo/syntax.md" rel="nofollow">here</a>.</p>
+<p>Alright syntax 101 for ssg! Syntax for ssg is pretty simple. Dead simple. Most of it is basic markdown syntax with some additional features like inserting a <a href="#table" rel="nofollow">table</a> or <a href="#underline" rel="nofollow">underlines</a> since markdown syntax doesn't support these features(yet). You can check the source code for this page in clear markdown format <a href="https://raw.githubusercontent.com/samiuljoy/ssg/main/demo/syntax.md" rel="nofollow">here</a>.</p>
 
 <p>See that heading at top that says 'Intro to syntax'? Notice the header is in center of the page and it's a header 1. Here's how you can add a center header1 tag;</p>
 
@@ -83,7 +69,7 @@ pre {
 <p>Whatever after the colon(:) gets displayed on the main screen. Same way, you can add header2, header3 upto header4. Just add 1 or 2 or 3 or 4 after <code>header</code> and before <code>:</code></p>
 
 
-<h2># Parahraphs</h2>
+<h2># Paragraphs</h2>
 
 <p>To add a new paragraph, just start typing anything after a new line just like you would do in markdown files. Here every newline gets wraped around <code>&lt;p&gt;</code> paragraph tags.</p>
 
@@ -93,7 +79,7 @@ pre {
 
 <pre>
 <code>
-&num;&num;&num; &num; General header tags
+&num;&num; &num; General header tags
 </code>
 </pre>
 
@@ -231,10 +217,32 @@ some more text
 </code>
 </pre>
 
-<center><img loading="lazy" class="pimg" src="../assets/terry.png" alt="Terry Davis"></center>
+<center>
+	<img loading="lazy" class="pimg" src="../assets/terry.png" alt="Terry Davis">
+</center>
 
 
 <div class="caption">Image: One of Terry Davis's quotes</div>
+
+<h2># Video addition</h2>
+
+<p>The video addition tag is pretty simple, follows a markdown alike syntax;</p>
+
+<pre>
+<code>
+&excl;&excl;&lsqb;this is a video&rsqb;(&period;&period;/assets/mouseless&period;mp4)
+&period;caption: video: keynav and xmouseless
+</code>
+</pre>
+
+<center>
+	<video title="this is a video" controls>
+		<source src="../assets/mouseless.mp4">
+	</video>
+</center>
+
+
+<div class="caption">video: keynav and xmouseless</div>
 
 <h2># Blockquotes</h2>
 
@@ -347,7 +355,7 @@ c&period; Item 3 in ordered list
 
 <pre>
 <code>
-The text <code>code</code> will be an inline code
+The text &grave;code&grave; will be an inline code
 </code>
 </pre>
 
@@ -395,6 +403,12 @@ The text \&grave;code\&grave; will have literal backticks
 &period;td: data 12
 &period;td: data 13
 &period;td: data 14
+
+&period;td: data 15
+&period;td: data 16
+&period;td: data 17
+&period;td: data 18
+&period;td: data 19
 
 ----------------table
 
@@ -461,7 +475,7 @@ The text \&grave;code\&grave; will have literal backticks
 
 <p>If you invoke <code>[ .today ]</code>,(with nospaces) this will add today's date like this;</p>
 
-<p>Today is September 29, 2021, the day seems nice, and I'm feeling good today</p>
+<p>Today is October 10, 2021, the day seems nice, and I'm feeling good today</p>
 
 <pre>
 <code>
@@ -469,6 +483,15 @@ Today is &lsqb;&period;today&rsqb;, The day seems nice and all, and I'm feeling 
 </code>
 </pre>
 
+<h2>Add a next page url</h2>
+
+<p>You can also add next page href link to basepages;</p>
+
+<pre>
+<code>
+&period;next&lsqb;next-&gt;&rsqb;(base2&period;html)
+</code>
+</pre>
 
 <h2># Code block section</h2>
 
@@ -503,7 +526,7 @@ echo "hello world"
 echo "hello world"
 </code>
 </pre>
-<a class='btn' href='code/syntax.html-code1'>view raw</a>
+<a class='btn' href='code/syntax.html-code1.txt'>view raw</a>
 
 <p>This is what you'd actually type in;</p>
 
@@ -525,7 +548,7 @@ echo "hello world"
 echo "this is a second code block"
 </code>
 </pre>
-<a class='btn' href='code/syntax.html-code2'>view raw</a>
+<a class='btn' href='code/syntax.html-code2.txt'>view raw</a>
 
 <p>This would look something like this when writing;</p>
 
@@ -642,12 +665,14 @@ This is \\&lowbar; underscore and \\&ast; is an asterisk and \\&grave; this is a
 
 <p>This is \&lowbar; underscore and \&ast; is an asterisk and \&grave; this is a backtick</p>
 
-<p>That's it for basic syntax. Learn how to write basic.md files on the <a href="basepage.html" rel="nofollow">next</a> article or learn how to write index.md pages <a href="indexpage.html" rel="nofollow">here</a>. Check the source code for this site over <a href="https://gitbub.com/samiuljoy/samiuljoy.github.io" rel="nofollow">here</a></p>
+<p>That's it for basic syntax. Learn how to write base.md files on the <a href="basepage.html" rel="nofollow">next</a> article or learn how to write index.md pages <a href="indexpage.html" rel="nofollow">here</a>. Check the source code for this site over <a href="https://gitbub.com/samiuljoy/samiuljoy.github.io" rel="nofollow">here</a></p>
 
 <hr>
 
 
 <center><p>Made with &lt;3 by <a href="https://github.com/samiuljoy" rel="nofollow">samiuljoy</a></p></center>
+
+<center><p><a href="/rss.xml" rel="nofollow">rss</a> | <a href="/about.html" rel="nofollow">about</a> | <a href="#" rel="nofollow">go to top</a></p></center>
 
 
 <script>

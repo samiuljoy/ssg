@@ -390,7 +390,7 @@ main_generate() {
 	sed -i '1s/\(.*\)/<!DOCTYPE html>\n<html lang="en">\n\1/' $filename
 
 	# head section
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.title:\s\(.*\)/\t<title>\1<\/title>\n\t<meta charset="UTF-8">\n\t<meta name="viewport" content="width=device-width, initial-scale=0.9">\n\t<meta name="theme-color" content="#002f30">/g' $filename
+	sed -i '/^+.*head$/,/^-.*head$/ s/\.title:\s\(.*\)/\t<title>\1<\/title>\n\t<meta charset="UTF-8">\n\t<meta name="viewport" content="width=device-width, initial-scale=0.9">\n\t<meta name="theme-color" content="#f8f8eb">/g' $filename
 	sed -i '/^+.*head$/,/^-.*head$/ s/\.author:\s\(.*\)/\t<meta name="author" content="\1">/g' $filename
 	sed -i '/^+.*head$/,/^-.*head$/ s/\.description:\s\(.*\)/\t<meta name="description" content="\1">/g' $filename
 	sed -i '/^+.*head$/,/^-.*head$/ s/\.style:\s\(.*\)/\t<link rel="stylesheet" href="\1" type="text\/css">/g' $filename

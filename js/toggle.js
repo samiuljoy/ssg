@@ -12,7 +12,7 @@ const enableDarkMode = () => {
 }
 const disableDarkMode = () => {
 	document.body.classList.remove('D');
-	meta.setAttribute("content", "#002f30");
+	meta.setAttribute("content", "#f8f8eb");
 	//word2.innerHTML = '🔆';
 	word2.innerHTML = 'λ';
 	localStorage.setItem('darkMode', null);
@@ -20,6 +20,9 @@ const disableDarkMode = () => {
 if (darkMode === 'enabled') {
 	enableDarkMode();
 }
+//if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+//	enableDarkMode();
+//}
 darkModeToggle.addEventListener('click', () => {
 	darkMode = localStorage.getItem('darkMode');
 	if (darkMode !== 'enabled') {

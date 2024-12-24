@@ -1,6 +1,8 @@
 body {
 	font-size:1rem;
+	background-color: #F8F8EB;
 	line-height:1.4;
+	color: #382c14;
 	-webkit-font-smoothing:antialiased;
 	-webkit-text-size-adjust:100%;
 	zoom:1;
@@ -26,7 +28,7 @@ body {
 	font-size: 1.8rem;
 }
 .a {
-	color: black;
+	color: #382c14;
 	text-decoration: none;
 	padding: 0.7rem;
 	border-radius: .5rem;
@@ -34,11 +36,11 @@ body {
 	text-align: center;
 }
 .a:hover {
-	color: #002f30;
+	color: #382c14;
 	border: 2px dashed black;
 }
 .a:visited {
-	color: #006262;
+	color: brown;
 }
 .gh {
 	color: #006262;

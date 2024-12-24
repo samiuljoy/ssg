@@ -13,6 +13,16 @@
 	color: var(--dpri);
 	border-bottom: 2px solid darkred;
 }
+.D home, .D back, .D .index {
+ background: var(--dbac);
+ color: var(--dpri);
+ border: 2px solid grey;
+}
+.D home:hover, .D back:hover, .D .index:hover {
+ color: white;
+ border: 2px dashed grey;
+ text-decoration: none;
+}
 .D a {
  color: var(--dpri);
  text-decoration: underline var(--dsec);
@@ -39,7 +49,6 @@
 }
 .D a:visited:hover, .D a:hover {
  color: var(--dpri);
- text-decoration: underline dashed var(--dsec);
 }
 .D blockquote {
  background: #808080;
@@ -69,11 +78,12 @@
  border-right: 1px solid black!important;
 }
 .D .card {
- box-shadow: 0 4px 8px -2px #1c2e4a;
- border: 1px solid #777777;
+ /* box-shadow: 0 4px 8px -2px #1c2e4a; */
+ border: 2px solid #777777;
 }
 .D .card:hover {
- box-shadow: 2px 4px 8px 2px #1c2e4a;
+ /* box-shadow: 2px 4px 8px 2px #1c2e4a; */
+	border: 2px dashed #777777;
 }
 .D .card a {
  text-decoration: none;
@@ -118,15 +128,6 @@
 }
 .D .caption {
  color: var(--dsec);
-}
-.D home, .D back, .D .index {
- background: var(--dbac);
- color: var(--dpri);
- border: 2px solid grey;
-}
-.D home:hover, .D back:hover, .D .index:hover {
- color: white;
- border: 2px dashed grey;
 }
 .D .btn {
  text-decoration: none;

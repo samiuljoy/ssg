@@ -11,9 +11,10 @@
 ++++navigation
 .homepage: [home](..//index.html)
 .navmenu: roam
-.navpage: [demo](..//demos/base.html)
+.navpage: [demo](..//demo/base.html)
 .navpage: [microblog](..//microblog/base.html)
-.navpage: [notes](notes/base.md)
+.navpage: [theology](..//theology/base.html)
+.navpage: [academics](..//academics/base.html)
 .backpage: [base](base.html)
 ----------navigation
 
@@ -24,7 +25,7 @@
 
 .caption: This is a cover image
 
-Alright syntax 101 for ssg! Syntax for ssg is pretty simple. Dead simple. Most of it is basic markdown syntax with some additional features like inserting a [table](#table) or [underlines](#underline) since markdown syntax doesn't support these features(yet). You can check the source code for this page in clear markdown format [here](https://github.com/samiuljoy/samiuljoy.github.io/demo/syntax.md).
+Alright syntax 101 for ssg! Syntax for ssg is pretty simple. Dead simple. Most of it is basic markdown syntax with some additional features like inserting a [table](#table) or [underlines](#underline) since markdown syntax doesn't support these features(yet). You can check the source code for this page in clear markdown format [here](https://raw.githubusercontent.com/samiuljoy/ssg/main/demo/syntax.md).
 
 See that heading at top that says 'Intro to syntax'? Notice the header is in center of the page and it's a header 1. Here's how you can add a center header1 tag;
 
@@ -35,7 +36,7 @@ See that heading at top that says 'Intro to syntax'? Notice the header is in cen
 Whatever after the colon(:) gets displayed on the main screen. Same way, you can add header2, header3 upto header4. Just add 1 or 2 or 3 or 4 after `header` and before `:`
 
 
-## # Parahraphs
+## # Paragraphs
 
 To add a new paragraph, just start typing anything after a new line just like you would do in markdown files. Here every newline gets wraped around `<p>` paragraph tags.
 
@@ -44,7 +45,7 @@ To add a new paragraph, just start typing anything after a new line just like yo
 General headers starts with # followed by header numbers. The header above that says '# General header tags' is a header2 writen like this;
 
 ```no
-	### # General header tags
+	## # General header tags
 ```
 
 Also normal headers as well;
@@ -162,6 +163,19 @@ And yes you can also use default markdown syntax to add images as well;
 
 .caption: Image: One of Terry Davis's quotes
 
+## # Video addition
+
+The video addition tag is pretty simple, follows a markdown alike syntax;
+
+```no
+	!![this is a video](../assets/mouseless.mp4)
+	.caption: video: keynav and xmouseless
+```
+
+!![this is a video](../assets/mouseless.mp4)
+
+.caption: video: keynav and xmouseless
+
 ## # Blockquotes
 
 Blockquotes also follows markdown syntax but each `>` expands to a new-line;
@@ -252,7 +266,7 @@ Which eventually transforms into numbers, unfortunately, ordered list doesn't re
 You've noticed me typing inline `tags` like this. Here's how to do it;
 
 ```no
-	The text `code` will be an inline code
+	The text \`code\` will be an inline code
 ```
 
 The text `code` will be an inline code
@@ -296,6 +310,12 @@ Tables are very easy to add. `.th: ` is for table header, `.td: ` is for table d
 	.td: data 12
 	.td: data 13
 	.td: data 14
+
+	.td: data 15
+	.td: data 16
+	.td: data 17
+	.td: data 18
+	.td: data 19
 
 	----------------table
 	
@@ -347,12 +367,19 @@ __Notice the blank line before .th on line 1 and a blank line after the last .td
 
 If you invoke `[ .today ]`,(with nospaces) this will add today's date like this;
 
-Today is [.today], the day seems nice, and I'm feeling good today
+Today is October 10, 2021, the day seems nice, and I'm feeling good today
 
 ```no
 	Today is [.today], The day seems nice and all, and I'm feeling good today
 ```
 
+## Add a next page url
+
+You can also add next page href link to basepages;
+
+```no
+	.next[next->](base2.html)
+```
 
 ## # Code block section
 
@@ -495,7 +522,7 @@ __Will print out;__
 
 This is \\_ underscore and \\* is an asterisk and \\` this is a backtick
 
-That's it for basic syntax. Learn how to write basic.md files on the [next](basepage.html) article or learn how to write index.md pages [here](indexpage.html). Check the source code for this site over [here](https://gitbub.com/samiuljoy/samiuljoy.github.io)
+That's it for basic syntax. Learn how to write base.md files on the [next](basepage.html) article or learn how to write index.md pages [here](indexpage.html). Check the source code for this site over [here](https://gitbub.com/samiuljoy/samiuljoy.github.io)
 
 .hr
 
@@ -503,6 +530,7 @@ That's it for basic syntax. Learn how to write basic.md files on the [next](base
 
 ++++++++++++++++footer
 .message: Made with <3 by [samiuljoy](https://github.com/samiuljoy)
+.message: [rss](/rss.xml) | [about](/about.html) | [go to top](#)
 ------------------footer
 
 ++++++script

@@ -4,7 +4,7 @@
 	<title>Learn how to edit index.md pages</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=0.9">
-	<meta name="theme-color" content="#002f30">
+	<meta name="theme-color" content="#f8f8eb">
 	<meta name="author" content="samiuljoy">
 	<meta name="description" content="Learn how to write index.md pages with ssg">
 	<link rel="stylesheet" href="../css/maind.css" type="text/css">
@@ -19,45 +19,31 @@
 
 <ul class="navigation">
 	<li>
-		<a href="../index.html" style="color: white; text-decoration: none"><home>home</home></a>
+		<a href="../index.html"><home>home</home></a>
 	</li><li class="dropdown">
 	<button class="dropbtn">
 		<div class="index">roam</div>
 	</button>
 	<div class="dropdown-content">
-		<a href="../demos/base.html">demo</a>
+		<a href="../demo/base.html">demo</a>
 		<a href="../microblog/base.html">microblog</a>
-		<a href="notes/base.md">notes</a>
+		<a href="../theology/base.html">theology</a>
+		<a href="../academics/base.html">academics</a>
 		</div>
-	<li><a href="base.html" style="text-decoration: none"><back>base</back></a>
+	<li><a href="base.html"><back>base</back></a>
 </li>
 </ul>
 </nav>
 </header>
 
 <div id=switch class=inner-switch>
-	<span id=sword>🔆</span>
+	<span id=sword>λ</span>
 </div>
 <noscript>
 	<style type=text/css media=all>
 	@import '..//css/dark.css' screen and (prefers-color-scheme: dark);
-.inner-switch {
+	.inner-switch {
 	display: none;
-}
-pre {
-	background:black;
-	color:white;
-	overflow:auto;
-	padding:0.5rem;
-	border-radius:0.5rem;
-}
-@media screen and (max-width:500px) {
-	pre {
-	max-height:250px;
-	}
-}
-.btn {
-	display:none;
 }
 	</style>
 </noscript>
@@ -85,8 +71,8 @@ $ cat index&period;md
 
 ++++++++++++++++++++++intro
 &period;h2: samiuljoy&period;github&period;io
-&period;h2: A personal place of mine ^&lowbar;^
-&period;img: &excl;&lsqb;rando image&rsqb;(assets/read&period;svg)
+&period;h2: Random stuff
+&period;img: &excl;&lsqb;rando image&rsqb;(assets/pens&period;png)
 ----------------------intro
 
 
@@ -109,7 +95,7 @@ $ cat index&period;md
 
 </code>
 </pre>
-<a class='btn' href='code/indexpage.html-code1'>view raw</a>
+<a class='btn' href='code/indexpage.html-code1.txt'>view raw</a>
 
 
 <h2># Head section</h2>
@@ -169,6 +155,8 @@ $ sh main&period;sh index index&period;md
 
 
 <center><p>Made with &lt;3 by <a href="https://github.com/samiuljoy" rel="nofollow">samiuljoy</a></p></center>
+
+<center><p><a href="/rss.xml" rel="nofollow">rss</a> | <a href="/about.html" rel="nofollow">about</a> | <a href="#" rel="nofollow">go to top</a></p></center>
 
 
 <script>

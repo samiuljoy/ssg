@@ -1,10 +1,15 @@
+@font-face {
+	font-family: "f";
+	src: url("f.ttf");
+}
+
 :root{
-	--pri: #002f30;
-	--sec: #006262;
-	--lnk: #002e43;
+	--pri: #382c14;
+	--sec: #382c14;
+	--lnk: #382c14;
 	--lc: #778899;
 	--lbl: #000000;
-	--hfont: Monospace;
+	--hfont: "f", Monospace;
 	--fsize: 1.5rem;
 }
 body{
@@ -15,6 +20,8 @@ body{
 	-webkit-text-size-adjust:100%;
 	/* zoom:1; */
 	font-family: var(--hfont);
+	background-color: #f8f8eb;
+	color: var(--sec);
 	margin:0 auto;
 	max-width:50rem;
 	padding:1rem;
@@ -53,12 +60,12 @@ p{
 	font-size: 1.15rem;
 }
 p a{
-	color: black;
+	color: #382c14;
 	text-decoration: none;
 	border-bottom: 2px solid grey;
 }
 p a:visited:hover, p a:hover{
-	color: var(--lbl);
+	color: brown;
 	text-decoration: none;
 	border-bottom: 2px dashed grey;
 }
@@ -116,7 +123,7 @@ nav ul{
 	padding: 1rem;
 	top: 0;
 	margin: 0;
-	background: white;
+	background: #f8f8eb;
 	box-shadow: 0 4px 2px -2px rgba(0,0,0,.2);
 	opacity: 0.92;
 }
@@ -148,8 +155,9 @@ nav ul li{
 	background-color: #f9f9f9;
 	min-width: 140px;
 	max-height: 21.5rem;
-	overflow: scroll;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	border: 1px dashed var(--sec);
+	/* overflow: scroll; */
+	/* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
 }
 .dropdown-content a{
 	float: inherit;
@@ -170,21 +178,21 @@ nav ul li{
 .dropdown:hover .dropdown-content{
 	display: block;
 	border-radius: 0.5rem;
-	border: none;
+	border: 1px dashed gray;
 }
 @media screen and (min-width: 800px){
 	.dropdown:hover .dropdown-content{
 	display: table;
 	border-radius: 0.5rem;
-	border: none;
+	border: 1px dashed gray;
 	}
 }
 .card{
 	padding: 20px;
-	box-shadow: 0 0 8px 0 rgba(0,0,0,.2);
+	/* box-shadow: 0 0 8px 0 rgba(0,0,0,.2); */
 	border-radius: 0.5rem;
-	margin-bottom:4rem;
-	border: 1px solid #ddd;
+	margin-bottom:2rem;
+	border: 2px solid #ddd;
 }
 .area, .area:visited, .area:hover, .area:visited:hover{
 	color: var(--lbl);
@@ -212,8 +220,8 @@ nav ul li{
 	float: left;
 }
 .card:hover{
-	box-shadow: 2px 4px 8px 2px var(--pri);
-	border: none;
+	/*box-shadow: 2px 4px 8px 2px var(--pri); */
+	border: 2px dashed #ddd;
 }
 .card a{
 	color:var(--sec);
@@ -244,7 +252,7 @@ nav ul li{
 }
 blockquote{
 	background: #eee;
-	color: var(--lbl);
+	color: var(--pri);
 	border-left:5px solid var(--lc);
 	font-size:120%;
 	margin:2rem 0;
@@ -354,7 +362,7 @@ hr:after {
 	font-size: 1rem;
 	color: grey;
 	display: inline;
-	background-color: white;
+	background-color: #f8f8eb;
 }
 tr:nth-child(odd) {
 	background-color: white;
@@ -392,7 +400,7 @@ td,th {
 	}
 }
 th {
-	color: #005252;
+	color: var(--pri);
 	padding: 0.45rem;
 }
 table tr{
