@@ -1,3 +1,5 @@
+# ⚠ Update, December 2024: Account Migration to [github.com/samiulahmedjoy](https://samiulahmedjoy)
+
 # Static Site Generator in Shell Script
 
 ![light demo page](screenshots/light.png)
