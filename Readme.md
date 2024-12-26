@@ -1,4 +1,4 @@
-# ⚠ Update, December 2024: Account Migration to [github.com/samiulahmedjoy](https://samiulahmedjoy)
+# ⚠ Update, December 2024: Account Migration to [github.com/samiulahmedjoy](https://github.com/samiulahmedjoy)
 
 # Static Site Generator in Shell Script
 
