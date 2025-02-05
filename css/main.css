@@ -15,9 +15,9 @@
 body{
 	font-size:1rem;
 	line-height:1.55;
-	-webkit-font-smoothing:antialiased;
+	/* -webkit-font-smoothing:antialiased; */
 	text-rendering:optimizeLegibility;
-	-webkit-text-size-adjust:100%;
+	/*  -webkit-text-size-adjust:100%; */
 	/* zoom:1; */
 	font-family: var(--hfont);
 	background-color: #f8f8eb;
@@ -212,9 +212,7 @@ nav ul li{
 	font-weight: bold;
 	font-size: 14px;
 	margin-top: 0;
-}
-.date {
-	float: right;
+	text-align: end;
 }
 .author {
 	float: left;
@@ -288,6 +286,11 @@ blockquote footer{
 	font-size:90%;
 	margin:1rem 0 0 0;
 }
+@media screen and (max-width: 800px) {
+	ul li {
+		font-size: 1rem;
+	}
+}
 ul{
 	font-family: var(--hfont);
 	font-weight: bold;
@@ -297,6 +300,7 @@ ul{
 ol li{
 	font-family: var(--hfont);
 	font-size: 1.15rem;
+	font-weight: bold;
 }
 .ull{
 	font-family: var(--hfont);

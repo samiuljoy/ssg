@@ -2,22 +2,43 @@
 
 # usage function
 usage() {
-	echo "sh main.sh config ------> generate an easy to edit config file"
-	echo "sh main.sh init --------> initialize all files based on sitemap section in config.txt"
-	echo "sh main.sh html filename.md -------> generate html format for the filename.md"
-	echo "sh main.sh navgen ------> generate navigation section from config.txt sitemap section and push it in navigation section of config_file"
+	echo "For detailed rundown and usage, run 'sh main.sh rundown'"
+	echo "sh main.sh config -----> generate an easy to edit config file"
+	echo "sh main.sh init -------> initialize all files based on sitemap section in config.txt"
+	echo "sh main.sh navgen -----> generate navigation section from config.txt sitemap section and push it in navigation section of config_file"
+	echo "sh main.sh add --------> add a post and also an entry to a base.md file and also config.txt sitemap section"
 	echo "sh main.sh post -------> make a post"
-	echo "sh main.sh add --------->  add a post and also an entry to a base.md file and also config.txt sitemap section"
-	echo "sh main.sh adddir ---------> add a whole directory navigation page to all files"
-	echo "sh main.sh rmdir  -----------> remove a directory navigation entry page from all files"
-	echo "sh main.sh remove latest -------> will remove the latest entry made through running sh main.sh add"
-	echo "sh main.sh remove last dirname/base.md  --------> will remove the last article entry from dirname/base.md file (it has to be a base.md file)"
-	echo "sh main.sh all -------> convert all md files(mentioned in config_file) to html files"
-	echo "sh main.sh index index.md -------> convert index.md file to index.html"
-	echo "sh main.sh final -------> arrange all files to a main or final site directory"
-	echo "sh main.sh rss ----------> generate a rss feed of the articles from base.md files"
+	echo "sh main.sh adddir -----> add a whole directory navigation page to all files"
+	echo "sh main.sh rmdir  -----> remove a directory navigation entry page from all files"
+	echo "sh main.sh remove latest ----> will remove the latest entry made through running sh main.sh add"
+	echo "sh main.sh remove last dirname/base.md ---> will remove the last article entry from dirname/base.md file (it has to be a base.md file)"
+	echo "sh main.sh html filename.md ----> generate html format for a single filename.md"
+	echo "sh main.sh all ----> convert all md files(mentioned in config_file) to html files"
+	echo "sh main.sh index index.md ----> convert index.md file to index.html"
+	echo "sh main.sh final ----> arrange all files to a main or final site directory"
+	echo "sh main.sh rss -----> generate a rss feed of the articles from base.md files"
 }
 
+rundown() {
+	echo
+	echo "Step1: Generate a config file by running 'sh main.sh config'. Then edit the config.txt file on your own. For an example config file, you can see 'https://samiuljoy.github.io/config.txt'. Make sure to add a base.md page on your first entry to every new page except for about and index page. The need for base.md page is to hold records of the different posts and display them on a dedicated page. For more info about basepage syntax please refer to 'https://samiuljoy.github.io/demo/basepage.html'"
+	echo
+	echo "Step2: If you're done editing config.txt file, initialize everything that you've declared on your config file by running 'sh main.sh init'. This will create all the files, directories and whatnot"
+	echo
+	echo "Step3: Now, generate navigation section by running 'sh main.sh navgen'. This navigation part just adds home, roam and base buttons on your navigation section"
+	echo
+	echo "Step4: Now, edit your index.md page. Open your favority text editor and edit the index.md file. For example index.md reference, see 'https://samiuljoy.github.io/index.md' and for syntax help please refer to this documentation, 'https://samiuljoy.github.io/demo/indexpage.html'. After done editing the index.md file, just run 'sh main.sh index index.md', which will generate a index.html file."
+	echo
+	echo "Step5: Now Edit the base.md page if your article is going to be in a directory such as 'blog/firstblog.md'. In such case, first edit 'blog/base.md' page with your text editor. For an example see 'https://samiuljoy.github.io/microblog/base.md' and for syntax documentation, please refer to 'https://samiuljoy.github.io/demo/basepage.html'. Just run 'sh main.sh post' and when it asks for the filename, just add 'blog/base.md' as the filename"
+	echo
+	echo "Step6: If you've completed everything above correctly, you can start writing your posts. You can either run 'sh main.sh post' and add manual entries to config.txt, blog/base.md file or you could just run 'sh main.sh add' and let all your entries by added automatically. It's your choice, depends on use case hence, added both post and add option for for variance."
+	echo
+	echo "Step7: Now since you've added all posts and everything, now run 'sh main.sh all'. This will generate html pages for all the files mentioned in 'config.txt'."
+	echo
+	echo "Step8: For convenience you can also run 'sh main.sh final' which will copy all the generated html files into a separate sub-directory"
+	echo "Step9: Last but not least, you can also generate rss.xml feeds of all your posts. Just run 'sh main.sh rss'"
+	echo
+}
 # global variables
 
 # config file name
@@ -127,6 +148,13 @@ ask_author() {
 ask_name() {
 	read -p "Name of the file you're about to edit: " current
 	val="$current" && empty_check
+	# check if filename contains / in it
+	#echo $current | grep -q "/"
+	#if [ "$?" = 0 ]; then
+	#	filename_contains_slash="1"
+	#else
+	#	filename_contains_slash="0";
+	#fi
 }
 
 ## generate template for config file
@@ -204,13 +232,13 @@ init() {
 
 	# make css, js and assets dir
 	[ ! -d "$css_dir" ] && \
-		mkdir -p "$css_dir"
+		mkdir -p "$css_dir" && "echo css dir is empty btw"
 
 	[ ! -d "$js_dir" ] && \
-		mkdir -p "$js_dir"
+		mkdir -p "$js_dir" && "echo js dir is empty btw"
 
 	[ ! -d "$assets_dir" ] && \
-		mkdir -p "$assets_dir"
+		mkdir -p "$assets_dir" && "assets dir is empty btw"
 
 	# initialize directories and files based on $sitemap
 	for i in $vals; do
@@ -317,6 +345,14 @@ main_generate() {
 		file_rename
 	fi
 
+	# check if filename has backslash
+	echo $filename | grep -q "/"
+	if [ "$?" = 0 ]; then
+		filename_has_backslash="1"
+	else
+		filename_has_backslash="0"
+	fi
+
 	# loop through code blocks, and substitute code blocks to new file/s
 	grep -q "^\`\`\`[[:digit:]]" $filename
 
@@ -421,8 +457,8 @@ main_generate() {
 	sed -i 's/^\.br$/<br>/g' $filename
 
 	# get directory structure
-	echo $filename | grep -q "/"
-	if [ "$?" = 0 ]; then
+	#echo $filename | grep -q "/"
+	if [ "$filename_has_backslash" = "1" ]; then
 		dirr="$(echo "$current" | sed 's/\(.*\)\/.*/\1/g' | \
 			sed 's/\([[:alpha:]]\|[[:alnum:]]\|[[:digit:]]\)*/..\//g; s/\/\//\//g')"
 	else
@@ -466,10 +502,6 @@ main_generate() {
 	sed -i 's/^+.*table$/<center>\n<table>/g' $filename
 	sed -i 's/^-.*table$/<\/table>\n<\/center>\n<br>/g' $filename
 	# table section end
-
-	# footer section
-	#sed -i '/^+.*footer$/,/^-.*footer$/ s/\.class:\s\(.*\)/<footer class="\1" role="contentinfo">\n<div class="pin">📎<\/div>/g' $filename
-	#sed -i '/^+.*footer$/,/^-.*footer$/ s/\[\([^]]*\)\](\([^)]*\))/<a href="\2" target="_blank" rel="nofollow">\1<\/a>/g' $filename
 
 	# removing class section if mentioned
 	sed -i '/^+.*footer$/,/^-.*footer$/ s/^\.class:.*//g' $filename
@@ -612,8 +644,9 @@ main_generate() {
 	sed -i 's/^```$/\t<\/code>\n<\/pre>/g' $filename
 
 	# code href
-	echo $filename | grep -q "/"
-	if [ "$?" = 0 ]; then
+	#echo $filename | grep -q "/"
+	if [ "$filename_has_backslash" = "1" ]; then
+	#if [ "$?" = 0 ]; then
 		name_sub="$(echo "$1" | sed 's/.*\/\(.*\).md$/\1.html/g')"
 		sed -i "s/^\.\(code[[:digit:]]\+\)$/<a class='btn' href='code\/$name_sub-\1.txt'>view raw<\/a>/g" $filename
 	else
@@ -677,6 +710,12 @@ main_generate() {
 
 ## post articles -> main post function -> will be called later
 main_post() {
+
+	# check if editor variable is defined
+	[ -z "$EDITOR" ] && \
+		echo "Editor global variable is not set" && \
+		exit 1
+
 	# functions begin
 	empty() {
 		echo "value can not be empty, exiting..."
@@ -708,14 +747,11 @@ main_post() {
 	val="$generate" && skip
 	touch $current
 	
-	# check if editor variable is defined
-	[ -z "$EDITOR" ] && \
-		echo "Editor global variable is not set" && \
-		exit 1
-
 	# invoke editor variable if prefix is set
 	$EDITOR $current
 
+	# check if filename contains backslash
+	echo "$current" | grep -q "/" && filename_contains_slash="1"
 	# if file is empty
 	if [ ! -s "$current" ]; then
 		echo "$current is an empty file, exiting..."
@@ -723,8 +759,8 @@ main_post() {
 	fi
 
 	# for directory 
-	echo $current | grep -q "/"
-	if [ "$?" = 0 ]; then
+	#echo $current | grep -q "/"
+	if [ "$filename_contains_slash" = "1" ]; then
 		dirr="$(echo "$current" | sed 's/\(.*\)\/.*/\1/g' | \
 			sed 's/\([[:alpha:]]\|[[:alnum:]]\|[[:digit:]]\)*/..\//g; s/\/\//\//g')"
 	else
@@ -794,8 +830,8 @@ main_post() {
 			fi
 			sed -n '/^+.*script$/,/^-.*script$/p' $config_file >> $current
 			sed -n '/^+.*add$/,/^-.*add$/p' $config_file >> $current
-			echo $dirr | grep -q "/"
-			if [ "$?" = 0 ]; then
+			#echo $dirr | grep -q "/"
+			if [ "$filename_contains_slash" = "1" ]; then
 				ddd="$(echo $dirr | sed 's/\//\\\//g')"
 				sed -i "/^+.*add$/,/^-.*add$/ s/^\.script:\s\(.*\)/.script: $ddd\/\1/g" $current
 			else
@@ -858,8 +894,8 @@ main_post() {
 		xargs -I '{}' sed -i '/^+.*main$/i {}' $current
 	
 	# escape forward slashes transformation
-	echo $dirr | grep -q "/"
-	if [ "$?" = 0 ]; then
+	#echo $dirr | grep -q "/"
+	if [ "$filename_contains_slash" = "1" ]; then
 		dnav="$(echo $dirr | sed 's/\//\\\//g')"
 		sed -i "/^+.*navigation/,/^-.*navigation$/ s/^\.navpage:\s\[\(.*\)\](\(.*\))/.navpage: [\1]($dnav\/\2)/g" $current
 		sed -i "/^+.*navigation/,/^-.*navigation$/ s/^\.homepage:\s\[\(.*\)\](\(.*\))/.homepage: [\1]($dnav\/\2)/g" $current
@@ -885,6 +921,52 @@ main_post() {
 	case "$generate" in
 		y|Y|yes|Yes|""|" " ) # call convert function
 			main_generate $current
+			# convert the .md extension to .html
+			html_converted_filename="$(echo $current | sed 's/.md$/.html/')"
+			# starting line number for date addition
+			starting_line_main="$(grep -no -m 1 "^<main id=" $html_converted_filename | tr -dc '[[:digit:]]')"
+			actual_line_number="$(( $starting_line_main + 2 ))"
+			# append date format
+			sed -i $actual_line_number"a <div class='date'>$daaate</div>" $html_converted_filename
+
+			# check if the name contains directory / in argument
+			echo $current | grep -q "base.md"
+			if [ "$?" -ne 0 ]; then
+				if [ "$filename_contains_slash" = "1" ]; then
+					basemd_file_name="$(echo "$current" | sed 's/\/.*/\/base.md/g')"
+
+					# assign content
+					last_date_part="$(grep "^.date" $basemd_file_name | tail -n1)"
+					last_article_part="$(grep "^.article" $basemd_file_name | tail -n1)"
+					last_describe_part="$(grep "^.describe" $basemd_file_name | tail -n1)"
+
+					# assign line numbers
+					last_date_lineno="$(grep -n "^.date" $basemd_file_name | tail -n1 | cut -f1 -d ':')"
+					last_article_lineno="$(grep -n "^.article" $basemd_file_name | tail -n1 | cut -f1 -d ':')"
+					last_describe_lineno="$(grep -n "^.describe" $basemd_file_name | tail -n1 | cut -f1 -d ':')"
+
+					# delete the unused lines
+					sed -i $last_describe_lineno'd' $basemd_file_name
+					sed -i $last_article_lineno'd' $basemd_file_name
+					sed -i $last_date_lineno'd' $basemd_file_name
+
+					# locating the start of card section and then appending
+					# card section line number
+					card_startline="$(grep -on -m 1 "^++++.*card$" $basemd_file_name | tr -dc [[:digit:]])"
+ 
+					# append everything
+					sed -i $card_startline"a$last_date_part\n$last_article_part\n$last_describe_part\n" $basemd_file_name
+
+					# also append a blank line
+					sed -i $card_startline"a\ " $basemd_file_name
+ 
+					# Now squeeze blank lines
+					awk -i inplace -v RS= '{print s $0; s="\n"}' $basemd_file_name
+ 
+					# also convert the base.md file to html
+					main_generate $basemd_file_name
+				fi
+			fi
 			;;
 		n|N|No|no ) echo "file left to manually generate to html. Run 'sh main.sh html $current'"
 			;;
@@ -1536,7 +1618,7 @@ EOF
 ## Begin main cli
 case "$1" in
 	-h|--help ) # calls usage function
-		usage
+		usage && rundown
 		;;
 	config ) # call config generate function
 		config_generate && \
@@ -1613,6 +1695,8 @@ case "$1" in
 				return 1;
 				;;
 		esac
+		;;
+	rundown ) rundown
 		;;
 	* ) usage
 		;;
