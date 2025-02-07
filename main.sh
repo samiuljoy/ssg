@@ -523,6 +523,9 @@ main_generate() {
 	today="$(date +%B' '%e', '%Y)" && \
 		sed -i "s/\[\.today\]/$today/g" $filename
 
+	# markdown style  iframe addition
+	sed -i 's/\!\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<iframe src="\2" title="\1" allow="accelerometer; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen><\/iframe>\n<\/center>/g' $filename
+
 	# markdown style video addition
 	sed -i 's/\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<video title="\1" controls>\n\t\t<source src="\2">\n\t<\/video>\n<\/center>/g' $filename
 
