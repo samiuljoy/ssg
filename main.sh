@@ -6,6 +6,7 @@ usage() {
 	echo "sh main.sh config -----> generate an easy to edit config file"
 	echo "sh main.sh init -------> initialize all files based on sitemap section in config.txt"
 	echo "sh main.sh navgen -----> generate navigation section from config.txt sitemap section and push it in navigation section of config_file"
+	echo "sh main.sh indexgen ---> generate a index.md page based on your prompt answers"
 	echo "sh main.sh add --------> add a post and also an entry to a base.md file and also config.txt sitemap section"
 	echo "sh main.sh post -------> make a post"
 	echo "sh main.sh adddir -----> add a whole directory navigation page to all files"
@@ -68,7 +69,11 @@ check_config() {
 		echo "file $config_file not found, exiting..." && \
 			exit 1;
 }
-
+check_index() {
+	[ ! -f "$index_file" ] && \
+		echo "index file not found.." && \
+		exit 1;
+}
 ## check if sitemap section is mentioned in config file
 check_sitemap() {
 	grep -q "^++.*sitemap$" $config_file && grep -q "^--.*sitemap$" $config_file
@@ -110,7 +115,7 @@ vals_basemd() {
 		sed '/^\(+\|-\)/d' | grep "base.md$")"
 }
 
-## value variable with all md5 files
+## value variable for all .md files except index file
 vals_allmd() {
 	# grep base.md values only
 	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
@@ -135,7 +140,7 @@ ask_title() {
 ## asks for description about the article
 ask_describe() {
 	read -p "Enter little bit of description about the page[optional]: " describe
-	arg="$author" && skip 
+	arg="$author" && skip
 }
 
 ## asks for author name
@@ -305,7 +310,6 @@ navigation_gen() {
 		fi
 	done
 }
-
 ## transform markdown article to html
 main_generate() {
 	# needs serious refactoring
@@ -336,14 +340,15 @@ main_generate() {
 	# function end
 
 	# args
-	if [ "$1" = "-c" ]; then
-		orig="$1"
-		# calling file_rename function
-		file_rename
-	else
-		orig="$1"
-		file_rename
-	fi
+	orig="$1"; file_rename
+#	if [ "$1" = "-c" ]; then
+#		orig="$1"
+#		# calling file_rename function
+#		file_rename
+#	else
+#		orig="$1"
+#		file_rename
+#	fi
 
 	# check if filename has backslash
 	echo $filename | grep -q "/"
@@ -1380,6 +1385,146 @@ index_generate() {
 	echo "</html>" >> $filename
 }
 
+# properly format the index.md file
+index_gen_function() {
+	# check if editor value is not set
+	[ -z "$EDITOR" ] && \
+		echo "Editor global variable is not set" && \
+		exit 1;
+
+	empty() {
+		echo "empty value provided" && exit 1;
+	}
+
+	invalid() {
+		echo "invalid argument provided" && exit 1;
+	}
+
+	empty_check() {
+		case "$val" in
+			""|" "|"   " ) empty
+				;;
+			* ) break
+				;;
+		esac
+	}
+
+	skip() {
+		case "$arg" in
+			"" ) echo "using defaults for this"
+				break
+				;;
+			" "|"  "|"   " ) invalid
+				;;
+			* ) break
+				;;
+		esac
+	}
+	chek_aboutmd() {
+		[ ! -f "about.md" ] && echo "file not found" && \
+			exit 1;
+	}
+	# check if the index.md file is empty
+	if [ -s "$index_file" ]; then
+		echo "$index_file has previously writen content in it";
+		read -p "Are you sure you want to overwrite $index_file [y/n] " overwrite_val
+		arg="$overwrite_val" && skip
+		if [ "$overwrite_val" = "n" ]; then
+			echo "Not overwriting $index_file";
+			echo "Exiting"
+			exit 1;
+		else
+			echo "Proceeding onto next steps, [overwrite allowed]"
+		fi
+	fi
+
+	# check if config file exists
+	check_config
+	# check if navigation region is present
+	nav_check
+	# ask for title
+	ask_title
+	# ask author
+	ask_author
+	# ask for description
+	ask_describe
+	echo
+
+	# check if image needs to be added
+	read -p "Do you want to attach an image at the index file?[y/n] " image_val
+
+	if [ "$image_val" = "y" ]; then
+		echo
+		read -p "Provide a title for the image " image_titl
+		arg="$image_titl" && skip
+		echo
+		read -p "Provide a valid path for the image[eg. 'assets/someimage.png'] " image_path
+
+		if [ ! -f "$image_path" ]; then
+			echo "file mot found"
+			exit 1;
+		fi
+
+		echo "Image path found $image_path"
+		image_mention="1"
+	fi
+
+	# check if about.md section needs to be added
+	echo
+	read -p "Do you have a 'about.md' file and want to use it in index.md/show up in index file?[y/n] " about_val
+	if [ "$about_val" = "y" ]; then
+		chek_aboutmd
+		echo "about.md found"
+		about_md_present="1";
+	fi
+	arg="about_val" && skip
+	echo
+	read -p "Provide a meta-name generator[optional] " meta_name
+	arg="$meta_name" && skip
+	echo
+	read -p "Provide a canonical link[optional] " canonical_link
+	arg="$canonical_link" && skip
+	echo
+	read -p "make file into .html when done? [y/n]: " generate
+	val="$generate" && skip
+
+	# Populate the index.md file
+	navi_startlineno="$(grep -on -m 1 "^+++.*navigation" $config_file | tr -dc '[[:digit:]]')"
+	navi_endlineno="$(grep -on -m 1 "^---.*navigation" $config_file | tr -dc '[[:digit:]]')"
+	sed -n $navi_startlineno,$navi_endlineno'p' $config_file > $index_file
+	sed -i '/^.homepage.*/d;/^.navmenu.*/d;/^.backpage.*/d;' $index_file
+	sed -i 's/^.*:/.page:/g' $index_file
+	if [ "$about_md_present" = "1" ]; then
+		sed -i '/^+++.*navigation/a .page: [about](about.html)' $index_file
+	fi
+
+	# Now start adding header and intro part
+	 sed -i 1'i ++++++++head\n--------head\n\n+++++++++++intro\n-------------intro\n' $index_file
+
+	 # Populate the intro section first because it's easier
+	 sed -i "/^+++.*intro$/a .h2: yourwebsitename.com\n.h2: change me" $index_file
+	 if [ "$image_mention" = "1" ]; then
+		 sed -i "/^--.*intro$/i .img: ![$image_titl]($image_path)" $index_file
+	 fi
+
+	 # Adding the header portion of;
+	 #
+	 sed -i "/^+++.*head$/a .title: $title\n.author: $author\n.description: $describe\n.style: css/imain.css\n.name-generator: $meta_name\n.canonical: $canonical_link" $index_file
+
+	 # Add the footer and script section
+	 sed -i '/^--.*navigation$/a\ \n++++++++++footer\n.message: <!>\n----------footer\n' $index_file
+	 sed -i '/^--.*footer$/a\ \n++++++++++script\n.script: js/itoggle.js\n----------script' $index_file
+
+	 # generating into html version;
+	 #
+	 if [ "$generate" = "y" ]; then
+		 index_generate $index_file
+	 else
+		 echo "Not generating index.md to index.html" && \
+			 exit 1;
+	 fi
+}
+
 ## transform all markdown files into html files
 to_html() {
 	# check for config file
@@ -1671,6 +1816,9 @@ case "$1" in
 			usage | grep remove
 			;;
 		esac
+		;;
+	indexgen ) # properly create a index.md formated file
+		index_gen_function
 		;;
 	index ) # convert a index.md file to index.html file
 		index_generate $2
