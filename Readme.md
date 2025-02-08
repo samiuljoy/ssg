@@ -1,5 +1,9 @@
 # ⚠ Update, December 2024: Account Migration to [github.com/samiulahmedjoy](https://github.com/samiulahmedjoy)
 
+# Here's a Video tutorial
+
+[![Video tutorial](https://img.youtube.com/vi/W9qleSpFd20/0.jpg)](https://www.youtube.com/watch?v=W9qleSpFd20)
+
 # Static Site Generator in Shell Script
 
 ![light demo page](screenshots/light.png)
