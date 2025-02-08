@@ -28,7 +28,7 @@ rundown() {
 	echo
 	echo "Step3: Now, generate navigation section by running 'sh main.sh navgen'. This navigation part just adds home, roam and base buttons on your navigation section"
 	echo
-	echo "Step4: Now, edit your index.md page. Open your favority text editor and edit the index.md file. For example index.md reference, see 'https://samiuljoy.github.io/index.md' and for syntax help please refer to this documentation, 'https://samiuljoy.github.io/demo/indexpage.html'. After done editing the index.md file, just run 'sh main.sh index index.md', which will generate a index.html file."
+	echo "Step4: Now generate an index file with 'sh main.sh indexgen'"
 	echo
 	echo "Step5: Now Edit the base.md page if your article is going to be in a directory such as 'blog/firstblog.md'. In such case, first edit 'blog/base.md' page with your text editor. For an example see 'https://samiuljoy.github.io/microblog/base.md' and for syntax documentation, please refer to 'https://samiuljoy.github.io/demo/basepage.html'. Just run 'sh main.sh post' and when it asks for the filename, just add 'blog/base.md' as the filename"
 	echo
@@ -1795,7 +1795,44 @@ case "$1" in
 		rmmdir && sync
 		;;
 	all ) # convert all md files to html from sitemap section in config file and generate the rss feed
-		to_html && sync && rss_generate
+		to_html && sync && rss_generate;
+		echo
+		read -p "Do you want to add dates to all your posts? [y/n]" d_addition
+		echo
+		case "$d_addition" in
+			""|" "|"  " ) echo "Empty input" && \
+				echo "exiting" && exit 1;
+				;;
+			n|no|N|NO ) echo "ok, exiting"
+				exit 0;
+				;;
+			y|yes|Y|YES ) sitemap_startline="$(grep -on -m 1 "^++++.*sitemap" $config_file | tr -dc '[[:digit:]]')"
+				sitemap_endline="$(grep -on -m 1 "^---.*sitemap" $config_file | tr -dc '[[:digit:]]')"
+				# print the sitemap section from config.txt file into a tmp file
+				sed -n $sitemap_startline,$sitemap_endline'p' $config_file | grep -v -e "base.md" -e "index.md" -e "about.md" -e "^+++.*sitemap" -e "^---.*sitemap" > file.temp
+				for i in $(cat file.temp); do
+					html="$(echo $i | sed 's/\(.*\).md/\1.html/')"
+					base="$(echo $i | sed 's/\(.*\)\/.*md/\1\/base.md/')"
+					just_html="$(echo "$html" | cut -f2 -d "/")"
+					pre_lineno="$(grep -on -m 1 "$just_html" $base | cut -f1 -d ':')"
+					actual_lineno="$(( $pre_lineno - 1 ))"
+					date_val="$(sed -n $actual_lineno'p' $base | cut -f2- -d " ")"
+					html_startlineno="$(grep -no -m 1 "<main id=" $html | tr -dc '[[:digit:]]')"
+					html_actlineno="$(( $html_startlineno + 2 ))"
+					sed -i $html_actlineno"a <div class='date'>$date_val</div>" $html
+				done 2> /dev/null
+				if [ "$?" = 0 ]; then
+					echo "done"
+					rm file.temp
+				else
+					echo "something went wrong"
+					rm file.temp
+					exit 1;
+				fi
+				;;
+			* ) echo "Invalid input, exiting" && exit 1;
+				;;
+		 esac
 		;;
 	rss ) # make rss.xml file
 		rss_generate
