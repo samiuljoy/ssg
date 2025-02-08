@@ -917,6 +917,11 @@ main_post() {
 	[ "$?" = 0 ] && \
 		sed -i '/^+.*navigation$/,/^-.*navigation$/ s/^\.backpage:\s.*/.backpage: [about](.\/about.html)/g' $current
 
+	# if page name is portfolio.md then change backpage to portfolio
+	echo $current | grep -q "portfolio.md"
+	[ "$?" = 0 ] && \
+		sed -i '/^+.*navigation$/,/^-.*navigation$/ s/^\.backpage:\s.*/.backpage: [portfolio](.\/portfolio.html)/g' $current
+
 	# if page has contact.md then change backpage to contact
 	echo $current | grep -q "contact.md"
 	[ "$?" = 0 ] && \
@@ -1809,7 +1814,7 @@ case "$1" in
 			y|yes|Y|YES ) sitemap_startline="$(grep -on -m 1 "^++++.*sitemap" $config_file | tr -dc '[[:digit:]]')"
 				sitemap_endline="$(grep -on -m 1 "^---.*sitemap" $config_file | tr -dc '[[:digit:]]')"
 				# print the sitemap section from config.txt file into a tmp file
-				sed -n $sitemap_startline,$sitemap_endline'p' $config_file | grep -v -e "base.md" -e "index.md" -e "about.md" -e "^+++.*sitemap" -e "^---.*sitemap" > file.temp
+				sed -n $sitemap_startline,$sitemap_endline'p' $config_file | grep -v -e "base.md" -e "index.md" -e "portfolio.md" -e "about.md" -e "^+++.*sitemap" -e "^---.*sitemap" > file.temp
 				for i in $(cat file.temp); do
 					html="$(echo $i | sed 's/\(.*\).md/\1.html/')"
 					base="$(echo $i | sed 's/\(.*\)\/.*md/\1\/base.md/')"
