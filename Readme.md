@@ -32,8 +32,7 @@ js directory -> has 28 lines of js code for dark mode and light mode toggle
 
 demo -> a directory with some examples
 
-
-This 9 steps are basically tldr; Watch the video for demo
+**This 9 steps are basically tldr; Watch the video above for demo**
 
 **Step1:** Generate a config file by running 'sh main.sh config'. Then edit the config.txt file on your own. For an example config file, you can see 'https://samiuljoy.github.io/config.txt'. Make sure to add a base.md page on your first entry to every new page except for about and index page. The need for base.md page is to hold records of the different posts and display them on a dedicated page. For more info about basepage syntax please refer to 'https://samiuljoy.github.io/demo/basepage.html'
 
