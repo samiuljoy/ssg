@@ -2,43 +2,53 @@
 
 # usage function
 usage() {
-	echo "For detailed rundown and usage, run 'sh main.sh rundown'"
-	echo "sh main.sh config -----> generate an easy to edit config file"
-	echo "sh main.sh init -------> initialize all files based on sitemap section in config.txt"
-	echo "sh main.sh navgen -----> generate navigation section from config.txt sitemap section and push it in navigation section of config_file"
-	echo "sh main.sh indexgen ---> generate a index.md page based on your prompt answers"
-	echo "sh main.sh add --------> add a post and also an entry to a base.md file and also config.txt sitemap section"
-	echo "sh main.sh post -------> make a post"
-	echo "sh main.sh adddir -----> add a whole directory navigation page to all files"
-	echo "sh main.sh rmdir  -----> remove a directory navigation entry page from all files"
-	echo "sh main.sh remove latest ----> will remove the latest entry made through running sh main.sh add"
-	echo "sh main.sh remove last dirname/base.md ---> will remove the last article entry from dirname/base.md file (it has to be a base.md file)"
-	echo "sh main.sh html filename.md ----> generate html format for a single filename.md"
-	echo "sh main.sh all ----> convert all md files(mentioned in config_file) to html files"
-	echo "sh main.sh index index.md ----> convert index.md file to index.html"
-	echo "sh main.sh final ----> arrange all files to a main or final site directory"
-	echo "sh main.sh rss -----> generate a rss feed of the articles from base.md files"
+	cat <<-'EOF'
+
+	For detailed rundown and usage, run 'sh main.sh rundown'"
+	
+	sh main.sh config -----> generate an easy to edit config file"
+	sh main.sh init -------> initialize all files based on sitemap section in config.txt"
+	sh main.sh navgen -----> generate navigation section from config.txt sitemap section and push it in navigation section of config_file"
+	sh main.sh indexgen ---> generate a index.md page based on your prompt answers"
+	sh main.sh add --------> add a post and also an entry to a base.md file and also config.txt sitemap section"
+	sh main.sh post -------> make a post"
+	sh main.sh adddir -----> add a whole directory navigation page to all files"
+	sh main.sh rmdir  -----> remove a directory navigation entry page from all files"
+	sh main.sh remove latest ----> will remove the latest entry made through running sh main.sh add"
+	sh main.sh remove last dirname/base.md ---> will remove the last article entry from dirname/base.md file (it has to be a base.md file)"
+	sh main.sh html filename.md ----> generate html format for a single filename.md"
+	sh main.sh all ----> convert all md files(mentioned in config_file) to html files"
+	sh main.sh index index.md ----> convert index.md file to index.html"
+	sh main.sh final ----> arrange all files to a main or final site directory"
+	sh main.sh rss -----> generate a rss feed of the articles from base.md files"
+
+	EOF
 }
 
 rundown() {
-	echo
-	echo "Step1: Generate a config file by running 'sh main.sh config'. Then edit the config.txt file on your own. For an example config file, you can see 'https://samiuljoy.github.io/config.txt'. Make sure to add a base.md page on your first entry to every new page except for about and index page. The need for base.md page is to hold records of the different posts and display them on a dedicated page. For more info about basepage syntax please refer to 'https://samiuljoy.github.io/demo/basepage.html'"
-	echo
-	echo "Step2: If you're done editing config.txt file, initialize everything that you've declared on your config file by running 'sh main.sh init'. This will create all the files, directories and whatnot"
-	echo
-	echo "Step3: Now, generate navigation section by running 'sh main.sh navgen'. This navigation part just adds home, roam and base buttons on your navigation section"
-	echo
-	echo "Step4: Now generate an index file with 'sh main.sh indexgen'"
-	echo
-	echo "Step5: Now Edit the base.md page if your article is going to be in a directory such as 'blog/firstblog.md'. In such case, first edit 'blog/base.md' page with your text editor. For an example see 'https://samiuljoy.github.io/microblog/base.md' and for syntax documentation, please refer to 'https://samiuljoy.github.io/demo/basepage.html'. Just run 'sh main.sh post' and when it asks for the filename, just add 'blog/base.md' as the filename"
-	echo
-	echo "Step6: If you've completed everything above correctly, you can start writing your posts. You can either run 'sh main.sh post' and add manual entries to config.txt, blog/base.md file or you could just run 'sh main.sh add' and let all your entries by added automatically. It's your choice, depends on use case hence, added both post and add option for for variance."
-	echo
-	echo "Step7: Now since you've added all posts and everything, now run 'sh main.sh all'. This will generate html pages for all the files mentioned in 'config.txt'."
-	echo
-	echo "Step8: For convenience you can also run 'sh main.sh final' which will copy all the generated html files into a separate sub-directory"
-	echo "Step9: Last but not least, you can also generate rss.xml feeds of all your posts. Just run 'sh main.sh rss'"
-	echo
+	cat <<-'EOF'
+
+	This is a basic rundown/CLI usage steps
+
+	Step1: Generate a config file by running 'sh main.sh config'. Then edit the config.txt file on your own. For an example config file, you can see 'https://samiuljoy.github.io/config.txt'. Make sure to add a base.md page on your first entry to every new page except for about and index page. The need for base.md page is to hold records of the different posts and display them on a dedicated page. For more info about basepage syntax please refer to 'https://samiuljoy.github.io/demo/basepage.html'
+	
+	Step2: If you're done editing config.txt file, initialize everything that you've declared on your config file by running 'sh main.sh init'. This will create all the files, directories and whatnot
+	
+	Step3: Now, generate navigation section by running 'sh main.sh navgen'. This navigation part just adds home, roam and base buttons on your navigation section
+	
+	Step4: Now generate an index file with 'sh main.sh indexgen'
+	
+	Step5: Now Edit the base.md page if your article is going to be in a directory such as 'blog/firstblog.md'. In such case, first edit 'blog/base.md' page with your text editor. For an example see 'https://samiuljoy.github.io/microblog/base.md' and for syntax documentation, please refer to 'https://samiuljoy.github.io/demo/basepage.html'. Just run 'sh main.sh post' and when it asks for the filename, just add 'blog/base.md' as the filename
+	
+	Step6: If you've completed everything above correctly, you can start writing your posts. You can either run 'sh main.sh post' and add manual entries to config.txt, blog/base.md file or you could just run 'sh main.sh add' and let all your entries by added automatically. It's your choice, depends on use case hence, added both post and add option for for variance.
+	
+	Step7: Now since you've added all posts and everything, now run 'sh main.sh all'. This will generate html pages for all the files mentioned in 'config.txt'.
+	
+	Step8: For convenience you can also run 'sh main.sh final' which will copy all the generated html files into a separate sub-directory
+
+	Step9: Last but not least, you can also generate rss.xml feeds of all your posts. Just run 'sh main.sh rss'
+
+	EOF
 }
 # global variables
 
@@ -172,47 +182,81 @@ config_generate() {
 	grep -q "^++.*sitemap" $config_file && grep -q "^--.*sitemap$" $config_file
 
 	if [ "$?" -ne 0 ]; then
-		echo "# Sitemap section -> include files.md here" >> $config_file
-		echo "" >> $config_file
-		echo "++++++++++sitemap\n--------sitemap" >> $config_file
+		cat <<-'EOF'>> $config_file
+		# Sitemap section -> include files.md here
+
+		++++++++++sitemap
+		--------sitemap
+		EOF
 	fi
 
 	grep -q "^++.*navigation" $config_file && grep -q "^--.*navigation$" $config_file
 
 	if [ "$?" -ne 0 ]; then
-		echo "" >> $config_file
-		echo "++++navigation\n.homepage: [home](index.html)\n.navmenu: roam\n.backpage: [base](base.html)" >> $config_file
-		echo "----------navigation" >> $config_file
+		cat <<-'EOF'>> $config_file
+
+		# Navigation Generation section starts here
+		++++navigation
+		.homepage: [home](index.html)
+		.navmenu: roam
+		.backpage: [base](base.html)
+		----------navigation
+		EOF
 	fi
 
 	grep -q "^++.*sitelink" $config_file && grep -q "^--.*sitelink" $config_file
 
 	if [ "$?" -ne 0 ]; then
-		echo "" >> $config_file
-		echo "# This portion is necessary for rss.xml generation. Rss portion starts from here\n" >> $config_file
-		echo "+++++sitelink\nhttps://yoursitename.com\n------sitelink" >> $config_file
-		echo "" >> $config_file
-		echo "+++++description\nsome description about your site\n-----description" >> $config_file
-		echo "" >> $config_file
-		echo "++++title\nthe title of your site\n-----title" >> $config_file
-		echo "" >> $config_file
-		echo "# Rss generation portion ends here. The Rss portion is optional" >> $config_file
+		cat <<-'EOF'>> $config_file
+
+		# This portion is necessary for rss.xml generation. Rss portion starts from here
+		+++++sitelink
+		https://yoursitename.com
+		------sitelink
+
+		+++++description
+		some description about your site
+		-----description
+
+		++++title
+		the title of your site
+		-----title
+
+		# Rss generation portion ends here. The Rss portion is optional
+		EOF
 	fi
 
 	grep -q "^# toggle script" $config_file
 
 	if [ "$?" -ne 0 ]; then
-		echo "\n# toggle script\n# this portion below is necessary\n" >> $config_file
-		echo "+++++++script\nmode = document.getElementById('switch');\n" >> $config_file
-		echo "if (! navigator.cookieEnabled) {\n\tmode.style.display = 'none';\n}" >> $config_file
-		echo "else if(! localStorage) {\n\tmode.style.display = 'none';\n}" >> $config_file
-		echo "else {\n\tmode.style.display = 'inline';\n}\n------script\n" >> $config_file
-		echo "# you can also add custom script files like this\n" >> $config_file
-		echo "+++++++++add\n.script: js/toggle.js\n-----------add" >> $config_file
-		echo "# this portion above in between ++add and --add is necessary\n" >> $config_file
-		echo "# Footer section (the message portion can be changed)\n" >> $config_file
-		echo "++++++++++++++++footer\n.class: footer\n.message: Made with <3 by [samiuljoy](https://github.com/samiuljoy)" >> $config_file
-		echo "------------------footer" >> $config_file
+		cat <<-'EOF'>> $config_file
+
+		# toggle script
+		# this portion below is necessary
+		# for javascript functionality
+
+		+++++++script
+		mode = document.getElementById('switch');
+		if (! navigator.cookieEnabled)
+		 { mode.style.display = 'none'; }
+		else if(! localStorage)
+		 { mode.style.display = 'none'; }
+		else { mode.style.display = 'inline'; }
+		------script
+
+		# you can also add custom script files like this
+		+++++++++add
+		.script: js/toggle.js
+		-----------add
+		# this portion above in between ++add and --add is necessary for
+		# javascript functionality
+
+		# Footer section (the message portion can be changed)
+		++++++++++++++++footer
+		.class: footer
+		.message: Made with <3 by [samiuljoy](https://github.com/samiuljoy)
+		------------------footer
+		EOF
 	fi
 }
 
@@ -229,21 +273,21 @@ init() {
 	vals_noindex
 
 	# creating index.md file
-	if [ ! -f "index.md" ]; then
-		touch index.md
+	if [ ! -f "$index_file" ]; then
+		touch $index_file
 	else
-		echo "index.md file exists, skipping creating a new one"
+		echo "$index_file file exists, skipping creating a new one"
 	fi
 
 	# make css, js and assets dir
 	[ ! -d "$css_dir" ] && \
-		mkdir -p "$css_dir" && "echo css dir is empty btw"
+		mkdir -p "$css_dir" && echo "css dir created but is empty btw"
 
 	[ ! -d "$js_dir" ] && \
-		mkdir -p "$js_dir" && "echo js dir is empty btw"
+		mkdir -p "$js_dir" && echo "js dir created but is empty btw"
 
 	[ ! -d "$assets_dir" ] && \
-		mkdir -p "$assets_dir" && "assets dir is empty btw"
+		mkdir -p "$assets_dir" && echo "assets dir created but is empty btw"
 
 	# initialize directories and files based on $sitemap
 	for i in $vals; do
@@ -622,7 +666,7 @@ main_generate() {
 
 	sed -i '/^<ul class="ull">$/,/^<\/ul>$/ s/^\#\.\s\(.*\)/\t<li>\1<\/li>/g' $filename
 
-	# Ordered list substitution for numbered lines
+	# Ordered list substitution for numbered lines if digits are mentioned
 	awk -i inplace '
 		/^$/ { blank++ }
 		blank && /^[[:digit:]]\./ { blank=0; block++; print "<ol>" }
@@ -632,7 +676,7 @@ main_generate() {
 
 	sed -i '/^<ol>$/,/^<\/ol>$/ s/^[[:digit:]]..\(.*\)/\t<li>\1<\/li>/g' $filename
 
-	# Ordered list substitution for numbered lines
+	# Ordered list substitution for numbered lines if alphabets are mentioned
 	awk -i inplace '
 		/^$/ { blank++ }
 		blank && /^[a-z]\.\s/ { blank=0; block++; print "<ol>" }
@@ -712,8 +756,10 @@ main_generate() {
 	[ "$com" = "false" ] && sed -i '/^<!.*-->$/d' $filename
 	
 	# ending tags
-	echo "</body>" >> $filename
-	echo "</html>" >> $filename
+	cat <<-'EOF'>>$filename
+	</body>
+	</html>
+	EOF
 }
 
 ## post articles -> main post function -> will be called later
@@ -1388,9 +1434,11 @@ index_generate() {
 	sed -i '/^+.*script$/d' $filename
 	sed -i '/^-.*script$/d' $filename
 
-	echo "</center>" >> $filename
-	echo "</body>" >> $filename
-	echo "</html>" >> $filename
+	cat <<-'EOF'>>$filename
+	</center>
+	</body>
+	</html>
+	EOF
 }
 
 # properly format the index.md file
@@ -1699,17 +1747,17 @@ rss_generate() {
 		site_title_name="$(sed -n '/^++.*title$/,/^--.*title$/p' $config_file | grep -v "^++.*\|^--.*")"
 
 		# have to remove leading tabs for catting into a file
-		cat << EOF > $rss_xml
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-<channel>
-<title>$site_title_name</title>
-<description>$description_of_site</description>
-<language>en-us</language>
-<link>$site_link/rss.xml</link>
-<atom:link href='$site_link/rss.xml' rel='self' type='application/rss+xml' />
-<!-- content starts here -->
-EOF
+		cat <<-'EOF'> $rss_xml
+		<?xml version="1.0" encoding="utf-8"?>
+		<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+		<channel>
+		<title>$site_title_name</title>
+		<description>$description_of_site</description>
+		<language>en-us</language>
+		<link>$site_link/rss.xml</link>
+		<atom:link href='$site_link/rss.xml' rel='self' type='application/rss+xml' />
+		<!-- content starts here -->
+		EOF
 	}
 
 		# appending xml tags (deprecated)
@@ -1814,7 +1862,8 @@ case "$1" in
 			y|yes|Y|YES ) sitemap_startline="$(grep -on -m 1 "^++++.*sitemap" $config_file | tr -dc '[[:digit:]]')"
 				sitemap_endline="$(grep -on -m 1 "^---.*sitemap" $config_file | tr -dc '[[:digit:]]')"
 				# print the sitemap section from config.txt file into a tmp file
-				sed -n $sitemap_startline,$sitemap_endline'p' $config_file | grep -v -e "base.md" -e "index.md" -e "portfolio.md" -e "about.md" -e "^+++.*sitemap" -e "^---.*sitemap" > file.temp
+				sed -n $sitemap_startline,$sitemap_endline'p' $config_file | \
+					grep -v -e "base.md" -e "index.md" -e "portfolio.md" -e "about.md" -e "^+++.*sitemap" -e "^---.*sitemap" > file.temp
 				for i in $(cat file.temp); do
 					html="$(echo $i | sed 's/\(.*\).md/\1.html/')"
 					base="$(echo $i | sed 's/\(.*\)\/.*md/\1\/base.md/')"
