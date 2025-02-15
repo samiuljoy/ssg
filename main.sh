@@ -409,54 +409,58 @@ main_generate() {
 		code_number=1
 		upto="$(grep '^```[[:digit:]]\+$' $filename | tail -n1 | cut -c 4-)"
 		code_directory="$(dirname $filename)/code"
-		mkdir -p "$code_directory"
+		[ ! -d "$code_directory" ] && mkdir -p "$code_directory"
 
 		while [ "$code_number" -le "$upto" ]; do
 			sed -n "/^\`\`\`$code_number$/,/^\.code$code_number$/p" $filename > "$filename-code$code_number.txt"
-			sed -i '/^\.code[[:digit:]]\+/d' "$filename-code$code_number.txt"
-			sed -i '/^```/d' "$filename-code$code_number.txt"
-			sed -i 's/^\t//g' "$filename-code$code_number.txt"
+			sed -i '{ /^\.code[[:digit:]]\+/d 
+				/^```/d 
+				s/^\t//g 
+			}' "$filename-code$code_number.txt"
 			mv "$filename-code$code_number.txt" $code_directory
 			code_number="$(( $code_number + 1 ))"
 		done
 	fi
 
 	# escape sequences substitution -> bounded
-	sed -i '/^```.*$/,/^```$/ s/\./\&period;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/_/\&lowbar;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/\!/\&excl;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/\[/\&lsqb;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/\]/\&rsqb;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/~/\&sim;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/\*/\&ast;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/#/\&num;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/</\&lt;/g' $filename
-	sed -i '/^```.*$/,/^```$/ s/>/\&gt;/g' $filename
+	sed -i '/^```.*$/,/^```$/ {
+		s/\./\&period;/g
+		s/_/\&lowbar;/g
+		s/\!/\&excl;/g
+		s/\[/\&lsqb;/g
+		s/\]/\&rsqb;/g
+		s/~/\&sim;/g
+		s/\*/\&ast;/g
+		s/#/\&num;/g
+		s/</\&lt;/g
+		s/>/\&gt;/g
+	}' $filename
 
 	# global escape sequences substitution
-	sed -i 's/\\_/\&lowbar;/g' $filename
-	sed -i 's/\\\*/\&ast;/g' $filename
-	sed -i 's/\\`/\&grave;/g' $filename
-	sed -i 's/\\\[/\&lsqb;/g' $filename
-	sed -i 's/\\\]/\&rsqb;/g' $filename
+	sed -i '{ s/\\_/\&lowbar;/g
+		s/\\\*/\&ast;/g
+		s/\\`/\&grave;/g
+		s/\\\[/\&lsqb;/g
+		s/\\\]/\&rsqb;/g
+	}' $filename
 
 	# global substitution < and > to escape sequences &lt; and &gt;
-	sed -i 's/</\&lt\;/g' $filename
-	sed -i '/^[^>]/ s/>/\&gt\;/g' $filename
+	sed -i '{ s/</\&lt\;/g
+		/^[^>]/ s/>/\&gt\;/g }' $filename
 
 	# comment -> if arg1 is "-c" then include all custom comments else remove all comments /* article 1 */
 	if [ "$1" = "-c" ]; then
 		sed -i 's/\s\/\*\(.*\)\*\//\n<!-- \1 -->/g' $filename
 	else
 		com="false"
-		sed -i 's/\s\/\*.*\*\/$//g' $filename
-		sed -i '/^\/\*.*\*\/$/d' $filename
+		sed -i '{ s/\s\/\*.*\*\/$//g
+			/^\/\*.*\*\/$/d }' $filename
 	fi
 
 	# cleaning up double .// to /
-	sed -i "/^+.*head$/,/^-.*head$/ s/\.\/\//.\//g" $filename
-	sed -i "/^+.*navigation$/,/^-.*navigation$/ s/\.\/\//.\//g" $filename
-	sed -i "/^+.*script$/,/^-.*script$/ s/\.\/\//.\//g" $filename
+	sed -i "{ /^+.*head$/,/^-.*head$/ s/\.\/\//.\//g
+		/^+.*navigation$/,/^-.*navigation$/ s/\.\/\//.\//g
+		/^+.*script$/,/^-.*script$/ s/\.\/\//.\//g }" $filename
 
 	# inline call-script substitution
 	sed -i 's/^\.call-script:\s\(.*\)$/\t<script>\1<\/script>/g' $filename
@@ -465,8 +469,8 @@ main_generate() {
 	sed -i 's/^\.script:\s\(.*\)/\t<script src="\1"><\/script>/g' $filename
 
 	# additional script section will be removed
-	sed -i '/^+++.*add$/d' $filename
-	sed -i '/^---.*add$/d' $filename
+	sed -i '{ /^+++.*add$/d
+		/^---.*add$/d }' $filename
 
 	# add tab inside script section
 	sed -i '/^+.*script$/,/^-.*script/ s/\(^[^+,^-].*\)/\t\1/g' $filename
@@ -475,29 +479,28 @@ main_generate() {
 	sed -i '1s/\(.*\)/<!DOCTYPE html>\n<html lang="en">\n\1/' $filename
 
 	# head section
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.title:\s\(.*\)/\t<title>\1<\/title>\n\t<meta charset="UTF-8">\n\t<meta name="viewport" content="width=device-width, initial-scale=0.9">\n\t<meta name="theme-color" content="#f8f8eb">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.author:\s\(.*\)/\t<meta name="author" content="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.description:\s\(.*\)/\t<meta name="description" content="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.style:\s\(.*\)/\t<link rel="stylesheet" href="\1" type="text\/css">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.icon:\s\(.*\)/\t<link rel="icon" href="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.name-generator:\s\(.*\)/\t<meta name="generator" content="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.canonical-link:\s\(.*\)/\t<link rel="canonical" href="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/^$/<!-- blank line -->/g' $filename
-	sed -i 's/^+.*head$/<!-- header section begin -->\n<head>/g' $filename
-	sed -i 's/^-.*head/<\/head>\n<!-- header section end -->/g' $filename
+	sed -i '/^+.*head$/,/^-.*head$/ {
+		s/\.title:\s\(.*\)/\t<title>\1<\/title>\n\t<meta charset="UTF-8">\n\t<meta name="viewport" content="width=device-width, initial-scale=0.9">\n\t<meta name="theme-color" content="#f8f8eb">/g
+		s/\.author:\s\(.*\)/\t<meta name="author" content="\1">/g
+		s/\.description:\s\(.*\)/\t<meta name="description" content="\1">/g
+		s/\.style:\s\(.*\)/\t<link rel="stylesheet" href="\1" type="text\/css">/g
+		s/\.icon:\s\(.*\)/\t<link rel="icon" href="\1">/g
+		s/\.name-generator:\s\(.*\)/\t<meta name="generator" content="\1">/g
+		s/\.canonical-link:\s\(.*\)/\t<link rel="canonical" href="\1">/g
+		s/^$/<!-- blank line -->/g }' $filename
+	sed -i '{ s/^+.*head$/<!-- header section begin -->\n<head>/g
+		s/^-.*head/<\/head>\n<!-- header section end -->/g }' $filename
 
 	# navigation section
-	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.homepage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<a href="\2"><home>\1<\/home><\/a>/g' $filename
-	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.navmenu:\s\(.*\)/\t<\/li><li class="dropdown">\n\t<button class="dropbtn">\n\t\t<div class="index">\1<\/div>\n\t<\/button>\n\t<div class="dropdown-content">/g' $filename
-	
-	# transform urls
-	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.navpage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<a href="\2">\1<\/a>/g' $filename
-	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.backpage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<\/div>\n\t<li><a href="\2"><back>\1<\/back><\/a>\n<\/li>\n<\/ul>/g' $filename
-	
-	# navigation tags transform
-	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/^$/<!-- blank line -->/g' $filename
-	sed -i 's/^+.*navigation$/<!-- navigation section begin -->\n<body>\n<header role="banner">\n<nav role="navigation">\n\n<ul class="navigation">\n\t<li>/g' $filename
-	sed -i 's/^-.*navigation$/<\/nav>\n<\/header>\n<!-- navigation section end -->/g' $filename
+	sed -i '/^+.*navigation$/,/^-.*navigation$/ {
+		s/\.homepage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<a href="\2"><home>\1<\/home><\/a>/g
+		s/\.navmenu:\s\(.*\)/\t<\/li><li class="dropdown">\n\t<button class="dropbtn">\n\t\t<div class="index">\1<\/div>\n\t<\/button>\n\t<div class="dropdown-content">/g
+		s/\.navpage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<a href="\2">\1<\/a>/g
+		s/\.backpage:\s\[\([^]]*\)\](\([^)]*\))/\t\t<\/div>\n\t<li><a href="\2"><back>\1<\/back><\/a>\n<\/li>\n<\/ul>/g
+		s/^$/<!-- blank line -->/g }' $filename
+	sed -i '{
+		s/^+.*navigation$/<!-- navigation section begin -->\n<body>\n<header role="banner">\n<nav role="navigation">\n\n<ul class="navigation">\n\t<li>/g
+		s/^-.*navigation$/<\/nav>\n<\/header>\n<!-- navigation section end -->/g }' $filename
 
 	# convert <hr> tags from .hr
 	sed -i 's/^\.hr$/<hr>/g' $filename
@@ -506,7 +509,6 @@ main_generate() {
 	sed -i 's/^\.br$/<br>/g' $filename
 
 	# get directory structure
-	#echo $filename | grep -q "/"
 	if [ "$filename_has_backslash" = "1" ]; then
 		dirr="$(echo "$current" | sed 's/\(.*\)\/.*/\1/g' | \
 			sed 's/\([[:alpha:]]\|[[:alnum:]]\|[[:digit:]]\)*/..\//g; s/\/\//\//g')"
@@ -519,13 +521,14 @@ main_generate() {
 	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">λ<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n\t.inner-switch {\n\tdisplay: none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
 
 	# card section start
-	sed -i '/^+.*card$/,/^-.*card$/ s/^\.date:\s\(.*\)/<div class="card">\n<div class="date">\1<\/div>/g' $filename
-	sed -i '/^+.*card$/,/^-.*card$/ s/^\.article:\s\[\([^]]*\)\](\([^)]*\))/<h2><a href="\2">\1<\/a><\/h2>/g' $filename
-	sed -i '/^+.*card$/,/^-.*card$/ s/^\.describe:\s\(.*\)/<p>\1<\/p>\n<\/div>/g' $filename
+	sed -i '/^+.*card$/,/^-.*card$/ {
+		s/^\.date:\s\(.*\)/<div class="card">\n<div class="date">\1<\/div>/g
+		s/^\.article:\s\[\([^]]*\)\](\([^)]*\))/<h2><a href="\2">\1<\/a><\/h2>/g
+		s/^\.describe:\s\(.*\)/<p>\1<\/p>\n<\/div>/g }' $filename
 	
 	# card tags transform
-	sed -i 's/^+.*card$/<div class="grid-container">\n/g' $filename
-	sed -i 's/^-.*card$/<\/div>/g' $filename
+	sed -i '{ s/^+.*card$/<div class="grid-container">\n/g
+		s/^-.*card$/<\/div>/g }' $filename
 	# card section end
 
 	# table section start
@@ -548,20 +551,22 @@ main_generate() {
 	sed -i '/^+.*table$/,/^-.*table$/ s/\.td:\s\(.*\)/\t\t<td>\1<\/td>/g' $filename
 	
 	# table sections replacement
-	sed -i 's/^+.*table$/<center>\n<table>/g' $filename
-	sed -i 's/^-.*table$/<\/table>\n<\/center>\n<br>/g' $filename
+	sed -i '{ s/^+.*table$/<center>\n<table>/g
+		s/^-.*table$/<\/table>\n<\/center>\n<br>/g }' $filename
 	# table section end
 
 	# removing class section if mentioned
-	sed -i '/^+.*footer$/,/^-.*footer$/ s/^\.class:.*//g' $filename
-	sed -i '/^+.*footer$/,/^-.*footer$/ s/\.message:\s\(.*\)/<center><p>\1<\/p><\/center>\n/g' $filename
+	sed -i '/^+.*footer$/,/^-.*footer$/ {
+		s/^\.class:.*//g
+		s/\.message:\s\(.*\)/<center><p>\1<\/p><\/center>\n/g
+	}' $filename
 
-	sed -i 's/^+.*footer$/<!-- footer section begin -->/g' $filename
-	sed -i 's/^-.*footer$/<!-- footer section end -->/g' $filename
+	sed -i '{ s/^+.*footer$/<!-- footer section begin -->/g
+		s/^-.*footer$/<!-- footer section end -->/g }' $filename
 
 	# end section
-	sed -i 's/^+.*script$/<script>/g' $filename
-	sed -i 's/^-.*script$/<\/script>/g' $filename
+	sed -i '{ s/^+.*script$/<script>/g
+		s/^-.*script$/<\/script>/g }' $filename
 
 	# Add current Month date, year
 	today="$(date +%B' '%e', '%Y)" && \
@@ -580,24 +585,29 @@ main_generate() {
 	sed -i 's/^\.next\[\([^]]*\)\](\([^)]*\))/<center><div class="next_page"><a href="\2" rel="nofollow">\1<\/a><\/div><\/center>/g' $filename
 
 	# main section
-	sed -i '/^+.*main$/,/^-.*main$/ s/^\.ce\sheader1:\s\(.*\)/<center><h1>\1<\/center><\/h1>/g' $filename
-	sed -i '/^+.*main$/,/^-.*main$/ s/^\.ce\sheader2:\s\(.*\)/<center><h2>\1<\/center><\/h2>/g' $filename
-	sed -i '/^+.*main$/,/^-.*main$/ s/^\.ce\sheader3:\s\(.*\)/<center><h3>\1<\/center><\/h3>/g' $filename
-	sed -i '/^+.*main$/,/^-.*main$/ s/^\.ce\sheader4:\s\(.*\)/<center><h4>\1<\/center><\/h4>/g' $filename
+	sed -i '/^+.*main$/,/^-.*main$/ {
+		s/^\.ce\sheader1:\s\(.*\)/<center><h1>\1<\/center><\/h1>/g
+		s/^\.ce\sheader2:\s\(.*\)/<center><h2>\1<\/center><\/h2>/g
+		s/^\.ce\sheader3:\s\(.*\)/<center><h3>\1<\/center><\/h3>/g
+		s/^\.ce\sheader4:\s\(.*\)/<center><h4>\1<\/center><\/h4>/g }' $filename
 
 	# Header tag substitution with class and parameter with {whatever="whatever"} notice the double quote around whatever
-	sed -i 's/^#\s{\(.*\)="\(.*\)"}\s\(.*\)/<h1 \1="\2">\3<\/h1>/g' $filename
-	sed -i 's/^##\s{\(.*\)="\(.*\)"}\s\(.*\)/<h2 \1="\2">\3<\/h2>/g' $filename
-	sed -i 's/^###\s{\(.*\)="\(.*\)"}\s\(.*\)/<h3 \1="\2">\3<\/h3>/g' $filename
-	sed -i 's/^####\s{\(.*\)="\(.*\)"}\s\(.*\)/<h4 \1="\2">\3<\/h4>/g' $filename
-	sed -i 's/^#####\s{\(.*\)="\(.*\)"}\s\(.*\)/<h5 \1="\2">\3<\/h5>/g' $filename
+	sed -i '{
+		s/^#\s{\(.*\)="\(.*\)"}\s\(.*\)/<h1 \1="\2">\3<\/h1>/g
+		s/^##\s{\(.*\)="\(.*\)"}\s\(.*\)/<h2 \1="\2">\3<\/h2>/g
+		s/^###\s{\(.*\)="\(.*\)"}\s\(.*\)/<h3 \1="\2">\3<\/h3>/g
+		s/^####\s{\(.*\)="\(.*\)"}\s\(.*\)/<h4 \1="\2">\3<\/h4>/g
+		s/^#####\s{\(.*\)="\(.*\)"}\s\(.*\)/<h5 \1="\2">\3<\/h5>/g
+	}' $filename
 
 	# Normal header tag substitution
-	sed -i 's/^#\s\(.*\)/<h1>\1<\/h1>/g' $filename
-	sed -i 's/^##\s\(.*\)/<h2>\1<\/h2>/g' $filename
-	sed -i 's/^###\s\(.*\)/<h3>\1<\/h3>/g' $filename
-	sed -i 's/^####\s\(.*\)/<h4>\1<\/h4>/g' $filename
-	sed -i 's/^#####\s\(.*\)/<h5>\1<\/h5>/g' $filename
+	sed -i '{
+		s/^#\s\(.*\)/<h1>\1<\/h1>/g
+		s/^##\s\(.*\)/<h2>\1<\/h2>/g
+		s/^###\s\(.*\)/<h3>\1<\/h3>/g
+		s/^####\s\(.*\)/<h4>\1<\/h4>/g
+		s/^#####\s\(.*\)/<h5>\1<\/h5>/g
+	}' $filename
 		
 	# Cover image substitution within paragraphs
 	sed -i 's/^\.cover-img:\s\(.*\)/<img class="cover" src="\1">/g' $filename
@@ -631,30 +641,24 @@ main_generate() {
 		/^./ { blank=0 }
 		{ print }' $filename
 
-	sed -i '/^<blockquote>$/,/^<\/blockquote>$/ s/^>\s#\s\(.*\)/\t<h1>\1<\/h1>/g' $filename
-	sed -i '/^<blockquote>$/,/^<\/blockquote>$/ s/^>\s##\s\(.*\)/\t<h2>\1<\/h2>/g' $filename
-	sed -i '/^<blockquote>$/,/^<\/blockquote>$/ s/^>\s###\s\(.*\)/\t<h3>\1<\/h3>/g' $filename
-	sed -i '/^<blockquote>$/,/^<\/blockquote>$/ s/^>\s\(.*\)/\t<p>\1<\/p>/g' $filename
+	sed -i '/^<blockquote>$/,/^<\/blockquote>$/ {
+		s/^>\s#\s\(.*\)/\t<h1>\1<\/h1>/g
+		s/^>\s##\s\(.*\)/\t<h2>\1<\/h2>/g
+		s/^>\s###\s\(.*\)/\t<h3>\1<\/h3>/g
+		s/^>\s\(.*\)/\t<p>\1<\/p>/g
+	}' $filename
 
 	# Unordered list substitution with bulleted [*] markers
 	awk -i inplace '
 		/^$/ { blank++ }
-		blank && /^\*\s/ { blank=0; block++; print "<ul>" }
+		blank && /^\*\s|^-\s/ { blank=0; block++; print "<ul>" }
 		block && blank { block=0; print "</ul>" }
 		/^./ { blank=0 }
 		{ print }' $filename
 
-	sed -i '/^<ul>$/,/^<\/ul>$/ s/^\*.\(.*\)/\t<li>\1<\/li>/g' $filename
-
-	# Unordered list with dashes [-] which will later turn in bullets in html
-	awk -i inplace '
-		/^$/ { blank++ }
-		blank && /^-\s/ { blank=0; block++; print "<ul>" }
-		block && blank { block=0; print "</ul>" }
-		/^./ { blank=0 }
-		{ print }' $filename
-
-	sed -i '/^<ul>$/,/^<\/ul>$/ s/^-\s\(.*\)/\t<li>\1<\/li>/g' $filename
+	sed -i '/^<ul>$/,/^<\/ul>$/ {
+		s/^\*.\(.*\)/\t<li>\1<\/li>/g
+		s/^-\s\(.*\)/\t<li>\1<\/li>/g }' $filename
 
 	# Unordered list with # instead of bullet points 
 	awk -i inplace '
@@ -666,37 +670,32 @@ main_generate() {
 
 	sed -i '/^<ul class="ull">$/,/^<\/ul>$/ s/^\#\.\s\(.*\)/\t<li>\1<\/li>/g' $filename
 
-	# Ordered list substitution for numbered lines if digits are mentioned
+	# Ordered list substitution for numbered and alphabetical lines
 	awk -i inplace '
 		/^$/ { blank++ }
-		blank && /^[[:digit:]]\./ { blank=0; block++; print "<ol>" }
+		blank && /^[[:digit:]]\.|^[a-z]\.\s/ { blank=0; block++; print "<ol>" }
 		block && blank { block=0; print "</ol>" }
 		/^./ { blank=0 }
 		{ print }' $filename
 
-	sed -i '/^<ol>$/,/^<\/ol>$/ s/^[[:digit:]]..\(.*\)/\t<li>\1<\/li>/g' $filename
-
-	# Ordered list substitution for numbered lines if alphabets are mentioned
-	awk -i inplace '
-		/^$/ { blank++ }
-		blank && /^[a-z]\.\s/ { blank=0; block++; print "<ol>" }
-		block && blank { block=0; print "</ol>" }
-		/^./ { blank=0 }
-		{ print }' $filename
-
-	sed -i '/^<ol>$/,/^<\/ol>$/ s/^[a-z]\.\s\(.*\)/\t<li>\1<\/li>/g' $filename
+	sed -i '/^<ol>$/,/^<\/ol>$/ {
+		s/^[[:digit:]]..\(.*\)/\t<li>\1<\/li>/g
+		s/^[a-z]\.\s\(.*\)/\t<li>\1<\/li>/g }' $filename
 
 	# for no code copy section
-	sed -i 's/^```[[:alpha:]]\+$/<pre>\n\t<code>/g' $filename
-	sed -i 's/^```no$/<pre>\n\t<code>/g' $filename
-	sed -i 's/^```$/\t<\/code>\n<\/pre>/g' $filename
+	sed -i '{
+		s/^```[[:alpha:]]\+$/<pre>\n\t<code>/g
+		s/^```no$/<pre>\n\t<code>/g
+		s/^```$/\t<\/code>\n<\/pre>/g
+	}' $filename
 
 	# tmp digit character replacement instead of ..*$ because code block raw text view
-	sed -i 's/^```[[:digit:]]\+$/<pre>\n\t<code>/g' $filename
-	sed -i 's/^```$/\t<\/code>\n<\/pre>/g' $filename
+	sed -i '{
+		s/^```[[:digit:]]\+$/<pre>\n\t<code>/g
+		s/^```$/\t<\/code>\n<\/pre>/g
+	}' $filename
 
 	# code href
-	#echo $filename | grep -q "/"
 	if [ "$filename_has_backslash" = "1" ]; then
 	#if [ "$?" = 0 ]; then
 		name_sub="$(echo "$1" | sed 's/.*\/\(.*\).md$/\1.html/g')"
@@ -705,35 +704,34 @@ main_generate() {
 		sed -i "s/^\.\(code[[:digit:]]\+\)$/<a class='btn' href='code\/$filename-\1.txt'>view raw<\/a>/g" $filename
 	fi
 
+	# Serial wise function of the below lines sed codes
 	# Paragraph substitution
+	# Strike through text within paragraphs and blockquotes
+	# Bold text substitution specific to paragraphs and blockquotes
+	# Bold-italic text substitution specific to paragraphs and blockquotes
+	# Bold-italic text with underscore syntaxes
+	# Bold text with underscore syntaxes
+	# Italic text with underscore syntaxes
+	# Underline text substitution specific to paragraphs and blockquotes
+	# Italic text substitution specific to paragraphs blockquotes
+	# Code snippet substitution within paragraphs and blockquotes
 	sed -i '/^+.*main$/,/^-.*main$/ s/\(^[^<,^>,\t,#,^+,^-].*\)/<p>\1<\/p>/g' $filename
 
-	# Strike through text within paragraphs and blockquotes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/~~\([^~]*\)~~/<strike>\1<\/strike>/g' $filename
+	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ {
+		s/~~\([^~]*\)~~/<strike>\1<\/strike>/g
+		s/\*\*\([^.*]*\)\*\*/<b>\1<\/b>/g
+		s/\*\*\*\([^.*]*\)\*\*\*/<i><b>\1<\/i><\/b>/g
+		s/___\([^_]*\)___/<b><i>\1<\/b><\/i>/g
+		s/__\([^_]*\)__/<b>\1<\/b>/g
+		s/_\([^_]*\)_/<i>\1<\/i>/g
+	}' $filename
 
-	# Bold text substitution specific to paragraphs and blockquotes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/\*\*\([^.*]*\)\*\*/<b>\1<\/b>/g' $filename
-
-	# Bold-italic text substitution specific to paragraphs and blockquotes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/\*\*\*\([^.*]*\)\*\*\*/<i><b>\1<\/i><\/b>/g' $filename
-
-	# Bold-italic text with underscore syntaxes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/___\([^_]*\)___/<b><i>\1<\/b><\/i>/g' $filename
-
-	# Bold text with underscore syntaxes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/__\([^_]*\)__/<b>\1<\/b>/g' $filename
-
-	# Italic text with underscore syntaxes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/_\([^_]*\)_/<i>\1<\/i>/g' $filename
-
-	# Underline text substitution specific to paragraphs and blockquotes
 	sed -i '/^<p>/,/<\/p>$/ s/,,,\([^,]*\),,,/<u>\1<\/u>/g' $filename
 
-	# Italic text substitution specific to paragraphs blockquotes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/\*\([^.*]*\)\*/<i>\1<\/i>/g' $filename
-
-	# Code snippet substitution within paragraphs and blockquotes
-	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/`\([^`]*\)`/<code>\1<\/code>/g' $filename
+	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ {
+		s/\*\([^.*]*\)\*/<i>\1<\/i>/g
+		s/`\([^`]*\)`/<code>\1<\/code>/g
+	}' $filename
 
 	# Literal backtick within a code paragraphs and blockquotes
 	#sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/\\<code>\([^.*]*\)\\<\/code>/`\1`/g' $filename
@@ -745,12 +743,16 @@ main_generate() {
 	sed -i '/^\t<code>$/,/^\t<\/code>$/ s/^\t//g' $filename
 
 	# main tag transformation
-	sed -i 's/^+.*main$/<!-- main section begin -->\n<main id="main" role="main">/g' $filename
-	sed -i 's/^-.*main$/<!-- main section end -->/g' $filename
+	sed -i '{
+		s/^+.*main$/<!-- main section begin -->\n<main id="main" role="main">/g
+		s/^-.*main$/<!-- main section end -->/g
+	}' $filename
 
 	# Cleaning up
-	sed -i '/^>$/d' $filename
-	sed -i '/^<p>.<\/p>$/d' $filename
+	sed -i '{
+		/^>$/d
+		/^<p>.<\/p>$/d
+	}' $filename
 
 	# remove all comments if com=false (-c flag isn't invoked)
 	[ "$com" = "false" ] && sed -i '/^<!.*-->$/d' $filename
@@ -951,11 +953,15 @@ main_post() {
 	#echo $dirr | grep -q "/"
 	if [ "$filename_contains_slash" = "1" ]; then
 		dnav="$(echo $dirr | sed 's/\//\\\//g')"
-		sed -i "/^+.*navigation/,/^-.*navigation$/ s/^\.navpage:\s\[\(.*\)\](\(.*\))/.navpage: [\1]($dnav\/\2)/g" $current
-		sed -i "/^+.*navigation/,/^-.*navigation$/ s/^\.homepage:\s\[\(.*\)\](\(.*\))/.homepage: [\1]($dnav\/\2)/g" $current
+		sed -i "/^+.*navigation/,/^-.*navigation$/ {
+			s/^\.navpage:\s\[\(.*\)\](\(.*\))/.navpage: [\1]($dnav\/\2)/g
+			s/^\.homepage:\s\[\(.*\)\](\(.*\))/.homepage: [\1]($dnav\/\2)/g
+		}" $current
 	else
-		sed -i "/^+.*navigation/,/^-.*navigation$/ s/^\.navpage:\s\[\(.*\)\](\(.*\))/.navpage: [\1]($dirr\/\2)/g" $current
-		sed -i "/^+.*navigation/,/^-.*navigation$/ s/^\.homepage:\s\[\(.*\)\](\(.*\))/.homepage: [\1]($dirr\/\2)/g" $current
+		sed -i "/^+.*navigation/,/^-.*navigation$/ {
+			s/^\.navpage:\s\[\(.*\)\](\(.*\))/.navpage: [\1]($dirr\/\2)/g
+			s/^\.homepage:\s\[\(.*\)\](\(.*\))/.homepage: [\1]($dirr\/\2)/g
+		}" $current
 	fi
 
 	# if page name is about.md then change backpage to about
@@ -988,6 +994,7 @@ main_post() {
 			# append date format
 			sed -i $actual_line_number"a <div class='date'>$daaate</div>" $html_converted_filename
 
+			# Flip the latest post(which automatically gets added to the bottom) to the first line of the base file
 			# check if the name contains directory / in argument
 			echo $current | grep -q "base.md"
 			if [ "$?" -ne 0 ]; then
@@ -1186,15 +1193,16 @@ remove_post() {
 	# initiate
 	initiate() {
 		# formating properly
-		sed -i '/^+.*card$/,/^-.*card$/ {/^$/d}' $filename
-		sed -i 's/^\(+.*card\)/\1\n/g' $filename
-		sed -i 's/^\(.describe:\s.*\)/\1\n/g' $filename
+		sed -i '{
+			/^+.*card$/,/^-.*card$/ {/^$/d}
+			s/^\(.describe:\s.*\)/\1\n/g
+		}' $filename
 		
 		# last line number for describe tag
-		val="$(grep -n "^-.*card" $filename | cut -f1 -d ":")"
+		val="$(grep -n "^+.*card" $filename | cut -f1 -d ":")"
 		
-		start_val="$(( $val - 4 ))"
-		end_val="$(( $val - 2 ))"
+		start_val="$(( $val + 2 ))"
+		end_val="$(( $val + 4 ))"
 	}
 
 	# main remove
@@ -1251,7 +1259,7 @@ remove_post() {
 		grep -q "^+.*card$" $filename && grep -q "^-.*card$" $filename
 		
 		[ "$?" -ne 0 ] && \
-			echo "card section isn't mentioned in $filename" && \
+			echo "card section isn't mentioned in $filename or improperly formatted" && \
 			exit 1;
 	}
 }
@@ -1320,28 +1328,30 @@ rmmdir() {
 		sed -i "/^++.*navigation$/,/^--.*navigation$/ {/^\.page:\s\[$disp_name\]($dirr_name\/base.html)/d}" index.md
 	}
 	
-	## remove from config file sitemap and navigation section
+	## remove just base.md file from config file sitemap and navigation section
 	rmconfig() {
-		sed -i "/^++.*sitemap$/,/^--.*sitemap$/ {/^$dirr_name\/base.md/d}" $config_file
-		sed -i "/^++.*navigation$/,/^--.*navigation$/ {/^\.navpage:\s\[$disp_name\]($dirr_name\/base.html)/d}" $config_file
+		sed -i "{
+			/^++.*sitemap$/,/^--.*sitemap$/ {/^$dirr_name\/base.md/d}
+			/^++.*navigation$/,/^--.*navigation$/ {/^\.navpage:\s\[$disp_name\]($dirr_name\/base.html)/d}
+		}" $config_file
 	}
 	
 	## loop through all md files and delete entries
 	dloop() {
 		file_names="$(sed -n '/^++.*sitemap$/,/^--.*sitemap$/p' $config_file | grep -v "^++.*\|^--.*")"
 		for i in "$file_names"; do
-			sed -i "/^++.*navigation$/,/^--.*navigation$/ {/^\.navpage:\s\[$disp_name\]($dirr_name\/base.html)/d}" $i
+			sed -i "/^++.*navigation$/,/^--.*navigation$/ {/^\.navpage:\s\[$disp_name\](.*$dirr_name\/base.html)/d}" $i
 		done
 	}
 
 	# print out the sitelist
 	sed -n '/^+.*navigation$/,/^-.*navigation$/p' $config_file | grep -v "^++.*\|^--.*"
 	echo
-	echo "These are the file name entries so far"
+	echo "These are the file name entries so far eg: [displayname](dirname/base.html)"
 	echo
-	read -p "Enter the dirname to delete: " dirr_name
+	read -p "Enter the dirname to delete: [see the line/s above] " dirr_name
 	echo
-	read -p "Enter the display dirname: " disp_name
+	read -p "Enter the display name: " disp_name
 	echo
 	read -p "Dirname is $dirr_name and Display name is $disp_name, is this correct? [y/n]: " ans
 	
@@ -1401,38 +1411,52 @@ index_generate() {
 		file_rename
 	fi
 
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.title:\s\(.*\)/<title>\1<\/title>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=0.75">\n<meta name="theme-color" content="black">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.author:\s\(.*\)/<meta name="author" content="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.description:\s\(.*\)/<meta name="description" content="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.style:\s\(.*\)/<link rel="stylesheet" type="text\/css" href="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.name-generator:\s\(.*\)/<meta name="generator" content="\1">/g' $filename
-	sed -i '/^+.*head$/,/^-.*head$/ s/\.canonical:\s\(.*\)/<link rel="canonical" href="\1">/g' $filename
+	sed -i '/^+.*head$/,/^-.*head$/ {
+		s/\.title:\s\(.*\)/<title>\1<\/title>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=0.75">\n<meta name="theme-color" content="black">/g
+		s/\.author:\s\(.*\)/<meta name="author" content="\1">/g
+		s/\.description:\s\(.*\)/<meta name="description" content="\1">/g
+		s/\.style:\s\(.*\)/<link rel="stylesheet" type="text\/css" href="\1">/g
+		s/\.name-generator:\s\(.*\)/<meta name="generator" content="\1">/g
+		s/\.canonical:\s\(.*\)/<link rel="canonical" href="\1">/g
+	}' $filename
 	
 	sed -i "/^-.*head$/ a \\\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import 'css\/dimain.css' screen and (prefers-color-scheme: dark);\n\t<\/style>\n<\/noscript>" $filename
 
-	sed -i 's/^+.*head$/<\!DOCTYPE html>\n<html>\n<head>/g' $filename
-	sed -i 's/^-.*head$/<\/head>/g' $filename
+	sed -i '{
+		s/^+.*head$/<\!DOCTYPE html>\n<html>\n<head>/g
+		s/^-.*head$/<\/head>/g }' $filename
 
-	sed -i '/^+.*intro$/,/^-.*intro$/ s/\.h2:\s\(.*\)/<h2>\1<\/h2>/g' $filename
-	sed -i '/^+.*intro$/,/^-.*intro$/ s/\.img:\s\!\[\([^]]*\)\](\([^)]*\))/<img id="mode" src="\2" alt="\1">/g' $filename
+	sed -i '/^+.*intro$/,/^-.*intro$/ {
+		s/\.h2:\s\(.*\)/<h2>\1<\/h2>/g
+		s/\.img:\s\!\[\([^]]*\)\](\([^)]*\))/<img id="mode" src="\2" alt="\1">/g
+	}' $filename
 
-	sed -i 's/^+.*intro$/<body>\n<center>/g' $filename
-	sed -i 's/^-.*intro$/<br>...../' $filename
+	sed -i '{
+		s/^+.*intro$/<body>\n<center>/g
+		s/^-.*intro$/<br>...../
+	}' $filename
 
 	sed -i '/^+.*navigation$/,/^-.*navigation$/ s/\.page:\s\[\([^]]*\)\](\([^)]*\))/<div class="grid-item"><a class="a" href="\2">\1<\/a><\/div>/g' $filename
 
-	sed -i 's/^+.*navigation$/<div class="grid-container">/g' $filename
-	sed -i 's/^-.*navigation$/<\/div>/g' $filename
+	sed -i '{
+		s/^+.*navigation$/<div class="grid-container">/g
+		s/^-.*navigation$/<\/div>/g }' $filename
 
 	sed -i '/^+.*footer$/,/^-.*footer$/ s/\.message:\s\(.*\)/<center><p>\1<\/p><\/center>/g' $filename
-	sed -i 's/^+.*footer$/<footer>/g' $filename
-	sed -i 's/^-.*footer$/<\/footer>/g' $filename
+	sed -i '{
+		s/^+.*footer$/<footer>/g
+		s/^-.*footer$/<\/footer>/g
+	}' $filename
 
-	sed -i 's/\[\([^]]*\)\](\([^)]*\))/<a href="\2" rel="nofollow" target="_blank">\1<\/a>/g' $filename
-	sed -i '/^+.*script$/,/^-.*script$/ s/\.script:\s\(.*\)/<script src="\1"><\/script>/g' $filename
+	sed -i '{
+		s/\[\([^]]*\)\](\([^)]*\))/<a href="\2" rel="nofollow" target="_blank">\1<\/a>/g
+		/^+.*script$/,/^-.*script$/ s/\.script:\s\(.*\)/<script src="\1"><\/script>/g
+	}' $filename
 
-	sed -i '/^+.*script$/d' $filename
-	sed -i '/^-.*script$/d' $filename
+	sed -i '{
+		/^+.*script$/d
+		/^-.*script$/d
+	}' $filename
 
 	cat <<-'EOF'>>$filename
 	</center>
@@ -1486,8 +1510,7 @@ index_gen_function() {
 		read -p "Are you sure you want to overwrite $index_file [y/n] " overwrite_val
 		arg="$overwrite_val" && skip
 		if [ "$overwrite_val" = "n" ]; then
-			echo "Not overwriting $index_file";
-			echo "Exiting"
+			echo "Not overwriting $index_file\nExiting";
 			exit 1;
 		else
 			echo "Proceeding onto next steps, [overwrite allowed]"
@@ -1548,8 +1571,10 @@ index_gen_function() {
 	navi_startlineno="$(grep -on -m 1 "^+++.*navigation" $config_file | tr -dc '[[:digit:]]')"
 	navi_endlineno="$(grep -on -m 1 "^---.*navigation" $config_file | tr -dc '[[:digit:]]')"
 	sed -n $navi_startlineno,$navi_endlineno'p' $config_file > $index_file
-	sed -i '/^.homepage.*/d;/^.navmenu.*/d;/^.backpage.*/d;' $index_file
-	sed -i 's/^.*:/.page:/g' $index_file
+	sed -i '{
+		/^.homepage.*/d;/^.navmenu.*/d;/^.backpage.*/d
+		s/^.*:/.page:/g
+	}' $index_file
 	if [ "$about_md_present" = "1" ]; then
 		sed -i '/^+++.*navigation/a .page: [about](about.html)' $index_file
 	fi
@@ -1594,18 +1619,14 @@ to_html() {
 
 	# generate all files except index.md
 	for i in $vals; do
-		if [ -f "$i" ]; then
-			if [ -s "$i" ]; then
-				main_generate $i
-				echo "Success --------------> $i"
-			else
-				echo "$i --> Empty File"
-			fi
-			if [ "$?" -ne 0 ]; then
-				echo "$i xxxxx > Failed"
-			fi
+		if [ -s "$i" ]; then
+			main_generate $i
+			echo "Success --------------> $i"
 		else
-			echo "$i ------------> SKIP [file not found]"
+			echo "$i --> Empty File/file not found"
+		fi
+		if [ "$?" -ne 0 ]; then
+			echo "$i xxxxx > Failed"
 		fi
 	done
 
@@ -1618,7 +1639,6 @@ to_html() {
 	[ "$?" = 0 ] && \
 		echo "$index_file converted to index.html"
 }
-
 
 ## arrange everything into a main-site directory for final release
 arrange() {
@@ -1731,12 +1751,14 @@ rss_generate() {
 
 	## parsing to xml
 	parse() {
-		sed -i '/^\.img:\s.*/d' $rss_md
-		sed -i 's/^\.date:\s\(.*\)/<item>\n\t<pubDate>\1<\/pubDate>/g' $rss_md
-		sed -i 's/^\.article:\s//g' $rss_md
-		sed -i "s/^\[\(.*\)\]/\t<title>\1<\/title>/g" $rss_md
-		sed -i 's/^\.describe:\s\(.*\)/\t<p>\1<\/p>\n\t]]>\n\t<\/description>\n<\/item>/g' $rss_md
-		sed -i 's/(\(.*\))/\n\t<description><![CDATA[\n\t<a href="\1">\1<\/a>/g' $rss_md
+		sed -i "{
+			/^\.img:\s.*/d
+			s/^\.date:\s\(.*\)/<item>\n\t<pubDate>\1<\/pubDate>/g
+			s/^\.article:\s//g
+			s/^\[\(.*\)\]/\t<title>\1<\/title>/g
+			s/^\.describe:\s\(.*\)/\t<p>\1<\/p>\n\t]]>\n\t<\/description>\n<\/item>/g
+			s/(\(.*\))/\n\t<description><![CDATA[\n\t<a href="\1">\1<\/a>/g
+		}" $rss_md
 	}
 
 	## appending header section
@@ -1747,7 +1769,7 @@ rss_generate() {
 		site_title_name="$(sed -n '/^++.*title$/,/^--.*title$/p' $config_file | grep -v "^++.*\|^--.*")"
 
 		# have to remove leading tabs for catting into a file
-		cat <<-'EOF'> $rss_xml
+		cat <<-EOF> $rss_xml
 		<?xml version="1.0" encoding="utf-8"?>
 		<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 		<channel>
@@ -1793,9 +1815,11 @@ rss_generate() {
 	card_loop
 
 	# proper formating -> squeezing blank lines
-	sed -i '/^+.*card$/,/^-.*card$/ {/^$/d}' $rss_md
-	sed -i 's/^\(+.*card\)/\1\n/g' $rss_md
-	sed -i 's/^\(.describe:\s.*\)/\1\n/g' $rss_md
+	sed -i '{
+		/^+.*card$/,/^-.*card$/ {/^$/d}
+		s/^\(+.*card\)/\1\n/g
+		s/^\(.describe:\s.*\)/\1\n/g
+	}' $rss_md
 
 	# get rid of the ++ and --
 	sed -i '/^\(++.*card$\|--.*card$\)/d' $rss_md
@@ -1814,7 +1838,6 @@ rss_generate() {
 	echo "</channel>" >> $rss_xml && \
 		echo "</rss>" >> $rss_xml
 }
-
 
 ## Begin main cli
 case "$1" in
@@ -1891,10 +1914,10 @@ case "$1" in
 	rss ) # make rss.xml file
 		rss_generate
 		;;
-	remove ) remove_post
+	remove ) remove_post # function call
 		case "$2" in
 		latest ) last_filename
-			main_remove
+			main_remove && main_generate $filename
 			;;
 		last ) if [ ! -z "$3" ]; then
 			filename="$3"
@@ -1904,7 +1927,7 @@ case "$1" in
 			return 1;
 		fi
 			custom_file
-			main_remove
+			main_remove && main_generate $filename
 			;;
 		* ) echo "invalid parameter" && \
 			usage | grep remove
@@ -1917,7 +1940,7 @@ case "$1" in
 	index ) # convert a index.md file to index.html file
 		index_generate $2
 		;;
-	final ) # arrange all files into a main_site file
+	final ) # arrange all files into a main_site directory
 		read -p "Did you run 'sh main.sh all' first? [y/n]: " prompt
 		case "$prompt" in
 			y|Y|yes|Yes|YES ) arrange && sync
