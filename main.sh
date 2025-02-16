@@ -13,7 +13,7 @@ usage() {
 	sh main.sh add --------> add a post and also an entry to a base.md file and also config.txt sitemap section"
 	sh main.sh post -------> make a post"
 	sh main.sh adddir -----> add a whole directory navigation page to all files"
-	sh main.sh rmdir  -----> remove a directory navigation entry page from all files"
+	sh main.sh rmdir ------> remove a directory navigation entry page from all files"
 	sh main.sh remove latest ----> will remove the latest entry made through running sh main.sh add"
 	sh main.sh remove last dirname/base.md ---> will remove the last article entry from dirname/base.md file (it has to be a base.md file)"
 	sh main.sh html filename.md ----> generate html format for a single filename.md"
@@ -115,28 +115,28 @@ nav_check() {
 vals_noindex() {
 	# getting values from sitemap region
 	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		sed '/^\(+\|-\)/d' | grep ".md$" | grep -v "$index_file")"
+		grep -v "^+++.*\|^---.*" | grep ".md$" | grep -v "$index_file")"
 }
 
 ## value variable with basemd file
 vals_basemd() {
 	# grep base.md values only
 	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		sed '/^\(+\|-\)/d' | grep "base.md$")"
+		grep -v "^+++.*\|^---.*" | grep "base.md$")"
 }
 
 ## value variable for all .md files except index file
 vals_allmd() {
 	# grep base.md values only
 	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		sed '/^\(+\|-\)/d' | grep ".md$")"
+		grep -v "^+++.*\|^---.*" | grep ".md$")"
 }
 
 ## value variable with all files in sitemap section
 vals_all() {
 	# grep base.md values only
 	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		sed '/^\(+\|-\)/d')"
+		grep -v "^+++.*\|^---.*")"
 }
 
 ## extra post section for quick access, rather than writing same function repeatedly
@@ -163,13 +163,6 @@ ask_author() {
 ask_name() {
 	read -p "Name of the file you're about to edit: " current
 	val="$current" && empty_check
-	# check if filename contains / in it
-	#echo $current | grep -q "/"
-	#if [ "$?" = 0 ]; then
-	#	filename_contains_slash="1"
-	#else
-	#	filename_contains_slash="0";
-	#fi
 }
 
 ## generate template for config file
@@ -385,14 +378,6 @@ main_generate() {
 
 	# args
 	orig="$1"; file_rename
-#	if [ "$1" = "-c" ]; then
-#		orig="$1"
-#		# calling file_rename function
-#		file_rename
-#	else
-#		orig="$1"
-#		file_rename
-#	fi
 
 	# check if filename has backslash
 	echo $filename | grep -q "/"
@@ -463,17 +448,16 @@ main_generate() {
 		/^+.*script$/,/^-.*script$/ s/\.\/\//.\//g }" $filename
 
 	# inline call-script substitution
-	sed -i 's/^\.call-script:\s\(.*\)$/\t<script>\1<\/script>/g' $filename
-
 	# script-src substitution
-	sed -i 's/^\.script:\s\(.*\)/\t<script src="\1"><\/script>/g' $filename
-
 	# additional script section will be removed
-	sed -i '{ /^+++.*add$/d
-		/^---.*add$/d }' $filename
-
 	# add tab inside script section
-	sed -i '/^+.*script$/,/^-.*script/ s/\(^[^+,^-].*\)/\t\1/g' $filename
+	sed -i '{
+		s/^\.call-script:\s\(.*\)$/\t<script>\1<\/script>/g
+		s/^\.script:\s\(.*\)/\t<script src="\1"><\/script>/g
+		/^+++.*add$/d
+		/^---.*add$/d
+		/^+.*script$/,/^-.*script/ s/\(^[^+,^-].*\)/\t\1/g
+	}' $filename
 
 	# top section
 	sed -i '1s/\(.*\)/<!DOCTYPE html>\n<html lang="en">\n\1/' $filename
@@ -503,10 +487,11 @@ main_generate() {
 		s/^-.*navigation$/<\/nav>\n<\/header>\n<!-- navigation section end -->/g }' $filename
 
 	# convert <hr> tags from .hr
-	sed -i 's/^\.hr$/<hr>/g' $filename
-
 	# convert <br> tags from .br
-	sed -i 's/^\.br$/<br>/g' $filename
+	sed -i '{
+		s/^\.hr$/<hr>/g
+		s/^\.br$/<br>/g
+	}' $filename
 
 	# get directory structure
 	if [ "$filename_has_backslash" = "1" ]; then
@@ -517,7 +502,6 @@ main_generate() {
 	fi
 
 	# noscript section
-
 	sed -i "/^+.*main$/ i <div id="switch" class="inner-switch">\n\t<span id="sword">λ<\/span>\n<\/div>\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import '$dirr\/css\/dark.css' screen and (prefers-color-scheme: dark);\n\t.inner-switch {\n\tdisplay: none;\n}\n\t<\/style>\n<\/noscript>\n" $filename
 
 	# card section start
@@ -561,35 +545,34 @@ main_generate() {
 		s/\.message:\s\(.*\)/<center><p>\1<\/p><\/center>\n/g
 	}' $filename
 
+	# Footer and script section messages
 	sed -i '{ s/^+.*footer$/<!-- footer section begin -->/g
-		s/^-.*footer$/<!-- footer section end -->/g }' $filename
-
-	# end section
-	sed -i '{ s/^+.*script$/<script>/g
-		s/^-.*script$/<\/script>/g }' $filename
+		s/^-.*footer$/<!-- footer section end -->/g
+		s/^+.*script$/<script>/g
+		s/^-.*script$/<\/script>/g
+	}' $filename
 
 	# Add current Month date, year
 	today="$(date +%B' '%e', '%Y)" && \
 		sed -i "s/\[\.today\]/$today/g" $filename
 
 	# markdown style  iframe addition
-	sed -i 's/\!\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<iframe src="\2" title="\1" allow="accelerometer; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen><\/iframe>\n<\/center>/g' $filename
-
 	# markdown style video addition
-	sed -i 's/\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<video title="\1" controls>\n\t\t<source src="\2">\n\t<\/video>\n<\/center>/g' $filename
-
 	# markdown style image addition
-	sed -i 's/^\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<img loading="lazy" class="pimg" src="\2" alt="\1">\n<\/center>/g' $filename
-
 	# custom markdown style next page
-	sed -i 's/^\.next\[\([^]]*\)\](\([^)]*\))/<center><div class="next_page"><a href="\2" rel="nofollow">\1<\/a><\/div><\/center>/g' $filename
+	sed -i '{
+		s/\!\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<iframe src="\2" title="\1" allow="accelerometer; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen><\/iframe>\n<\/center>/g
+		s/\!\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<video title="\1" controls>\n\t\t<source src="\2">\n\t<\/video>\n<\/center>/g
+		s/^\!\[\([^]]*\)\](\([^)]*\))/<center>\n\t<img loading="lazy" class="pimg" src="\2" alt="\1">\n<\/center>/g
+		s/^\.next\[\([^]]*\)\](\([^)]*\))/<center><div class="next_page"><a href="\2" rel="nofollow">\1<\/a><\/div><\/center>/g
+	}' $filename
 
 	# main section
 	sed -i '/^+.*main$/,/^-.*main$/ {
-		s/^\.ce\sheader1:\s\(.*\)/<center><h1>\1<\/center><\/h1>/g
-		s/^\.ce\sheader2:\s\(.*\)/<center><h2>\1<\/center><\/h2>/g
-		s/^\.ce\sheader3:\s\(.*\)/<center><h3>\1<\/center><\/h3>/g
-		s/^\.ce\sheader4:\s\(.*\)/<center><h4>\1<\/center><\/h4>/g }' $filename
+		s/^\.ce\sheader1:\s\(.*\)/<center><h1>\1<\/h1><\/center>/g
+		s/^\.ce\sheader2:\s\(.*\)/<center><h2>\1<\/h2><\/center>/g
+		s/^\.ce\sheader3:\s\(.*\)/<center><h3>\1<\/h3><\/center>/g
+		s/^\.ce\sheader4:\s\(.*\)/<center><h4>\1<\/h4><\/center>/g }' $filename
 
 	# Header tag substitution with class and parameter with {whatever="whatever"} notice the double quote around whatever
 	sed -i '{
@@ -610,28 +593,23 @@ main_generate() {
 	}' $filename
 		
 	# Cover image substitution within paragraphs
-	sed -i 's/^\.cover-img:\s\(.*\)/<img class="cover" src="\1">/g' $filename
-
 	# Image substitution within paragraphs, (png or svg or jpeg or jpg or gif files)
-	sed -i 's/^\.img:\sclass=\(".*"\)\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)\s\(.*\)/<center><img class=\1 src="\2" alt="\4" loading="lazy"><\/center>/g' $filename
-
 	# if class is not mentioned, fallback to noclass
-	sed -i 's/^\.img:\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)\s\(.*\)/<center><img src="\1" alt="\3"><\/center>/g' $filename
-
 	# if img-def is mentioned, then use class pimg
-	sed -i 's/^\.pimg:\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)\s\(.*\)/<center><img class="pimg" src="\1" alt="\3"><\/center>/g' $filename
-
 	# for explicitly mentioning classes without alt text
-	sed -i 's/^\.img:\sclass=\(".*"\)\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)$/<center><img class=\1 src="\2"><\/center>/g' $filename
-
 	# Caption under image substitution within paragraph
-	sed -i 's/^\.caption:\s\(.*\)/\n<div class="caption">\1<\/div>/g' $filename
-
 	# Url substitution
-	sed -i 's/\[\([^]]*\)\](\([^)]*\))/<a href="\2" rel="nofollow">\1<\/a>/g' $filename
-
 	# Nested blockquote substitution (experimental)
-	sed -i 's/^>>\s\(.*\)/\t<blockquote>\n\t<p>\1<\/p>\n\t<\/blockquote>/g' $filename
+	sed -i '{
+		s/^\.cover-img:\s\(.*\)/<img class="cover" src="\1">/g
+		s/^\.img:\sclass=\(".*"\)\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)\s\(.*\)/<center><img class=\1 src="\2" alt="\4" loading="lazy"><\/center>/g
+		s/^\.img:\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)\s\(.*\)/<center><img src="\1" alt="\3"><\/center>/g
+		s/^\.pimg:\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)\s\(.*\)/<center><img class="pimg" src="\1" alt="\3"><\/center>/g
+		s/^\.img:\sclass=\(".*"\)\s\(.*\(\.png\|\.jpg\|\.jpeg\|.gif\|\.svg\)\)$/<center><img class=\1 src="\2"><\/center>/g
+		s/^\.caption:\s\(.*\)/\n<div class="caption">\1<\/div>/g
+		s/\[\([^]]*\)\](\([^)]*\))/<a href="\2" rel="nofollow">\1<\/a>/g
+		s/^>>\s\(.*\)/\t<blockquote>\n\t<p>\1<\/p>\n\t<\/blockquote>/g
+	}' $filename
 
 	# Blockquote substitution
 	awk -i inplace '
@@ -815,7 +793,6 @@ main_post() {
 	fi
 
 	# for directory 
-	#echo $current | grep -q "/"
 	if [ "$filename_contains_slash" = "1" ]; then
 		dirr="$(echo "$current" | sed 's/\(.*\)\/.*/\1/g' | \
 			sed 's/\([[:alpha:]]\|[[:alnum:]]\|[[:digit:]]\)*/..\//g; s/\/\//\//g')"
@@ -1186,7 +1163,6 @@ add_post() {
 	main_post
 }
 
-
 ## remove post
 remove_post() {
 	
@@ -1319,7 +1295,6 @@ adddir() {
 	esac
 }
 
-
 ## remove a directory and all of it's entries
 rmmdir() {
 	# functions
@@ -1373,7 +1348,6 @@ rmmdir() {
 	esac
 }
 
-
 ## Generate index file
 index_generate() {
 	# if argument is null
@@ -1402,15 +1376,9 @@ index_generate() {
 	# function end
 
 	# args
-	if [ "$1" = "-c" ]; then
-		orig="$1"
-		# calling file_rename function
-		file_rename
-	else
-		orig="$1"
-		file_rename
-	fi
+	orig="$1" && file_rename
 
+	# Header part substitution
 	sed -i '/^+.*head$/,/^-.*head$/ {
 		s/\.title:\s\(.*\)/<title>\1<\/title>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=0.75">\n<meta name="theme-color" content="black">/g
 		s/\.author:\s\(.*\)/<meta name="author" content="\1">/g
@@ -1419,7 +1387,7 @@ index_generate() {
 		s/\.name-generator:\s\(.*\)/<meta name="generator" content="\1">/g
 		s/\.canonical:\s\(.*\)/<link rel="canonical" href="\1">/g
 	}' $filename
-	
+	# add <noscript> portion
 	sed -i "/^-.*head$/ a \\\n<noscript>\n\t<style type="text\/css" media="all">\n\t@import 'css\/dimain.css' screen and (prefers-color-scheme: dark);\n\t<\/style>\n<\/noscript>" $filename
 
 	sed -i '{
@@ -1717,7 +1685,6 @@ arrange() {
 	echo "\ndone [^_^]\n"
 }
 
-
 ## rss generate
 rss_generate() {
 
@@ -1781,18 +1748,6 @@ rss_generate() {
 		<!-- content starts here -->
 		EOF
 	}
-
-		# appending xml tags (deprecated)
-		#sed -i '1i <?xml version="1.0" encoding="utf-8"?>' $rss_xml
-		#sed -i '1a <!-- content starts here -->' $rss_xml
-		#sed -i "1a <atom:link href='$main_site\/rss.xml' rel='self' type='application\/rss+xml' \/>" $rss_xml
-		#sed -i "1a <link>$main_site\/rss.xml<\/link>" $rss_xml
-		#sed -i "1a <language>en-us<\/language>" $rss_xml
-		#sed -i "1a <description>$description<\/description>" $rss_xml
-		#sed -i "1a <title>$site_title<\/title>" $rss_xml
-		#sed -i "1a <channel>" $rss_xml
-		#sed -i '1a <rss version="2.0" xmlns:atom="http:\/\/www.w3.org\/2005\/Atom">' $rss_xml
-	#}
 	# end of functions
 
 	# removes the old rss file if already exists 
