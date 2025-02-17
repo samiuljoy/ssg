@@ -1,4 +1,4 @@
-# ⚠ Update, December 2024: Account Migration to [github.com/samiulahmedjoy](https://github.com/samiulahmedjoy)
+# ⚠ Update, December 2024: New Repositories will now be uploaded to [github.com/samiulahmedjoy](https://github.com/samiulahmedjoy)
 
 # Here's a Video tutorial
 
