@@ -520,7 +520,7 @@ main_generate() {
 			/^$/ { blank++ }
 			blank && /^\.th:\s/ { blank=0; block++; print "\t<tr>" }
 			block && blank { block=0; print "\t</tr>" }
-			/^./ { blank=0 }
+			/^\./ { blank=0 }
 			{ print }' $filename
 
 	sed -i '/^+.*table$/,/^-.*table$/ s/\.th:\s\(.*\)/\t\t<th>\1<\/th>/g' $filename
@@ -529,7 +529,7 @@ main_generate() {
 			/^$/ { blank++ }
 			blank && /^\.td:\s/ { blank=0; block++; print "\t<tr>" }
 			block && blank { block=0; print "\t</tr>" }
-			/^./ { blank=0 }
+			/^\./ { blank=0 }
 			{ print }' $filename
 
 	sed -i '/^+.*table$/,/^-.*table$/ s/\.td:\s\(.*\)/\t\t<td>\1<\/td>/g' $filename
