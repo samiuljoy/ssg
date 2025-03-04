@@ -115,7 +115,7 @@ nav_check() {
 vals_noindex() {
 	# getting values from sitemap region
 	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		grep -v "^+++.*\|^---.*" | grep ".md$" | grep -v "$index_file")"
+		grep -v "^+++.*\|^---.*\|$index_file" | grep ".md$")"
 }
 
 ## value variable with basemd file
