@@ -5,7 +5,6 @@ const darkModeToggle = document.querySelector('#mode');
 // Will load color scheme based on browser preference
 if (! localStorage.dark_value) {
 	if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		meta.setAttribute("content", "#000000");
 		document.body.classList.add('D');
 	}
 }
