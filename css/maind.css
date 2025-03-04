@@ -51,8 +51,8 @@
  color: var(--dpri);
 }
 .D blockquote {
- background: #808080;
- border-left:5px solid #704550;
+ background: #d2d2d2;
+ border-left:5px solid brown;
 }
 .D blockquote h1, .D blockquote, .D blockquote h2, .D blockquote h3 {
  color: var(--dlak);

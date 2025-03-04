@@ -1,4 +1,4 @@
-# ⚠ Update, December 2024: New Repositories will now be uploaded to [github.com/samiulahmedjoy](https://github.com/samiulahmedjoy)
+# ⚠ Update, December 2024: New Repositories will now be uploaded to [github.com/samiulahmedjoy](https://github.com/samiulahmedjoy) If you have any issues with ssg, please make issues on [github.com/samiulahmedjoy/ssg](https://github.com/samiulahmedjoy/ssg)
 
 # Here's a Video tutorial
 
