@@ -11,7 +11,9 @@
 }
 .D .inner-switch {
 	color: var(--dpri);
-	border-bottom: 2px solid darkred;
+}
+.D .inner-switch::after {
+	background: darkred;
 }
 .D home, .D back, .D .index {
  background: var(--dbac);
