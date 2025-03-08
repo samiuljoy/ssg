@@ -1724,7 +1724,7 @@ rss_generate() {
 			s/^\.article:\s//g
 			s/^\[\(.*\)\]/\t<title>\1<\/title>/g
 			s/^\.describe:\s\(.*\)/\t<p>\1<\/p>\n\t]]>\n\t<\/description>\n<\/item>/g
-			s/(\(.*\))/\n\t<description><![CDATA[\n\t<a href="\1">\1<\/a>/g
+			s/(\(.*\))/\n\t<description><![CDATA[\n\t<a href='\1'>\1<\/a>/g
 		}" $rss_md
 	}
 
