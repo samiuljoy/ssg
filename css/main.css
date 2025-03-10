@@ -101,7 +101,6 @@ home, back, .index{
 	font-size: 1rem;
 	}
 }
-
 home:hover, back:hover, .index:hover {
 	background: var(--lbl);
 }

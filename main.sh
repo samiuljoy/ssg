@@ -434,13 +434,13 @@ main_generate() {
 		/^[^>]/ s/>/\&gt\;/g }' $filename
 
 	# comment -> if arg1 is "-c" then include all custom comments else remove all comments /* article 1 */
-	if [ "$1" = "-c" ]; then
-		sed -i 's/\s\/\*\(.*\)\*\//\n<!-- \1 -->/g' $filename
-	else
-		com="false"
-		sed -i '{ s/\s\/\*.*\*\/$//g
-			/^\/\*.*\*\/$/d }' $filename
-	fi
+	#if [ "$1" = "-c" ]; then
+	sed -i 's/\s\/\*\(.*\)\*\//\n<!-- \1 -->/g' $filename
+	#else
+	#	com="false"
+	#	sed -i '{ s/\s\/\*.*\*\/$//g
+	#		/^\/\*.*\*\/$/d }' $filename
+	#fi
 
 	# cleaning up double .// to /
 	sed -i "{ /^+.*head$/,/^-.*head$/ s/\.\/\//.\//g
@@ -733,7 +733,7 @@ main_generate() {
 	}' $filename
 
 	# remove all comments if com=false (-c flag isn't invoked)
-	[ "$com" = "false" ] && sed -i '/^<!.*-->$/d' $filename
+	#[ "$com" = "false" ] && sed -i '/^<!.*-->$/d' $filename
 	
 	# ending tags
 	cat <<-'EOF'>>$filename
@@ -1688,110 +1688,73 @@ arrange() {
 ## rss generate
 rss_generate() {
 
-	# markdown version of the file name
-	rss_md="rss.md"
-
-	# xml version of the file name
-	rss_xml="$(echo $rss_md | sed 's/\.md/.xml/')"
-
-	# get the sitelink from config.txt
-	site_link="$(sed -n '/^++.*sitelink$/,/^--.*sitelink$/p' $config_file | \
+	# Basic rss info about site
+	site_title="$(sed -n '/^++.*title/,/^--.*title/p' $config_file | \
 		grep -v "^++.*\|^--.*")"
+	
+	site_description="$(sed -n '/^++.*description/,/^--.*description/p' $config_file | \
+		grep -v "^++.*\|^--.*")"
+	
+	site_link="$(sed -n '/^++.*sitelink/,/^--.*sitelink/p' $config_file | \
+			grep -v "^++.*\|^--.*")"
+	
+	config_startline="$(grep -n -o "^+++.*sitemap" $config_file | \
+		echo "$(( $(cut -d ':' -f1) + 1 ))")"
+	config_endline="$(grep -n -o "^---.*sitemap" $config_file | \
+		echo "$(( $(cut -d ':' -f1) - 1 ))")"
+	
+	files="$(sed -n $config_startline,$config_endline'p' config.txt | \
+		grep -o "^.*\/.*.md$" | grep -v "base.md")"
+	
+	# Fill up with basic stuff
+	cat <<-EOF> $rss_file
+	<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:media="http://search.yahoo.com/mrss/" >
+	<channel>
+	<title>$site_title</title>
+	<description>$site_description</description>
+	<language>en-us</language>
+	<link>$site_link/rss.xml</link>
+	<atom:link href='$site_link/rss.xml' rel='self' type='application/rss+xml' />
+	<!-- content starts here -->
+	EOF
 
-	# convert / to \/ because sed
-	main_site="$(echo $site_link | sed 's/\//\\\//g')"
+	# Loop through all files in config file and add them
+	for i in $files; do
+		html_extension="$(echo $i | sed "s/\.md$/.html/g")"
+		date_val="$(grep -o -m 1 "<div class=.date.>.*<\/div>$" $html_extension | \
+			sed 's/.*>\(.*\)<.*/\1/g')"
+		title_val="$(grep -o -m 1 "<title>.*<\/title>$" $html_extension)"
+		description_val="$(grep -o -m 1 "<meta name=.description..*>$" $html_extension | \
+			sed 's/^.*content=.\(.*\).>/\1/g')"
+		content_start="$(grep -n -o -m 1 "^<main id=" $html_extension | \
+			echo "$(( $(cut -d ':' -f1) + 1 ))")"
+		content_end="$(grep -n -o -m 1 "^<\!-- main section end" $html_extension | \
+			cut -d ':' -f1)"
+		website_link="$(echo "$site_link/$html_extension")"
+		echo "" >> $rss_file
+		echo "<item>" >> $rss_file
+		echo "\t<pubDate>$date_val</pubDate>" >> $rss_file
+		echo "\t$title_val" >> $rss_file
+		echo "\t<link>$website_link</link>" >> $rss_file
+		echo "\t<description><![CDATA[ $description_val ]]></description>" >> $rss_file
+		echo "\t<content:encoded><![CDATA[" >> $rss_file
+		sed -n $content_start,$content_end'p' $html_extension | \
+			sed 's/^/\t/g' >> $rss_file
+		echo "\t]]>" >> $rss_file
+		echo "\t</content:encoded>" >> $rss_file
+		echo "</item>" >> $rss_file
+		echo "" >> $rss_file
+	done
 
-	# functions begin
-	## check for card section and push to $rss_md file
-	card_loop() {
-		for i in $base_files; do
-			dirr_name="$(dirname $i | sed 's/\//\\\//g')"
-			grep -q "^++.*card$" $i && grep -q "^--.*card$" $i
-			if [ "$?" = 0 ]; then
-				sed -n '/^++.*card$/,/^--.*card$/p' $i | \
-					sed "s/(\(.*\))/($main_site\/$dirr_name\/\1)/g" >> $rss_md
-			else
-				echo "card section not found in $i"
-			fi
-		done
-	}
-
-	## parsing to xml
-	parse() {
-		sed -i "{
-			/^\.img:\s.*/d
-			s/^\.date:\s\(.*\)/<item>\n\t<pubDate>\1<\/pubDate>/g
-			s/^\.article:\s//g
-			s/^\[\(.*\)\]/\t<title>\1<\/title>/g
-			s/^\.describe:\s\(.*\)/\t<p>\1<\/p>\n\t]]>\n\t<\/description>\n<\/item>/g
-			s/(\(.*\))/\n\t<description><![CDATA[\n\t<a href='\1'>\1<\/a>/g
-		}" $rss_md
-	}
-
-	## appending header section
-	header() {
-		# get description text from config_file
-		description_of_site="$(sed -n '/^++.*description$/,/^--.*description$/p' $config_file | grep -v "^++.*\|^--.*")"
-		# get the site title from config_file
-		site_title_name="$(sed -n '/^++.*title$/,/^--.*title$/p' $config_file | grep -v "^++.*\|^--.*")"
-
-		# have to remove leading tabs for catting into a file
-		cat <<-EOF> $rss_xml
-		<?xml version="1.0" encoding="utf-8"?>
-		<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-		<channel>
-		<title>$site_title_name</title>
-		<description>$description_of_site</description>
-		<language>en-us</language>
-		<link>$site_link/rss.xml</link>
-		<atom:link href='$site_link/rss.xml' rel='self' type='application/rss+xml' />
-		<!-- content starts here -->
-		EOF
-	}
-	# end of functions
-
-	# removes the old rss file if already exists 
-	[ -f "$rss_xml" ] && \
-		rm "$rss_xml"
-
-	[ -f "$rss_md" ] && \
-		rm $rss_md
-
-	# check for config file
-	check_config
-
-	# only base file
-	base_files="$(grep '\/base\.md$\|\/base..md$' $config_file)"
-
-	# modify the headers
-	header
-
-	# push to $rss_md file
-	card_loop
-
-	# proper formating -> squeezing blank lines
-	sed -i '{
-		/^+.*card$/,/^-.*card$/ {/^$/d}
-		s/^\(+.*card\)/\1\n/g
-		s/^\(.describe:\s.*\)/\1\n/g
-	}' $rss_md
-
-	# get rid of the ++ and --
-	sed -i '/^\(++.*card$\|--.*card$\)/d' $rss_md
-
-	# parse function
-	parse
-
-	# sort by last added
-	[ ! -f "rss.awk" ] && \
-		echo "rss.awk file not found, exiting..." && \
-		return 1;
-
-	awk -f "rss.awk" $rss_md >> $rss_xml
-
-	# properly format header section and add ending tags
-	echo "</channel>" >> $rss_xml && \
-		echo "</rss>" >> $rss_xml
+	echo "</channel>" >> $rss_file
+	echo "</rss>" >> $rss_file
 }
 
 ## Begin main cli
@@ -1826,7 +1789,7 @@ case "$1" in
 		rmmdir && sync
 		;;
 	all ) # convert all md files to html from sitemap section in config file and generate the rss feed
-		to_html && sync && rss_generate;
+		to_html && sync && echo "Generating rss" && rss_generate;
 		echo
 		read -p "Do you want to add dates to all your posts? [y/n]" d_addition
 		echo
@@ -1867,6 +1830,7 @@ case "$1" in
 		 esac
 		;;
 	rss ) # make rss.xml file
+		echo "Generating rss"
 		rss_generate
 		;;
 	remove ) remove_post # function call
