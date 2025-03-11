@@ -1704,8 +1704,8 @@ rss_generate() {
 		echo "$(( $(cut -d ':' -f1) - 1 ))")"
 	
 	files="$(sed -n $config_startline,$config_endline'p' config.txt | \
-		grep -o "^.*\/.*.md$" | grep -v "base.md")"
-	
+		grep -o "^.*\/.*.md$" | grep -v "base.md" | tac)"
+
 	# Fill up with basic stuff
 	cat <<-EOF> $rss_file
 	<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
@@ -1725,7 +1725,7 @@ rss_generate() {
 	<!-- content starts here -->
 	EOF
 
-	# Loop through all files in config file and add them
+	# Loop through all files in config file and add them to rss.xml
 	for i in $files; do
 		html_extension="$(echo $i | sed "s/\.md$/.html/g")"
 		date_val="$(grep -o -m 1 "<div class=.date.>.*<\/div>$" $html_extension | \
