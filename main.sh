@@ -71,7 +71,21 @@ rss_file="rss.xml"
 # assets directory
 assets_dir="assets"
 
-## global functions
+# Global functions
+
+# Sitemap values
+all_sitemap_values() {
+	all_sitemap_entries="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file 2> /dev/null | \
+		grep -v "^+++.*\|^---.*")"
+}
+
+# Check for sitemap section only and sets status based on presence
+check_sitemap_status() {
+	grep -q "^++.*sitemap" $config_file && \
+		grep -q "^--.*sitemap$" $config_file && \
+		sitemap_section_present='1' || \
+		sitemap_section_present='0';
+}
 
 ## check if config file exists
 check_config() {
@@ -86,13 +100,13 @@ check_index() {
 }
 ## check if sitemap section is mentioned in config file
 check_sitemap() {
-	grep -q "^++.*sitemap$" $config_file && grep -q "^--.*sitemap$" $config_file
+	check_sitemap_status;
 
-	if [ "$?" -ne 0 ]; then
+	if [ "$sitemap_section_present" -ne 1 ]; then
 		echo "$config_file does not have a sitemap region mentioned, exiting..." && \
 			exit 1;
 	fi
-	
+
 	# if sitemap region is less than 3 lines then abort
 	if [ "$(sed -n '/^++.*sitemap$/,/^--.*sitemap$/p' $config_file | wc -l)" -le 3 ]; then
 		echo "sitemap region is improperly edited, exiting..." && \
@@ -114,29 +128,29 @@ nav_check() {
 ## value variable without index file
 vals_noindex() {
 	# getting values from sitemap region
-	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		grep -v "^+++.*\|^---.*\|$index_file" | grep ".md$")"
+	all_sitemap_values;
+	vals="$(echo "$all_sitemap_entries" | grep -v "$index_file" | grep ".md$")"
 }
 
 ## value variable with basemd file
 vals_basemd() {
 	# grep base.md values only
-	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		grep -v "^+++.*\|^---.*" | grep "base.md$")"
+	all_sitemap_values;
+	vals="$(echo "$all_sitemap_entries" | grep "base.md$")"
 }
 
 ## value variable for all .md files except index file
 vals_allmd() {
 	# grep base.md values only
-	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		grep -v "^+++.*\|^---.*" | grep ".md$")"
+	all_sitemap_values;
+	vals="$(echo "$all_sitemap_entries" | grep ".md$")"
 }
 
 ## value variable with all files in sitemap section
 vals_all() {
 	# grep base.md values only
-	vals="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file | \
-		grep -v "^+++.*\|^---.*")"
+	all_sitemap_values;
+	vals="$(echo "$all_sitemap_entries")"
 }
 
 ## extra post section for quick access, rather than writing same function repeatedly
@@ -172,9 +186,9 @@ config_generate() {
 	[ ! -f "$config_file" ] && \
 		touch $config_file
 
-	grep -q "^++.*sitemap" $config_file && grep -q "^--.*sitemap$" $config_file
+	check_sitemap_status;
 
-	if [ "$?" -ne 0 ]; then
+	if [ "$sitemap_section_present" -ne 1 ]; then
 		cat <<-'EOF'>> $config_file
 		# Sitemap section -> include files.md here
 
@@ -333,9 +347,7 @@ navigation_gen() {
 				;;
 		esac
 	fi
-
 	# if everything above returns true, then run this section
-
 	# generate navigation values based on dir name
 	for i in $(echo $vals); do
 		ddd="$(dirname $i)"
@@ -355,24 +367,22 @@ main_generate() {
 	[ -z "$1" ] && \
 		echo "empty file passed" && \
 		return 1;
-
-	# check if file has a html extension
-	echo $1 | grep -q "\.html" && \
-		echo "file with .html can not be modified, use .md(markdown)" && \
-		return 1;
-
 	# check if file exists
 	[ ! -f "$1" ] && echo "file $1 does not exist" && return 1;
-
 	# check if file is empty, if empty then skip file
 	[ ! -s "$1" ] && \
 		echo "file seems to be empty, skipping $1" && \
 		return 1;
-
+	# check if file has a html extension
+	echo $1 | grep -q "\.html" && \
+		echo "file with .html can not be modified, use .md(markdown)" && \
+		return 1;
 	# functions
 	file_rename() {
-		filename="$(echo $orig | sed 's/\(.*\).md/\1.html/g')"
-		touch $filename && cat $orig > $filename
+		filename="$(echo $orig | \
+			sed 's/\(.*\).md/\1.html/g')"
+		touch $filename && \
+			cat $orig > $filename
 	}
 	# function end
 
@@ -381,11 +391,9 @@ main_generate() {
 
 	# check if filename has backslash
 	echo $filename | grep -q "/"
-	if [ "$?" = 0 ]; then
-		filename_has_backslash="1"
-	else
-		filename_has_backslash="0"
-	fi
+	[ "$?" = 0 ] && \
+		filename_has_backslash="1" || \
+		filename_has_backslash="0";
 
 	# loop through code blocks, and substitute code blocks to new file/s
 	grep -q "^\`\`\`[[:digit:]]" $filename
@@ -552,7 +560,7 @@ main_generate() {
 		s/^-.*script$/<\/script>/g
 	}' $filename
 
-	# Add current Month date, year
+	# Add current Month date, year if user decides to include
 	today="$(date +%B' '%e', '%Y)" && \
 		sed -i "s/\[\.today\]/$today/g" $filename
 
@@ -675,7 +683,6 @@ main_generate() {
 
 	# code href
 	if [ "$filename_has_backslash" = "1" ]; then
-	#if [ "$?" = 0 ]; then
 		name_sub="$(echo "$1" | sed 's/.*\/\(.*\).md$/\1.html/g')"
 		sed -i "s/^\.\(code[[:digit:]]\+\)$/<a class='btn' href='code\/$name_sub-\1.txt'>view raw<\/a>/g" $filename
 	else
@@ -713,7 +720,6 @@ main_generate() {
 
 	# Literal backtick within a code paragraphs and blockquotes
 	#sed -i '/^<p>\|^\t<p>/,/<\/p>$/ s/\\<code>\([^.*]*\)\\<\/code>/`\1`/g' $filename
-
 	# reverting of <code> tags within codeblocks
 	#sed -i '/^\t<code>$/,/^\t<\/code>$/ s/<code>\([^.*]*\)<\/code>/`\1`/g' $filename
 
@@ -927,7 +933,6 @@ main_post() {
 		xargs -I '{}' sed -i '/^+.*main$/i {}' $current
 	
 	# escape forward slashes transformation
-	#echo $dirr | grep -q "/"
 	if [ "$filename_contains_slash" = "1" ]; then
 		dnav="$(echo $dirr | sed 's/\//\\\//g')"
 		sed -i "/^+.*navigation/,/^-.*navigation$/ {
@@ -1152,8 +1157,7 @@ add_post() {
 	fi
 	sed -i "/^-.*card$/i .describe: $describe\n" $file_dir/base.md
 
-	# variable exchange
-
+	# variable switch
 	current="$file"
 	echo
 	# ask_author function asks for author
@@ -1165,7 +1169,7 @@ add_post() {
 
 ## remove post
 remove_post() {
-	
+
 	# initiate
 	initiate() {
 		# formating properly
@@ -1173,10 +1177,10 @@ remove_post() {
 			/^+.*card$/,/^-.*card$/ {/^$/d}
 			s/^\(.describe:\s.*\)/\1\n/g
 		}' $filename
-		
+
 		# last line number for describe tag
 		val="$(grep -n "^+.*card" $filename | cut -f1 -d ":")"
-		
+
 		start_val="$(( $val + 2 ))"
 		end_val="$(( $val + 4 ))"
 	}
@@ -1230,10 +1234,10 @@ remove_post() {
 		[ "$?" -ne 0 ] && \
 			echo "file is not a base.md file, exiting..." && \
 			exit 1;
-		
+
 		# check for card section
 		grep -q "^+.*card$" $filename && grep -q "^-.*card$" $filename
-		
+
 		[ "$?" -ne 0 ] && \
 			echo "card section isn't mentioned in $filename or improperly formatted" && \
 			exit 1;
@@ -1244,8 +1248,9 @@ remove_post() {
 adddir() {
 	# functions
 	noindex() {
-		files="$(sed -n '/^++.*sitemap$/,/^--.*sitemap$/p' $config_file | grep -v "^++.*\|^--.*")"
-		for i in "$files"; do
+		# Function callback for sitemap section
+		vals_all;
+		for i in "$vals"; do
 			sed -i "/^\.backpage:\s/i .navpage: [$disp_name]($dirr_name\/base.html)" $i
 		done
 	}
@@ -1277,14 +1282,14 @@ adddir() {
 		y|Y|yes|Yes|YES ) 
 			# make directory first
 			mkdir -p "$dirr_name"
+			# touch a base.md file
+			touch $dirr_name/base.md
 			# make changes to config file
 			change_config
 			# call noindex function
 			noindex
 			# call index function
 			index
-			# touch a base.md file
-			touch $dirr_name/base.md
 			;;
 		n|N|No|NO ) echo "exiting..."
 			break
@@ -1313,8 +1318,9 @@ rmmdir() {
 	
 	## loop through all md files and delete entries
 	dloop() {
-		file_names="$(sed -n '/^++.*sitemap$/,/^--.*sitemap$/p' $config_file | grep -v "^++.*\|^--.*")"
-		for i in "$file_names"; do
+		# Function callback for all values in sitemap section
+		vals_all;
+		for i in "$vals"; do
 			sed -i "/^++.*navigation$/,/^--.*navigation$/ {/^\.navpage:\s\[$disp_name\](.*$dirr_name\/base.html)/d}" $i
 		done
 	}
@@ -1353,11 +1359,6 @@ index_generate() {
 	# if argument is null
 	[ -z "$1" ] && return 1;
 
-	# check if file has a html extension
-	echo $1 | grep -q "\.html" && \
-		echo "file with .html can not be modified, use .md(markdown)" && \
-		return 1;
-
 	# if file doesn't exist
 	[ ! -f "$1" ] && \
 		echo "file $1 does not exist" && \
@@ -1366,6 +1367,11 @@ index_generate() {
 	# check if file is empty, if empty then skip file
 	[ ! -s "$1" ] && \
 		echo "file seems to be empty, skipping $1" && \
+		return 1;
+
+	# check if file has a html extension
+	echo $1 | grep -q "\.html" && \
+		echo "file with .html can not be modified, use .md(markdown)" && \
 		return 1;
 
 	# keep the original file intact and add a html extension
