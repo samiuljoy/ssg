@@ -24,7 +24,7 @@ usage() {
 
 	EOF
 }
-
+# Basic rundown function
 rundown() {
 	cat <<-'EOF'
 
@@ -51,28 +51,21 @@ rundown() {
 	EOF
 }
 # global variables
-
 # config file name
 config_file="config.txt"
-
 # index file name
 index_file="index.md"
-
 # main site dir variable name
 main_site="main-site"
-
 # css and js dirs
 css_dir="css"
 js_dir="js"
-
 # rss file name
 rss_file="rss.xml"
-
 # assets directory
 assets_dir="assets"
 
 # Global functions
-
 # Sitemap values
 all_sitemap_values() {
 	all_sitemap_entries="$(sed -n '/^+.*sitemap$/,/^-.*sitemap$/p' $config_file 2> /dev/null | \
@@ -441,7 +434,8 @@ main_generate() {
 	sed -i '{ s/</\&lt\;/g
 		/^[^>]/ s/>/\&gt\;/g }' $filename
 
-	# comment -> if arg1 is "-c" then include all custom comments else remove all comments /* article 1 */
+	# comment -> if arg1 is "-c" then include all custom comments else remove all comments
+	# see https://samiuljoy.github.io/demo/syntax.html for more info
 	#if [ "$1" = "-c" ]; then
 	sed -i 's/\s\/\*\(.*\)\*\//\n<!-- \1 -->/g' $filename
 	#else
@@ -971,7 +965,8 @@ main_post() {
 			# convert the .md extension to .html
 			html_converted_filename="$(echo $current | sed 's/.md$/.html/')"
 			# starting line number for date addition
-			starting_line_main="$(grep -no -m 1 "^<main id=" $html_converted_filename | tr -dc '[[:digit:]]')"
+			starting_line_main="$(grep -no -m 1 "^<main id=" $html_converted_filename | \
+				tr -dc '[[:digit:]]')"
 			actual_line_number="$(( $starting_line_main + 2 ))"
 			# append date format
 			sed -i $actual_line_number"a <div class='date'>$daaate</div>" $html_converted_filename
@@ -981,7 +976,8 @@ main_post() {
 			echo $current | grep -q "base.md"
 			if [ "$?" -ne 0 ]; then
 				if [ "$filename_contains_slash" = "1" ]; then
-					basemd_file_name="$(echo "$current" | sed 's/\/.*/\/base.md/g')"
+					basemd_file_name="$(echo "$current" | \
+						sed 's/\/.*/\/base.md/g')"
 
 					# assign content
 					last_date_part="$(grep "^.date" $basemd_file_name | tail -n1)"
@@ -989,9 +985,12 @@ main_post() {
 					last_describe_part="$(grep "^.describe" $basemd_file_name | tail -n1)"
 
 					# assign line numbers
-					last_date_lineno="$(grep -n "^.date" $basemd_file_name | tail -n1 | cut -f1 -d ':')"
-					last_article_lineno="$(grep -n "^.article" $basemd_file_name | tail -n1 | cut -f1 -d ':')"
-					last_describe_lineno="$(grep -n "^.describe" $basemd_file_name | tail -n1 | cut -f1 -d ':')"
+					last_date_lineno="$(grep -n "^.date" $basemd_file_name | \
+						tail -n1 | cut -f1 -d ':')"
+					last_article_lineno="$(grep -n "^.article" $basemd_file_name | \
+						tail -n1 | cut -f1 -d ':')"
+					last_describe_lineno="$(grep -n "^.describe" $basemd_file_name | \
+						tail -n1 | cut -f1 -d ':')"
 
 					# delete the unused lines
 					sed -i $last_describe_lineno'd' $basemd_file_name
@@ -1000,7 +999,8 @@ main_post() {
 
 					# locating the start of card section and then appending
 					# card section line number
-					card_startline="$(grep -on -m 1 "^++++.*card$" $basemd_file_name | tr -dc [[:digit:]])"
+					card_startline="$(grep -on -m 1 "^++++.*card$" $basemd_file_name | \
+						tr -dc [[:digit:]])"
  
 					# append everything
 					sed -i $card_startline"a$last_date_part\n$last_article_part\n$last_describe_part\n" $basemd_file_name
@@ -1542,8 +1542,10 @@ index_gen_function() {
 	val="$generate" && skip
 
 	# Populate the index.md file
-	navi_startlineno="$(grep -on -m 1 "^+++.*navigation" $config_file | tr -dc '[[:digit:]]')"
-	navi_endlineno="$(grep -on -m 1 "^---.*navigation" $config_file | tr -dc '[[:digit:]]')"
+	navi_startlineno="$(grep -on -m 1 "^+++.*navigation" $config_file | \
+		tr -dc '[[:digit:]]')"
+	navi_endlineno="$(grep -on -m 1 "^---.*navigation" $config_file | \
+		tr -dc '[[:digit:]]')"
 	sed -n $navi_startlineno,$navi_endlineno'p' $config_file > $index_file
 	sed -i '{
 		/^.homepage.*/d;/^.navmenu.*/d;/^.backpage.*/d
@@ -1666,7 +1668,7 @@ arrange() {
 
 	# main
 	for i in $vals; do
-		html_val="$(echo $i | sed 's/\(.*\)\.md$/\1.html/g')"
+		html_val="$(echo $i | sed 's/\.md$/html/g')"
 		dir_name="$(dirname $i)"
 		
 		if [ -f "$html_val" ]; then
@@ -1690,25 +1692,23 @@ arrange() {
 	# end message
 	echo "\ndone [^_^]\n"
 }
-
 ## rss generate
 rss_generate() {
-
 	# Basic rss info about site
 	site_title="$(sed -n '/^++.*title/,/^--.*title/p' $config_file | \
 		grep -v "^++.*\|^--.*")"
-	
+
 	site_description="$(sed -n '/^++.*description/,/^--.*description/p' $config_file | \
 		grep -v "^++.*\|^--.*")"
-	
+
 	site_link="$(sed -n '/^++.*sitelink/,/^--.*sitelink/p' $config_file | \
 			grep -v "^++.*\|^--.*")"
-	
+
 	config_startline="$(grep -n -o "^+++.*sitemap" $config_file | \
 		echo "$(( $(cut -d ':' -f1) + 1 ))")"
 	config_endline="$(grep -n -o "^---.*sitemap" $config_file | \
 		echo "$(( $(cut -d ':' -f1) - 1 ))")"
-	
+
 	files="$(sed -n $config_startline,$config_endline'p' config.txt | \
 		grep -o "^.*\/.*.md$" | grep -v "base.md" | tac)"
 
@@ -1763,6 +1763,28 @@ rss_generate() {
 	echo "</rss>" >> $rss_file
 }
 
+# Add dates to all the posts
+add_dates() {
+	sitemap_startline="$(grep -on -m 1 "^++++.*sitemap" $config_file | \
+		tr -dc '[[:digit:]]')"
+	sitemap_endline="$(grep -on -m 1 "^---.*sitemap" $config_file | \
+		tr -dc '[[:digit:]]')"
+	# print the sitemap section from config.txt file into a tmp file
+	sed -n $sitemap_startline,$sitemap_endline'p' $config_file | \
+		grep -v -e "base.md" -e "index.md" -e "portfolio.md" -e "about.md" -e "^+++.*sitemap" -e "^---.*sitemap" > file.temp
+	for i in $(cat file.temp); do
+		html="$(echo $i | sed 's/\.md/.html/')"
+		base="$(echo $i | sed 's/\(.*\)\/.*md/\1\/base.md/')"
+		just_html="$(echo "$html" | cut -f2 -d "/")"
+		pre_lineno="$(grep -on -m 1 "$just_html" $base | cut -f1 -d ':')"
+		actual_lineno="$(( $pre_lineno - 1 ))"
+		date_val="$(sed -n $actual_lineno'p' $base | cut -f2- -d " ")"
+		html_startlineno="$(grep -no -m 1 "<main id=" $html | tr -dc '[[:digit:]]')"
+		html_actlineno="$(( $html_startlineno + 2 ))"
+		sed -i $html_actlineno"a <div class='date'>$date_val</div>" $html
+	done 2> /dev/null
+}
+
 ## Begin main cli
 case "$1" in
 	-h|--help ) # calls usage function
@@ -1806,30 +1828,16 @@ case "$1" in
 			n|no|N|NO ) echo "ok, exiting"
 				exit 0;
 				;;
-			y|yes|Y|YES ) sitemap_startline="$(grep -on -m 1 "^++++.*sitemap" $config_file | tr -dc '[[:digit:]]')"
-				sitemap_endline="$(grep -on -m 1 "^---.*sitemap" $config_file | tr -dc '[[:digit:]]')"
-				# print the sitemap section from config.txt file into a tmp file
-				sed -n $sitemap_startline,$sitemap_endline'p' $config_file | \
-					grep -v -e "base.md" -e "index.md" -e "portfolio.md" -e "about.md" -e "^+++.*sitemap" -e "^---.*sitemap" > file.temp
-				for i in $(cat file.temp); do
-					html="$(echo $i | sed 's/\(.*\).md/\1.html/')"
-					base="$(echo $i | sed 's/\(.*\)\/.*md/\1\/base.md/')"
-					just_html="$(echo "$html" | cut -f2 -d "/")"
-					pre_lineno="$(grep -on -m 1 "$just_html" $base | cut -f1 -d ':')"
-					actual_lineno="$(( $pre_lineno - 1 ))"
-					date_val="$(sed -n $actual_lineno'p' $base | cut -f2- -d " ")"
-					html_startlineno="$(grep -no -m 1 "<main id=" $html | tr -dc '[[:digit:]]')"
-					html_actlineno="$(( $html_startlineno + 2 ))"
-					sed -i $html_actlineno"a <div class='date'>$date_val</div>" $html
-				done 2> /dev/null
-				if [ "$?" = 0 ]; then
-					echo "done"
-					rm file.temp
-				else
-					echo "something went wrong"
-					rm file.temp
-					exit 1;
-				fi
+			y|yes|Y|YES ) # Add dates to all posts
+						add_dates;
+					if [ "$?" = 0 ]; then
+						echo "done"
+						rm file.temp
+					else
+						echo "something went wrong"
+						rm file.temp
+						exit 1;
+					fi
 				;;
 			* ) echo "Invalid input, exiting" && exit 1;
 				;;
