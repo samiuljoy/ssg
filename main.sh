@@ -686,6 +686,8 @@ main_generate() {
 	# Serial wise function of the below lines sed codes
 	# Paragraph substitution
 	# Strike through text within paragraphs and blockquotes
+	# Sup text substitution
+	# Sub text substitution
 	# Bold text substitution specific to paragraphs and blockquotes
 	# Bold-italic text substitution specific to paragraphs and blockquotes
 	# Bold-italic text with underscore syntaxes
@@ -698,6 +700,8 @@ main_generate() {
 
 	sed -i '/^<p>\|^\t<p>/,/<\/p>$/ {
 		s/~~\([^~]*\)~~/<strike>\1<\/strike>/g
+		s/\^\^\([^\^]*\)\^\^/<sup>\1<\/sup>/g
+		s/\^\([^\^]*\)\^/<sub>\1<\/sub>/g
 		s/\*\*\([^.*]*\)\*\*/<b>\1<\/b>/g
 		s/\*\*\*\([^.*]*\)\*\*\*/<i><b>\1<\/i><\/b>/g
 		s/___\([^_]*\)___/<b><i>\1<\/b><\/i>/g
