@@ -110,12 +110,13 @@ check_sitemap() {
 ## check if navigation section is mentioned in config file
 nav_check() {
 	# check for navigation region in config file
-	grep -q "^+.*navigation$" $config_file && grep -q "^-.*navigation$" $config_file
+	grep -q "^+.*navigation$" $config_file && \
+		grep -q "^-.*navigation$" $config_file && \
+		navigation_section_present="1";
 
-	if [ "$?" -ne 0 ]; then
-		echo "navigation section is not mentioned in $config_file, perhaps you would want to edit it manually exiting..." && \
-			exit 1;
-	fi
+	[ "$?" -ne 0 ] && \
+		echo "navigation section is not mentioned in $config_file, perhaps you would want to edit it manually.." && \
+		exit 1;
 }
 
 ## value variable without index file
@@ -346,10 +347,8 @@ navigation_gen() {
 		ddd="$(dirname $i)"
 		html_val="$(echo $i | sed 's/.*\/\(.*\).md/\1.html/g')"
 		ddd_val="$(dirname $i | sed 's/\//\\\//g')"
-		grep -q "\.navpage: \[$ddd_val\]($ddd_val/$html_val)" $config_file
-		if [ "$?" -ne 0 ]; then
+		grep -q "\.navpage: \[$ddd_val\]($ddd_val/$html_val)" $config_file || \
 			sed -i "/^\.backpage:\s/i .navpage: [$ddd_val]($ddd_val\/$html_val)" $config_file
-		fi
 	done
 }
 ## transform markdown article to html
@@ -383,8 +382,7 @@ main_generate() {
 	orig="$1"; file_rename
 
 	# check if filename has backslash
-	echo $filename | grep -q "/"
-	[ "$?" = 0 ] && \
+	echo $filename | grep -q "/" && \
 		filename_has_backslash="1" || \
 		filename_has_backslash="0";
 
@@ -808,29 +806,29 @@ main_post() {
 	sed -i '1i ++++++++++++++++main' $current
 
 	# if card section found
-	grep -q "^\.date:\s" $current && grep -q "^\.article:\s" $current && grep -q "^\.describe:\s" $current
-	case "$?" in
-		0 ) sed -i '0,/^\.date:\s/{s/^\.date:\s\(.*\)/+++++++++++++++++card\n\n.date: \1/g}' $current
-			ce="$(grep -n '^\.describe:\s' $current | sed -n '$p' | cut -f1 -d ':')"
-			sed -i "$ce,/^\.describe:\s/{s/^\.describe:\s\(.*\)/.describe: \1\n\n-----------------card/g}" $current
-			;;
-		* ) echo "using default format instead of card format, because card format doesn't seem to be mentioned"
-			break
-			;;
-	esac
+	grep -q "^\.date:\s" $current && \
+		grep -q "^\.article:\s" $current && \
+		grep -q "^\.describe:\s" $current
+
+	if [ "$?" = 0 ]; then
+		sed -i '0,/^\.date:\s/{s/^\.date:\s\(.*\)/+++++++++++++++++card\n\n.date: \1/g}' $current
+		ce="$(grep -n '^\.describe:\s' $current | sed -n '$p' | cut -f1 -d ':')"
+		sed -i "$ce,/^\.describe:\s/{s/^\.describe:\s\(.*\)/.describe: \1\n\n-----------------card/g}" $current
+	else
+		echo "using default format instead of card format, because card format doesn't seem to be mentioned"
+	fi
 	# end card section
 
 	# if table section found
 	grep -q "^\.th:\s" $current && grep -q "^\.td:\s" $current
-	case "$?" in
-		0 ) sed -i '0,/^\.th:\s/{s/^\.th:\s\(.*\)/+++++++++++++++++table\n\n.th: \1/g}' $current
-			ce="$(grep -n '^\.td:\s' $current | sed -n '$p' | cut -f1 -d ':')"
-			sed -i "$ce,/^\.td:\s/{s/^\.td:\s\(.*\)/.td: \1\n\n----------------table/g}" $current
-			;;
-		* ) echo "table format doesn't seem to be included, skipping this method"
-			break
-			;;
-	esac
+
+	if [ "$?" = 0 ]; then
+		sed -i '0,/^\.th:\s/{s/^\.th:\s\(.*\)/+++++++++++++++++table\n\n.th: \1/g}' $current
+		ce="$(grep -n '^\.td:\s' $current | sed -n '$p' | cut -f1 -d ':')"
+		sed -i "$ce,/^\.td:\s/{s/^\.td:\s\(.*\)/.td: \1\n\n----------------table/g}" $current
+	else
+		echo "table format doesn't seem to be included, skipping this method"
+	fi
 	#end table section
 
 	sed -i '$a ----------------main' $current
@@ -945,18 +943,15 @@ main_post() {
 	fi
 
 	# if page name is about.md then change backpage to about
-	echo $current | grep -q "about.md"
-	[ "$?" = 0 ] && \
+	echo $current | grep -q "about.md" && \
 		sed -i '/^+.*navigation$/,/^-.*navigation$/ s/^\.backpage:\s.*/.backpage: [about](.\/about.html)/g' $current
 
 	# if page name is portfolio.md then change backpage to portfolio
-	echo $current | grep -q "portfolio.md"
-	[ "$?" = 0 ] && \
+	echo $current | grep -q "portfolio.md" && \
 		sed -i '/^+.*navigation$/,/^-.*navigation$/ s/^\.backpage:\s.*/.backpage: [portfolio](.\/portfolio.html)/g' $current
 
 	# if page has contact.md then change backpage to contact
-	echo $current | grep -q "contact.md"
-	[ "$?" = 0 ] && \
+	echo $current | grep -q "contact.md" && \
 		sed -i '/^+.*navigation$/,/^-.*navigation$/ s/^\.backpage:\s.*/.backpage: [contact](.\/contact.html)/g' $current
 
 	# add an extra line for aesthetic reasons
