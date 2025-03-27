@@ -429,9 +429,13 @@ main_generate() {
 	}' $filename
 
 	# global substitution < and > to escape sequences &lt; and &gt;
-	sed -i '{ s/</\&lt\;/g
+	# within main and footer tags
+	sed -i '/^++.*main$/,/^--.*main$/ {
+		s/</\&lt\;/g
 		/^[^>]/ s/>/\&gt\;/g }' $filename
-
+	sed -i '/^++.*footer$/,/^--.*footer$/ {
+		s/</\&lt\;/g
+		/^[^>]/ s/>/\&gt\;/g }' $filename
 	# comment -> if arg1 is "-c" then include all custom comments else remove all comments
 	# see https://samiuljoy.github.io/demo/syntax.html for more info
 	#if [ "$1" = "-c" ]; then
