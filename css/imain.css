@@ -1,7 +1,7 @@
 body {
 	font-size:1rem;
 	background-color: #F8F8EB;
-	line-height:1.4;
+	line-height:1.5;
 	color: #382c14;
 	-webkit-font-smoothing:antialiased;
 	-webkit-text-size-adjust:100%;
@@ -81,8 +81,8 @@ footer a {
 	color: grey;
 }
 .D img {
-	--webkit-filter: invert(100%);
-	filter: invert(100%);
+	--webkit-filter: invert(50%);
+	filter: invert(50%);
 }
 .D .gh {
 	color: #10101c;
